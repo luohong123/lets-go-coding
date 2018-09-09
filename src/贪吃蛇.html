@@ -42,6 +42,7 @@
             //颜色
             this.color = color || "blue";
         }
+
         //为原型添加初始化的方法,在地图上显示这个食物
         Food.prototype.init = function (map) {
             //先删除食物,外部无法访问的函数
@@ -65,13 +66,14 @@
             //把div加入到数组elements中
             elements.push(div);
         }
+
         //把自调用函数暴露Window,外部可以使用
         window.Food = Food;
         //删除食物,外部无法访问的私有函数，只能自己删除自己
         function remove() {
             //element数组长有这个食物
             for (var i = 0; i < elements.length; i++) {
-                var ele = elementt[i];
+                var ele = elements[i];
                 //先找到这个子元素的父节点,父节点删除这个子节点
                 ele.parentNode.removeChild(ele);
                 //再次把elements中的这个子元素删除
@@ -79,6 +81,7 @@
             }
         }
     }());
+
     /**
      * 自调用函数-小蛇的
      *
@@ -138,6 +141,7 @@
                 //把div加到elements数组中,目的是为了删除
                 elements.push(div);
             }
+
         }
         //为原型添加方法---小蛇移动起来
         Snake.prototype.move = function (food, map) {
@@ -162,8 +166,26 @@
                     this.body[0].y += 1;
                     break;
             }
-            //判断小蛇是否到地图尽头
+            //判断有没有吃到食物
+            //小蛇的头的坐标和食物的坐标一样 
+            var headX = this.body[0].x * this.width;
+            var headY = this.body[0].y * this.height;
+            //判断小蛇的头和食物的坐标是否相同
+            if (headX === food.x && headY === food.y) {
+                console.log("吃到蛇啦");
+                //获取小蛇最后的尾巴
+                var last = this.body[this.body.length - 1];
+                // 把最后的蛇尾复制一个,重写的加入到
+                this.body.push({
+                    x: last.x,
+                    y: last.y,
+                    color: last.color
+                })
+                //吃了食物后需要再画一个食物,并且蛇本身身体加长
+                food.init(this.map);
+            }
         }
+
         //创建小蛇私有的函数
         function remove() {
             //获取数组
@@ -175,26 +197,22 @@
                 elements.splice(i, 1);
             }
         }
-        //初始化游戏对象
-        //让小蛇自动的动起来
-        function runSnake() {
-
-        }
         //把内部函数暴露给window,外部可访问
         window.Snake = Snake;
     }());
+
     /**
      *自调用函数---游戏对象
      *
      */
     (function () {
-        var that =null;
+        var that = null;
         //游戏的构造函数
         function Game(map) {
             this.food = new Food(); //食物对象
             this.snake = new Snake(); //小蛇对象
             this.map = map; //地图
-            that=this;
+            that = this;
         }
         //游戏的初始化对象
         Game.prototype.init = function () {
@@ -210,19 +228,21 @@
             // }, 150);
             //调用自动移动小蛇的方法
             this.runSnake(this.food, this.map);
+            //调用按键的绑定方法
+            this.bindKey();
+            //调用分数
+            // this.getScoreByNumber(this.snake.body.length - 1);
         }
         //  添加原型方法---设置小蛇可以自动的跑起来
         Game.prototype.runSnake = function (food, map) {
             //此时这里的this指的是实例对象runSnake
             //自动的去移动
-            setInterval(function () {
+            var timeId = setInterval(function () {
                 //此时的this是window,
                 //移动小蛇
                 this.snake.move(food, map);
                 //初始化小蛇
                 this.snake.init(map);
-
-
                 //判断小蛇是否撞墙,如果小蛇撞到墙,则游戏停止
                 //横坐标的最大值
                 var maxX = map.offsetWidth / this.snake.width;
@@ -232,16 +252,57 @@
                 //小蛇的头的坐标
                 var headX = this.snake.body[0].x;
                 var headY = this.snake.body[0].y;
-                if (headX < 0 || headX > maxX) {
-                    clearInterval();
+                if (headX < 0 || headX >= maxX) {
+                    clearInterval(timeId);
                     alert("不小心撞墙啦,游戏结束！")
                 }
-                if (headY < 0 || headY > maxY) {
-                    clearInterval();
+                if (headY < 0 || headY >= maxY) {
+                    //停止定时器
+                    clearInterval(timeId);
                     alert("不小心撞墙啦,游戏结束！")
                 }
-            }.bind(that),150); //bind改变了this的指向,谁调用了bind,this。指的便是谁
+            }.bind(that), 150); //bind改变了this的指向,谁调用了bind,this。指的便是谁
         }
+        //添加原型方法-设置用户按键,改变小蛇移动的方向
+        Game.prototype.bindKey = function () {
+            console.log("bindKey已经调用")
+            //获取用户的按键,改变小蛇的方向
+            document.addEventListener("keydown",
+                function (e) {
+                    //这里的this是触发keydown的事件的对象--document,所有这里的this是document
+                    switch (e.keyCode) {
+                        case 37:
+                            //此时的this是游戏对象
+                            this.snake.direction = "left";
+                            break;
+                        case 38:
+                            //此时的this是游戏对象
+                            this.snake.direction = "top";
+                            break;
+                        case 39:
+                            //此时的this是游戏对象
+                            this.snake.direction = "right";
+                            break;
+                        case 40:
+                            //此时的this是游戏对象
+                            this.snake.direction = "bottom";
+                            break;
+                    }
+                }.bind(that), false);
+        }
+        //得分
+        // Game.prototype.getScoreByNumber=function(number) {
+        //     var div = document.createElement("div");
+        //     this.map.appendChild(div);
+        //     div.style.width = "80px";
+        //     div.style.height = "80px";
+        //     div.style.backgroundColor = "yellow";
+        //     div.style.color = "#ffffff";
+        //     div.style.position = "fixed";
+        //     div.style.left = "850px";
+        //     div.style.top = "10px";
+        //     div.innerHtml = "分数" + number * 10 + "分";
+        // }
         window.Game = Game;
     }());
     //调用游戏,让小蛇动起来
@@ -255,9 +316,18 @@
     // var snake = new Snake();
     // snake.init(document.querySelector(".map")); //先在地图上看到小蛇
     //页面的任何的位置,按下键盘，获取按下键盘的值
-    document.onkeydown = function () {
-        console.log(arguments.length);
-        console.log(arguments[0]);
+    document.onkeydown = function (e) {
+        //事件参数对象
+        // console.log(arguments.length);
+        // console.log(arguments[0]);
+        console.log(e.keyCode);
+        // e.ArrayFrom(e);
+        //arguments是类数组
+        console.log("这是一个伪数组" + arguments instanceof Array); //false
+        //把arguments转换为数组
+        // var argsArray = Array.prototype.slice.call(arguments);
+        var argsArray = Array.from(arguments);
+        console.log("伪数组转换成真数组：" + argsArray instanceof Array); //true
     }
     // window.setInterval(function(){
     //     console.log(this);

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>贪吃蛇</title>
+    <style>
+        .map {
+            width: 800px;
+            height: 600px;
+            background: #ccc;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 画地图 -->
+    <div class="map">
+
+    </div>
+</body>
+<script src="food.js"> </script>
+<script src="Snake.js"> </script>
+<script src="game.js"> </script>
+<script>
+    //贪吃蛇---面向对象的思想
+    //面向对象的编程思想：根据需求，抽象出现相关的对象,总结对象的特征和行为，把特征变成属性,行为变成方法,然后定义js构造函数,实例化对象，通过对象调用属性和方法，完成相应的需求
+    //bind(对象)
+    //私有的函数---外部不能访问，自己访问
+
+
+
+
+
+
+    //外部调用创建食物
+    // var fd = new Food();
+    // fd.init(document.querySelector(".map"));
+    // console.log("食物横纵坐标：" + fd.x + "---->" + fd.y);
+    //外部new 调用创建小蛇
+    // var snake = new Snake();
+    // snake.init(document.querySelector(".map")); //先在地图上看到小蛇
+    //页面的任何的位置,按下键盘，获取按下键盘的值
+    document.onkeydown = function (e) {
+        //事件参数对象
+        // console.log(arguments.length);
+        // console.log(arguments[0]);
+        console.log(e.keyCode);
+        // e.ArrayFrom(e);
+        //arguments是类数组
+        console.log("这是一个伪数组" + arguments instanceof Array); //false
+        //把arguments转换为数组
+        // var argsArray = Array.prototype.slice.call(arguments);
+        var argsArray = Array.from(arguments);
+        console.log("伪数组转换成真数组：" + argsArray instanceof Array); //true
+    }
+    // window.setInterval(function(){
+    //     console.log(this);
+    // })
+</script>
+
+</html>
