@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>通过原型继承</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+</body>
+<script>
+    function Person(name, age, sex) {
+        this.name = name;
+        this.age = age;
+        this.sex = sex;
+    }
+    Person.prototype.eat = function () {
+        console.log("吃东西");
+    }
+    Person.prototype.sleep = function () {
+        console.log("在睡觉");
+    }
+
+    function Student(score) {
+        this.score = score;
+    }
+    Student.prototype = new Person("小红", 18, "女");
+    Student.prototype.study=function(){
+        console.log("好好学习");
+    }
+    var stu = new Student(100);
+    console.log(stu.name);
+    console.log(stu.age);
+    console.log(stu.sex);
+    console.log(stu.score);
+    console.log(stu.eat);
+    console.log(stu.sleep);
+    console.log(stu.study);
+    //缺陷：继承过来时属性也继承过来了
+</script>
+
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>数组中的函数调用</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+</body>
+<script>
+    var arr = [
+        function () {
+            console.log("函数1");
+        },
+        function () {
+            console.log("函数2");
+        },
+        function () {
+            console.log("函数3");
+        },
+        function () {
+            console.log("函数4");
+        },
+        function () {
+            console.log("函数5");
+        },
+    ];
+    //回调函数：函数作为参数使用
+    arr.forEach(function (ele) {
+        console.log(ele);
+    })
+</script>
+
+</html>

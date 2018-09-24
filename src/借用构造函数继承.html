@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>借用构造函数继承</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+</body>
+<script>
+    //借用构造函数，不用改变原型的指向，直接调用父级的构造函数
+    //
+    function Person(name,age,sex,weight){
+        this.name=name;
+        this.age=age;
+        this.sex=sex;
+        this.weight=weight;
+    }
+    Person.prototype.sayHi=function(){
+        console.log("您好！");
+    }
+    function Student(name,age,sex,weight,score){
+        //借用构造函数
+        Person.call(this,name,age,sex,weight);
+    }
+    var stu1=new Student("小红",18,"女",100,100);
+    console.log(stu1.name,stu1.age,stu1.sex,stu1.weight);
+    // stu1.sayHi();
+    var stu2=new Student("小华",58,"男",60,130);
+    console.log(stu2.name,stu2.age,stu2.sex,stu2.weight);
+    // stu2.sayHi();
+    var stu3=new Student("小明",18,"男",98,110);
+    console.log(stu3.name,stu3.age,stu3.sex,stu3.weight);
+    // stu3.sayHi();
+    //借用构造函数：构造函数名字.call(当前对象,属性,属性,属性,..)
+    //解决了属性继承，并且值不重复的问题
+    //缺陷：父级类别的方法不能继承
+
+    
+</script>
+
+</html>

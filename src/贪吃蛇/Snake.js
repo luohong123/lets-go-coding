@@ -98,7 +98,7 @@
                     color: last.color
                 })
                 //吃了食物后需要再画一个食物,并且蛇本身身体加长
-                food.init(this.map);
+                food.init(map);
             }
         }
 

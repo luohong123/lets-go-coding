@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>this的指向和严格模式</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+</body>
+<script>
+    /**
+     * 定时器this指向window
+     * 普通函数
+     * 构造函数
+     * 构造函数的方法
+     * 
+     * 
+     * 
+     * 
+     * 
+     * use strict严格模式
+     */
+    // setInterval(function(){
+    //     console.log(this);
+    // },10000);
+    function Person(name) {
+        this.name = name;
+        this.sayHi = function () {
+            console.log(this);
+            console.log("构造函数内的方法this指的是实例对象");
+        }
+        console.log(this); //指的是实例对象
+    }
+    Person.prototype.eat = function () {
+        console.log(this); //原型方法的实例对象指的是实例对象
+    }
+    var per = new Person("阿芳");
+    per.eat();
+    per.sayHi();
+    console.dir(Person);
+
+    //普通函数
+    var f1 = function () {
+        console.log(this); //this指的是window
+    }
+    f1();
+    //一般不用这种写法，因为是字符串效率低需要现解析
+    var func3 = new Function('num1', 'num2', 'return num1+num2');
+    console.log(func3(10, 20));
+</script>
+
+</html>
