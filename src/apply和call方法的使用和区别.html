@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>apply和call方法的使用和区别</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+</body>
+<script>
+    /**
+     *都可以改变this的指向
+     *使用方式：
+     *函数名.apply(对象,[参数1，参数2，参数3，...]);
+     *函数名.call(对象,参数1,参数2,参数3,...);
+     *想要使用其他对象的某个方法，使用其他对象.方法名,apply(当前对象,[参数,..])或者其他对象.方法名,call(当前对象,参数,..])
+     *这个方法会被当前对象使用,this指向的是当前对象，在调用方法时改变了this的指向
+     *
+     *bind方法的使用和区别
+     *
+     *
+     */
+    function f1(x, y) {
+        console.log("结果是:" + (x + y) + this);
+    }
+    f1(10, 20);
+    console.log(">>>>>>>");
+    //applay和call方法也是函数的调用的方式
+    // f1.apply();
+    // f1.call();
+    console.log(">>>>");
+    // f1.apply(null);
+    // f1.call(null);
+    //apply和call方法中如果没有传入参数，或者传入的是null，那么调用该方法的函数对象
+    // 中的this是默认的window
+
+    f1.apply(null, [100, 200]);
+    f1.call(null, 50, 48);
+    //apply和call都可以让函数或者方法来调用，传入参数和自己调用的参数方式不一样，
+    //但是效果是一样的
+
+    //所有函数都是Function的实例对象
+    console.log(Function.prototype); //ƒ () { [native code] }
+    console.dir(Function);
+</script>
+
+</html>

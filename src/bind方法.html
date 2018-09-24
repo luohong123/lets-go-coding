@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>bind方法</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+</body>
+<script>
+    function f1(x, y) {
+        console.log((x + y) + ":>>>" + this);
+    }
+    //bind方法是复制的意思
+    var ff = f1.bind(null, 10, 10);
+    ff();
+    //bind是复制一份的时候改变this的方法，call和apply是调用的时候直接改变this的指向
+    //使用语法：  函数名字.bind(对象，参数1，参数2，...)====>返回值是复制之后的函数
+    //方法名字.bind(对象，参数1，参数2，...)====>返回值是复制之后的方法
+
+    //bind应用于随机数，调用这个方法一次，可以不停的产生随机数
+    function ShowRandom() {
+        //1-10的随机数
+        this.number = parseInt(Math.random() * 10 + 1);
+    }
+    //添加原型方法
+    ShowRandom.prototype.show1 = function () {
+        window.setInterval(this.show2.bind(this), 1000);
+    }
+    ShowRandom.prototype.show2 = function () {
+        //显示随机数
+        console.log(this.number);
+    };
+    //实例对象
+    var show = new ShowRandom();
+    //调用这个方法，输出随机数
+    //调用这个方法一次，可以不停的产生随机数
+    show.show1();
+</script>
+
+</html>
