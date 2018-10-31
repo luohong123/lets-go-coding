@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        ul li{
+            width: 25%;
+            text-align: center;
+            list-style-type: none;
+        }
+        ul li img{
+            object-fit: cover;
+        }
+        ul{
+            display: flex;
+            flex-direction:row;
+        }
+        ul input{
+            display: block;
+            background: #109801;
+            border: 1px solid #109801;
+            color: #fff;
+            margin: auto;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li>
+            <img src="../img/zixuan1.jpg" alt="zixuan" width="80%" height="200">
+            <input type="button" value="赞1">
+        </li>
+        <li>
+            <img src="../img/zixuan2.jpg" alt="zixuan" width="80%" height="200">
+            <input type="button" value="赞1">
+        </li>
+        <li>
+            <img src="../img/zixuan3.jpg" alt="zixuan" width="80%" height="200">
+            <input type="button" value="赞1">
+        </li>
+        <li>
+            <img src="../img/zixuan4.jpg" alt="zixuan" width="80%" height="200">
+            <input type="button" value="赞1">
+        </li>
+
+    </ul>
+</body>
+<script>
+    //获取所有的按钮
+    //根据标签名字获取元素
+    function getTag(tagName) {
+        return document.getElementsByTagName(tagName);
+    }
+
+    function getValue() {
+        var value = 2;
+        return function () {
+            this.value = "赞(" + value++ + ")";
+        }
+    }
+    var objs = getTag("input");
+    console.dir(objs);
+    for (i = 0; i < objs.length; i++) {
+        objs[i].onclick = getValue();
+    }
+</script>
+
+</html>

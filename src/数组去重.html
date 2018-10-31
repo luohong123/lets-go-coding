@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+ /* .red #red{
+        color:yellow;
+    } */
+    /* #red .red{
+        color:red;
+    } */
+    div .red{
+        color:block;
+    }
+    /* body .red{
+        color:orange;
+    } */
+--------------------- 
+作者：_Terry_ 
+来源：CSDN 
+原文：https://blog.csdn.net/Terry88_0728/article/details/78081058 
+版权声明：本文为博主原创文章，转载请附上博文链接！
+    </style>
+</head>
+
+<body>
+    <div class="red" id="red">
+        <span class="red" id="red">color</span>
+    </div>
+</body>
+<script>
+    function unique(arr) {
+        let obj = {};
+        let data = [];
+        //遍历数组
+        for (let i = 0; i < arr.length; i++) {
+            //判断数组的每一个值是否在这个对象中，如果没有在就添加到新数组中
+            if (!obj[arr[i]]) {
+                obj[arr[i]] = true;
+                data.push(arr[i]);
+            }
+        }
+        return data;
+    }
+    arr = [1, 2, 3, 3, 4, 4, 6, 2];
+    console.log(unique(arr));
+</script>
+
+</html>

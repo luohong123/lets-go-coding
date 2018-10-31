@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+</body>
+<script>
+    //涉及Ajax操作的页面不能使用文件协议访问（文件的阿方索）
+    //ajax是一套API核心提供的XMLHttpRequest
+    //1.安装浏览器(用户代理)
+    //xhr类似于浏览器的作用(发送请求接收)
+    // var xhr = new XMLHttpRequest()
+    //2.打开浏览器 输入网址
+    // xhr.open('GET', 'http://day-11.io/time.php')
+    //3.敲回车键 开始请求
+    // xhr.send()
+    //4.等待响应
+    //5.看结果
+    // 【1,2,2,3,a,b,4,5】 如何输出？54321
+    // function sortNum(arr) {
+    //     if (arr instanceof Array) {
+
+    //     } else {
+    //         alert('请传入数组');
+    //     }
+    //     console.log(arr);
+    //     var newArr = [];
+    //     for (i = 0; i < arr.length; i++) {
+    //         if (typeof arr[i] == 'number') {
+    //             newArr.push(arr[i]);
+    //         }
+    //         //倒序排序
+    //     }
+    //     newArr.sort(getSort);
+    //     console.log(newArr);
+    // }
+    // function sortNum(arr) {
+    //     // console.log(arr);
+    //     if (arr instanceof Array) {
+    //         var temp = Number(arr);
+    //         console.log(temp);
+    //         var newArr = [];
+    //     } else {
+    //         alert('请传入数组');
+    //     }
+    //     for (i = 0; i < arr.length; i++) {
+    //         // if (typeof arr[i] == 'number') {
+    //             newArr.push(arr[i]);
+    //         // }
+    //         //倒序排序
+    //     }
+    //     newArr.sort(getSort);
+    //     console.log(newArr);
+    // }
+
+    // function getSort(a, b) {
+    //     if (a > b) {
+    //         return -1;
+    //     } else if (a == b) {
+    //         return 0;
+    //     } else {
+    //         return 1;
+    //     }
+    // }
+    // sortNum([1, 2, 2, 3, 'a', 'b', 4, 5]);
+    function iterate(obj) {
+        var arr = [];
+        Object.keys(obj).forEach(function (item) {
+            arr.push( item + ':' + obj[item])
+        })
+        return arr;
+    }
+    var C = function() {this.foo = 'bar'; this.baz = 'bim';}; 
+C.prototype.bop = 'bip'; 
+console.log(iterate(new C()));
+</script>
+
+</html>

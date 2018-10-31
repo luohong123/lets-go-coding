@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+</body>
+<script>
+    /**
+     *依次比较相邻的两个值，如果后面的比前面的小，则将小的元素排到前面。依照这个规则进行多次并且递减的迭代，直到顺序正确。
+     *时间复杂度，空间复杂度，稳定性
+     */
+    function bubble_sort(arr) {
+        for (var i = 0; i < arr.length - 1; i++) {
+            for (var j = 0; j < arr.length - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    var swap = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = swap;
+                }
+            }
+        }
+    }
+
+    var arr = [3, 1, 5, 7, 2, 4, 9, 6, 10, 8];
+    bubble_sort(arr);
+    console.log(arr);
+</script>
+
+</html>
