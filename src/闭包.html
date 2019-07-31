@@ -92,6 +92,14 @@
     //闭包的作用：缓存数据,优点也是缺点，没有及时的释放。
     //局部变量是在函数中，函数使用结束后，局部变量就会被自动的释放
     //闭包后，里面的局部变量的使用作用域链就会被延长
+    var name = "The Window";
+var object = {
+    name : "My Object",
+    getName: function(){
+        return this.name;
+}
+ };
+alert(object.getName());
 </script>
 
 </html>

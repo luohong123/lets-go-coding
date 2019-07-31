@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>this</title>
+</head>
+
+<body>
+    <script>
+        'use strict';
+        function Student(name) {
+            this.name = name;
+            console.log(this); // {name: '若川'}
+            // 相当于返回了
+            // return this;
+        }
+        var result = new Student('若川');
+    </script>
+
+</body>
+
+</html>
