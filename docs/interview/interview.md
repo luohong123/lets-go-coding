@@ -1,4 +1,4 @@
-## 得记住啊
+## study
 [面试题链接](https://juejin.im/post/5b44a485e51d4519945fb6b7) https://juejin.im/post/5b44a485e51d4519945fb6b7
 ## webpack考点
 webpack是收把项目当作一个整体，通过一个给定的的主文件，webpack将从这个文件开始找到你的项目的所有依赖文件，使用loaders处理它们，最后打包成一个或多个浏览器可识别的js文件
