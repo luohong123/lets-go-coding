@@ -1,0 +1,25 @@
+{
+  "name": "lets-go-coding",
+  "version": "1.0.0",
+  "description": "让我们编码吧! 动起手来～",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luohong123/lets-go-coding.git"
+  },
+  "author": "qingcheng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/luohong123/lets-go-coding/issues"
+  },
+  "homepage": "https://github.com/luohong123/lets-go-coding#readme",
+  "dependencies": {
+    "lodash": "^4.17.15"
+  }
+}
