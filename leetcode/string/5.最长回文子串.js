@@ -25,25 +25,38 @@ var longestPalindrome = function (s) {
     //  Manacher's Algorithm 马拉车算法
     var len = s.length;
     if (len == 0 || len == 1)
-        return text;
-
+        return str;
     var n = len * 2 + 1,
-        radius = [], // 回文半径
+        radius = [0, 1], // 回文半径
         center = 1, // centerPosition 中心位置
         right = 2, //centerRightPosition 中心右侧位置
         currentIndex = 0, // currentRightPosition 当前右侧位置
         iMirror,
-        maxR = 0, // 最长半径
-        maxRIndex = 0, // 最长半径所在的索引
-        text = '|';
+        maxRadius = 0, // 最长半径
+        maxCenterPosition = 0, // 最长半径所在的索引
+        str = '#';
     for (var i = 0; i < s.length; i++) {
-        text += s[i] + '|'
+        str += s[i] + '#'
     }
-
-
-
-    console.log(text)
-
-    return text
+    console.log(str)
+    len = str.length;
+    for (var i = 2; i < len; i++) {
+        currentIndex = i;
+        radius[i] = 0
+        while (currentIndex > radius[i] &&
+            currentIndex + radius[i] < len &&
+            i % 2 !== 0 &&
+            str[currentIndex + radius[i]] == str[currentIndex - radius[i]]) {
+            radius[i]++
+        }
+        if (radius[i] >= maxRadius) {
+            maxRadius = radius[i]
+            maxCenterPosition = i
+        }
+    }
+    console.log(radius, 'radius')
+    str = str.substring(maxCenterPosition - maxRadius, maxCenterPosition + maxRadius)
+    console.log(str)
+    return str
 };
-longestPalindrome('babad') // 'aba'
+longestPalindrome('abaca') // 'aba'
