@@ -1,4 +1,12 @@
 /*
+ * @Author: luohong
+ * @Date: 2019-08-19 17:43:36
+ * @LastEditors: luohong
+ * @LastEditTime: 2019-08-19 18:02:49
+ * @Description: 
+ * @email: 3300536651@qq.com
+ */
+/*
  * @lc app=leetcode.cn id=107 lang=javascript
  *
  * [107] 二叉树的层次遍历 II
@@ -47,6 +55,10 @@
  * @return {number[][]}
  */
 var levelOrderBottom = function(root) {
-    
+    // 
+    if(root==null){
+        return []
+    }
+
 };
 
