@@ -1,4 +1,12 @@
 /*
+ * @Author: luohong
+ * @Date: 2019-08-19 17:43:36
+ * @LastEditors: luohong
+ * @LastEditTime: 2019-08-19 18:02:49
+ * @Description: 
+ * @email: 3300536651@qq.com
+ */
+/*
  * @lc app=leetcode.cn id=107 lang=javascript
  *
  * [107] 二叉树的层次遍历 II
@@ -52,24 +60,11 @@ function TreeNode(val) {
  * @param {TreeNode} root
  * @return {number[][]}
  */
-var levelOrderBottom = function (root) {
-    // 队列
-    var queue = [];
-    var result = [];
-    if (root !== null) {
-        queue.push(root);
+var levelOrderBottom = function(root) {
+    // 
+    if(root==null){
+        return []
     }
-    while (queue.length !== 0) {
-        var level = [];
-        var len = queue.length;
-        for (var i = 0; i < len; i++) {
-            var currentNode = queue.shift();
-            level.push(currentNode.val);
-            if (currentNode.left !== null) queue.push(currentNode.left);
-            if (currentNode.right !== null) queue.push(currentNode.right);
-        }
-        result.push(level);
-    }
-    return result.reverse();
+
 };
 levelOrderBottom([3, 9, 20, null, null, 15, 7])
