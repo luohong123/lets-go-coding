@@ -7,6 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,5 +23,8 @@
   "homepage": "https://github.com/luohong123/lets-go-coding#readme",
   "dependencies": {
     "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "vuepress": "^1.1.0"
   }
 }

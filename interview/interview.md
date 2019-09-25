@@ -792,7 +792,7 @@ var newBol=baseClone(bol);
     }
     //被复制的对象
     var obj1 = {
-        name: '红红',
+        name: '青成',
         age: '24',
         color: ['blue', 'red', 'black'],
         obj: {
