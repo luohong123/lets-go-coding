@@ -2,14 +2,14 @@
  * @Author: honghong
  * @Date: 2019-09-25 10:15:42
  * @LastEditors: honghong
- * @LastEditTime: 2019-09-25 14:04:27
+ * @LastEditTime: 2019-09-25 14:09:44
  * @Description: 
  * @email: 3300536651@qq.com
  */
 module.exports = {
     title: 'lets-go-coding',
     // description: '青成的前端知识架构',
-    base: '/lets-go-coding/docs/',
+    base: '/lets-go-coding/docs/fe/',
     themeConfig: {
         sidebarDepth: 2,
         lastUpdated: 'Last Updated',

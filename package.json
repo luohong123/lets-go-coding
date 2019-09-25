@@ -25,6 +25,12 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
+    "cz-conventional-changelog": "^3.0.2",
     "vuepress": "^1.1.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
