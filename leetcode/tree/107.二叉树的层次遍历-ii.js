@@ -50,6 +50,12 @@
  *     this.left = this.right = null;
  * }
  */
+
+function TreeNode(val) {
+    this.val = val;
+    this.left = this.right = null;
+}
+
 /**
  * @param {TreeNode} root
  * @return {number[][]}
@@ -61,4 +67,4 @@ var levelOrderBottom = function(root) {
     }
 
 };
-
+levelOrderBottom([3, 9, 20, null, null, 15, 7])
