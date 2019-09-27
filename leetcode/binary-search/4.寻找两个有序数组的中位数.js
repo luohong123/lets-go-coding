@@ -16,22 +16,23 @@
  * @param {number[]} nums2
  * @return {number}
  */
-var findMedianSortedArrays = function(nums1, nums2) {
-    var numbers =nums1.concat(nums2).sort(function(a,b){
-        return a-b
+var findMedianSortedArrays = function (nums1, nums2) {
+    var numbers = nums1.concat(nums2).sort(function (a, b) {
+        return a - b
     });
     let len = numbers.length
-    let mid = Math.floor(len/2)
+    let mid = Math.floor(len / 2)
     let median
-    if(len%2==0){
-        median= ((numbers[mid]+numbers[mid-1])/2).toFixed(1)
-    }else{
-        median= numbers[mid].toFixed(1)
+    if (len % 2 == 0) {
+        median = ((numbers[mid] + numbers[mid - 1]) / 2).toFixed(1)
+    } else {
+        median = numbers[mid].toFixed(1)
     }
     console.log(median)
     return median
-    
+
 };
-findMedianSortedArrays([1,2],[4])
-findMedianSortedArrays([1,2],[3,4])
-findMedianSortedArrays([1,3],[2])
+// 
+findMedianSortedArrays([1, 2], [4])
+findMedianSortedArrays([1, 2], [3, 4])
+findMedianSortedArrays([1, 3], [2])
