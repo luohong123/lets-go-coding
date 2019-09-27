@@ -6,6 +6,16 @@
 
 > 以下是常用的数据结构，以下排版参考了《学习 JavaScript 数据结构与算法》- 格罗纳（Groner,L.）著 孙晓博等译 一书
 
+## 数据结构 Data Structure
+
+- Array
+- Stack / Queue PriorityQueue (heap) LinkedList (single / double) Tree / Binary Tree
+- Binary Search Tree HashTable
+- Disjoint Set
+- Trie
+- BloomFilter
+- LRU Cache
+
 ## 数组
 
 to do

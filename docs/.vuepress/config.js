@@ -2,7 +2,7 @@
  * @Author: honghong
  * @Date: 2019-09-25 10:15:42
  * @LastEditors: honghong
- * @LastEditTime: 2019-09-26 17:29:54
+ * @LastEditTime: 2019-09-27 15:27:17
  * @Description: 
  * @email: 3300536651@qq.com
  */
@@ -52,19 +52,14 @@ module.exports = {
                 {
                     title: '数组',
                     children: [
-                        '/dataStructure/树/二叉树基础',
+                        '/dataStructure/数组/数组基础',
                     ]
                 },
                 {
-                    title: '栈',
+                    title: '堆栈和队列',
                     children: [
-                        '/dataStructure/栈/栈基础',
-                    ]
-                },
-                {
-                    title: '队列',
-                    children: [
-                        '/dataStructure/队列/队列基础',
+                        '/dataStructure/堆栈和队列/堆栈和队列基础',
+                        '/dataStructure/堆栈和队列/优先队列',
                     ]
                 },
                 {
@@ -74,27 +69,42 @@ module.exports = {
                     ]
                 },
                 {
-                    title: '集合',
+                    title: '哈希表和集合',
                     children: [
-                        '/dataStructure/集合/集合基础',
+                        '/dataStructure/哈希表和集合/集合基础',
+                        '/dataStructure/哈希表和集合/并查集',
                     ]
                 },
                 {
                     title: '字典和散列表',
                     children: [
                         '/dataStructure/字典和散列表/字典和散列表基础',
+                        '/dataStructure/字典和散列表/字典树',
                     ]
                 },
                 {
                     title: '树',
                     children: [
                         '/dataStructure/树/树基础',
+                        '/dataStructure/树/二叉树遍历',
                     ]
                 },
                 {
                     title: '图',
                     children: [
                         '/dataStructure/图/图基础',
+                    ]
+                },
+                {
+                    title: 'LRU Cache',
+                    children: [
+                        '/dataStructure/LRU Cache/LRU Cache基础',
+                    ]
+                },
+                {
+                    title: '布隆过滤器',
+                    children: [
+                        '/dataStructure/布隆过滤器/布隆过滤器基础',
                     ]
                 },
             ],
@@ -110,6 +120,55 @@ module.exports = {
                     title: '查找',
                     children: [
                         '/algorithm/查找/查找',
+                        '/algorithm/查找/二分查找',
+                    ]
+                },
+                {
+                    title: '递归',
+                    children: [
+                        '/algorithm/递归/递归基础',
+                    ]
+                },
+                {
+                    title: '分治',
+                    children: [
+                        '/algorithm/分治/分治基础',
+                    ]
+                },
+                {
+                    title: '回溯',
+                    children: [
+                        '/algorithm/回溯/回溯基础',
+                    ]
+                },
+                {
+                    title: '贪心算法',
+                    children: [
+                        '/algorithm/贪心算法/贪心算法基础',
+                    ]
+                },
+                {
+                    title: 'DFS和BFS',
+                    children: [
+                        '/algorithm/DFS和BFS/深度优先DFS+广度优先BFS',
+                    ]
+                },
+                {
+                    title: '剪枝',
+                    children: [
+                        '/algorithm/剪枝/剪枝基础',
+                    ]
+                },
+                {
+                    title: '位运算',
+                    children: [
+                        '/algorithm/位运算/位运算基础',
+                    ]
+                },
+                {
+                    title: '动态规划',
+                    children: [
+                        '/algorithm/动态规划/动态规划基础',
                     ]
                 },
             ],
