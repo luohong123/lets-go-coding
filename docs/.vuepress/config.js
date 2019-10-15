@@ -2,7 +2,7 @@
  * @Author: honghong
  * @Date: 2019-09-25 10:15:42
  * @LastEditors: honghong
- * @LastEditTime: 2019-09-27 15:27:17
+ * @LastEditTime: 2019-10-15 16:45:12
  * @Description: 
  * @email: 3300536651@qq.com
  */
@@ -18,20 +18,56 @@ module.exports = {
                 link: '/'
             },
             {
+                text: '仓库',
+                link: '/repository/'
+            },
+            {
+                text: '网站',
+                link: '/website/'
+            },
+            {
+                text: '黄金屋',
+                link: '/goldhouse/'
+            },
+            {
+                text: '文章',
+                link: '/article/'
+            },
+            {
+                text: 'MDN',
+                link: '/mdn/'
+            },
+            {
+                text: '实践',
+                link: '/practice/'
+            },
+            {
                 text: 'JavaScript',
                 link: '/JavaScript/'
             },
             {
-                text: '数据结构分类',
+                text: '可视化',
+                link: '/visual/'
+            },
+            {
+                text: '数据结构',
                 link: '/dataStructure/'
             },
             {
-                text: '算法分类',
+                text: '算法',
                 link: '/algorithm/'
             },
             {
                 text: '分享',
                 link: '/share/'
+            },
+            {
+                text: 'interview',
+                link: '/interview/'
+            },
+            {
+                text: '操作命令',
+                link: '/command/'
             },
             {
                 text: '博客',
@@ -46,6 +82,43 @@ module.exports = {
             '/JavaScript/': [
                 '/JavaScript/',
                 '/JavaScript/手写instanceof'
+            ],
+            '/practice/': [
+                '/practice/',
+                '/practice/工程化'
+            ],
+            '/goldhouse/': [
+                '/goldhouse/',
+                {
+                    title: 'JavaScript高级程序设计',
+                    children: [
+                        '/goldhouse/jsAdvanceProgram/第 1 章 JavaScript简介/',
+                        '/goldhouse/jsAdvanceProgram/第 2 章 在HTML中使用JavaScript/',
+                        '/goldhouse/jsAdvanceProgram/第 3 章 基本概念/',
+                        '/goldhouse/jsAdvanceProgram/第 4 章 变量、作用域和内存问题/',
+                        '/goldhouse/jsAdvanceProgram/第 5 章 引用类型/',
+                        '/goldhouse/jsAdvanceProgram/第 6 章 面向对象的程序设计/',
+                        '/goldhouse/jsAdvanceProgram/第 7 章 函数表达式/',
+                        '/goldhouse/jsAdvanceProgram/第 8 章 BOM/',
+                        '/goldhouse/jsAdvanceProgram/第 9 章 客户端检测/',
+                        '/goldhouse/jsAdvanceProgram/第 10 章 DOM/',
+                        '/goldhouse/jsAdvanceProgram/第 11 章 DOM 扩展/',
+                        '/goldhouse/jsAdvanceProgram/第 12 章 DOM2 和 DOM3/',
+                        '/goldhouse/jsAdvanceProgram/第 13 章 事件/',
+                        '/goldhouse/jsAdvanceProgram/第 14 章 表单脚本/',
+                        '/goldhouse/jsAdvanceProgram/第 15 章 使用 Canvas 绘图/',
+                        '/goldhouse/jsAdvanceProgram/第 16 章 HTML5脚本编程/',
+                        '/goldhouse/jsAdvanceProgram/第 17 章 错误处理与调试/',
+                        '/goldhouse/jsAdvanceProgram/第 18 章 JavaScript 与 XML/',
+                        '/goldhouse/jsAdvanceProgram/第 19 章 E4X/',
+                        '/goldhouse/jsAdvanceProgram/第 20 章 JSON/',
+                        '/goldhouse/jsAdvanceProgram/第 21 章 Ajax 与 Comet/',
+                        '/goldhouse/jsAdvanceProgram/第 22 章 高级技巧/',
+                        '/goldhouse/jsAdvanceProgram/第 23 章 离线应用与客户端存储/',
+                        '/goldhouse/jsAdvanceProgram/第 24 章 最佳实践/',
+                        '/goldhouse/jsAdvanceProgram/第 25 章 新兴的 API/'
+                    ]
+                },
             ],
             '/dataStructure/': [
                 '/dataStructure/',
@@ -174,12 +247,7 @@ module.exports = {
             ],
             '/share/': [
                 '/share/',
-                {
-                    title: '算法学习心得',
-                    children: [
-                        '/share/迷茫'
-                    ]
-                }
+                '/share/算法学习心得'
             ]
         }
     }

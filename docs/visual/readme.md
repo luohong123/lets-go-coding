@@ -1,3 +1,5 @@
+## 公司
+
 1. 万博思图
 2. 数字冰雹
 
@@ -13,9 +15,3 @@
 3. unity3D
 4. echart highcharts
 5. GIS
-
-Meredith 用户名
-
-## 十一
-
-可视化与游戏
