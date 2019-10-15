@@ -12,14 +12,13 @@ sudo cd docs/.vuepress/dist
 # 如果是发布到自定义域名
 # echo 'www.example.com' > CNAME
 
+#创建.nojekyll 防止Github Pages build错误
+touch .nojekyll
+
 git init
 git add -A
 git commit -m 'deploy'
 
-# 如果发布到 https://<USERNAME>.github.io
-# git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git master
+git push -f "https://${access_token}@github.com/luohong123/lets-go-coding.git" master:gh-pages
 
-# 如果发布到 https://<USERNAME>.github.io/<REPO>
-git push git@github.com:luohong123/https://github.com/luohong123/lets-go-coding.git master:gh-pages
-
-sudo cd -
+cd -
