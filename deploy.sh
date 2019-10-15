@@ -13,7 +13,7 @@ sudo cd docs/.vuepress/dist
 # echo 'www.example.com' > CNAME
 
 #创建.nojekyll 防止Github Pages build错误
-touch .nojekyll
+sudo touch .nojekyll
 
 git init
 git add -A
