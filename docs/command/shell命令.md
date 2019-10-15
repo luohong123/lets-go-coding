@@ -11,3 +11,5 @@
 [root@c7~]# dd if=/dev/sda of=mbr.bin bs=446 count=1
 
 ```
+
+test
