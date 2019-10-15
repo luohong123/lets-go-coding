@@ -18,7 +18,7 @@ touch .nojekyll
 git init
 git add -A
 git commit -m 'deploy'
-
+# 远程仓库别名  分支名称
 git push -f "https://${access_token}@github.com/luohong123/lets-go-coding.git" master:gh-pages
 
 sudo cd -
