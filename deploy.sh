@@ -21,4 +21,4 @@ git commit -m 'deploy'
 
 git push -f "https://${access_token}@github.com/luohong123/lets-go-coding.git" master:gh-pages
 
-cd -
+sudo cd -
