@@ -21,16 +21,22 @@
     "url": "https://github.com/luohong123/lets-go-coding/issues"
   },
   "homepage": "https://github.com/luohong123/lets-go-coding#readme",
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e $GIT_PARAMS"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    }
+  },
   "dependencies": {
+    "cz-customizable": "^6.2.0",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
     "cz-conventional-changelog": "^3.0.2",
     "vuepress": "^1.1.0"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   }
 }
