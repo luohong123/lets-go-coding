@@ -2,14 +2,14 @@
  * @Author: honghong
  * @Date: 2019-09-25 10:15:42
  * @LastEditors: honghong
- * @LastEditTime: 2019-10-15 16:45:12
+ * @LastEditTime: 2019-10-15 19:09:49
  * @Description: 
  * @email: 3300536651@qq.com
  */
 module.exports = {
     title: 'lets-go-coding',
     description: '动起手来，让我们一起编码吧~',
-    base: '/lets-go-coding/docs/fe/',
+    base: '/lets-go-coding/',
     themeConfig: {
         sidebarDepth: 2,
         lastUpdated: 'Last Updated',
