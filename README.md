@@ -2,4 +2,4 @@
 
 让我们编码吧! 动起手来～
 
-- 预览地址: https://luohong123.github.io/lets-go-coding/docs/fe/
+- 预览地址: https://luohong123.github.io/lets-go-coding
