@@ -2,7 +2,7 @@
  * @Author: honghong
  * @Date: 2019-09-25 10:15:42
  * @LastEditors: honghong
- * @LastEditTime: 2019-10-15 19:09:49
+ * @LastEditTime: 2019-10-17 10:13:27
  * @Description: 
  * @email: 3300536651@qq.com
  */
@@ -11,51 +11,38 @@ module.exports = {
     description: '动起手来，让我们一起编码吧~',
     base: '/lets-go-coding/',
     themeConfig: {
-        sidebarDepth: 2,
+        sidebarDepth: 3,
         lastUpdated: 'Last Updated',
         nav: [{
                 text: '首页',
                 link: '/'
             },
             {
-                text: '仓库',
-                link: '/repository/'
-            },
-            {
-                text: '网站',
-                link: '/website/'
-            },
-            {
-                text: '黄金屋',
+                text: '阅读',
                 link: '/goldhouse/'
-            },
-            {
-                text: '文章',
-                link: '/article/'
-            },
-            {
-                text: 'MDN',
-                link: '/mdn/'
             },
             {
                 text: '实践',
                 link: '/practice/'
             },
             {
-                text: 'JavaScript',
-                link: '/JavaScript/'
-            },
-            {
-                text: '可视化',
-                link: '/visual/'
-            },
-            {
-                text: '数据结构',
-                link: '/dataStructure/'
-            },
-            {
-                text: '算法',
-                link: '/algorithm/'
+                text: '技能提升',
+                items: [{
+                        text: 'JavaScript',
+                        link: '/JavaScript/'
+                    }, {
+                        text: '可视化',
+                        link: '/visual/'
+                    },
+                    {
+                        text: '数据结构',
+                        link: '/dataStructure/'
+                    },
+                    {
+                        text: '算法',
+                        link: '/algorithm/'
+                    },
+                ]
             },
             {
                 text: '分享',
@@ -65,14 +52,10 @@ module.exports = {
                 text: 'interview',
                 link: '/interview/'
             },
-            {
-                text: '操作命令',
-                link: '/command/'
-            },
-            {
-                text: '博客',
-                link: 'https://luohong123.github.io/'
-            },
+            // {
+            //     text: '博客',
+            //     link: 'https://luohong123.github.io/'
+            // },
             {
                 text: 'github',
                 link: 'https://github.com/luohong123/lets-go-coding'
@@ -81,14 +64,22 @@ module.exports = {
         sidebar: {
             '/JavaScript/': [
                 '/JavaScript/',
-                '/JavaScript/手写instanceof'
+                '/JavaScript/TypeScript'
             ],
             '/practice/': [
                 '/practice/',
-                '/practice/工程化'
+                '/practice/工程化',
+                {
+                    title: '操作命令',
+                    children: [
+                        '/practice/command/mac'
+                    ]
+                },
             ],
             '/goldhouse/': [
                 '/goldhouse/',
+                '/goldhouse/article/',
+                '/goldhouse/mdn/',
                 {
                     title: 'JavaScript高级程序设计',
                     children: [
@@ -247,7 +238,13 @@ module.exports = {
             ],
             '/share/': [
                 '/share/',
+                '/share/repository',
+                '/share/website',
                 '/share/算法学习心得'
+            ],
+            '/interview/': [
+                '/interview/',
+                '/interview/总结',
             ]
         }
     }
