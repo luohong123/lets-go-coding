@@ -2,7 +2,7 @@
  * @Author: honghong
  * @Date: 2019-09-25 10:15:42
  * @LastEditors: honghong
- * @LastEditTime: 2019-10-17 10:13:27
+ * @LastEditTime: 2019-10-18 15:32:29
  * @Description: 
  * @email: 3300536651@qq.com
  */
@@ -30,6 +30,9 @@ module.exports = {
                 items: [{
                         text: 'JavaScript',
                         link: '/JavaScript/'
+                    }, {
+                        text: 'three.js',
+                        link: '/visual/Threejs基础/'
                     }, {
                         text: '可视化',
                         link: '/visual/'
@@ -66,6 +69,30 @@ module.exports = {
                 '/JavaScript/',
                 '/JavaScript/TypeScript'
             ],
+            '/visual/Threejs基础': [
+                '/visual/Threejs基础/',
+                {
+                    title: 'threejs学习笔记',
+                    children: [
+                        '/visual/Threejs基础/1-three.js快速入门',
+                        '/visual/Threejs基础/2-顶点概念、几何体结构',
+                        '/visual/Threejs基础/3-材质对象',
+                        '/visual/Threejs基础/4-模型对象',
+                        '/visual/Threejs基础/5-光源对象',
+                        '/visual/Threejs基础/6-层级模型、树结构',
+                        '/visual/Threejs基础/7-几何体 对象、曲线、三维建模',
+                        '/visual/Threejs基础/8-纹理贴图',
+                        '/visual/Threejs基础/9-相机对象(投影方式)',
+                        '/visual/Threejs基础/10-精灵模型、粒子系统',
+                        '/visual/Threejs基础/11-帧动画模块',
+                        '/visual/Threejs基础/12-骨骼、变形动画',
+                        '/visual/Threejs基础/13-语音模块 ',
+                        '/visual/Threejs基础/14-模型文件加载',
+                        '/visual/Threejs基础/15-WebGL渲染器',
+                    ]
+                }
+
+            ],
             '/practice/': [
                 '/practice/',
                 '/practice/工程化',
@@ -75,6 +102,7 @@ module.exports = {
                         '/practice/command/mac'
                     ]
                 },
+                '/practice/RESTfulAPI',
             ],
             '/goldhouse/': [
                 '/goldhouse/',
