@@ -440,7 +440,8 @@ console.log(employeeName); // Joseph Samuel Lucas MacKinzie
 
 ### 泛型
 软件工程中，我们不仅要创建一致的定义良好的API，同时也要考虑可重用性。 组件不仅能够支持当前的数据类型，同时也能支持未来的数据类型，这在创建大型系统时为你提供了十分灵活的功能。使用`泛型`来创建可重用的组件，一个组件可以支持多种类型对数据。
-泛型就是把类型当变量
+
+泛型就是把类型当变量,使返回值的类型与传入参数的类型是相同的
 代码片段:
 ```ts
 function identity<T>(arg: T): T { // T 帮助我们捕获用户传人的类型,比如 number
@@ -453,10 +454,63 @@ function loggingIdentity<T>(arg: Array<T>): Array<T> {
     return arg;
 }
 ```
+- 泛型的应用场景有哪些？
+
 ### 枚举
+定义一些带名字的常量，增强代码的可读性
+#### 数字枚举
+```js
+enum Direction {
+    Up = 1, // 从 1 开始自动增长
+    Down,
+    Left,
+    Right
+}
+```
+
+#### 字符枚举
+```js
+enum Direction {
+    Up = "UP",
+    Down = "DOWN",
+    Left = "LEFT",
+    Right = "RIGHT",
+}
+```
+#### 异构枚举（Heterogeneous enums）
+```js
+// 混合字符串和数字成员, 不常用
+enum BooleanLikeHeterogeneousEnum {
+    No = 0,
+    Yes = "YES",
+}
+```
+#### `const`枚举
+```js
+const enum Enum {
+    A = 1,
+    B = A * 2
+}
+```
 ### 类型推论
+```js
+let x = 3; // 变量 x 的类型推断为数字
+```
 ### 类型兼容性
+TypeScript里的类型兼容性是基于结构子类型的。 TypeScript结构化类型系统的基本规则是，如果x要兼容y，那么y至少具有与x相同的属性。
+
 ### 高级类型
+#### 交叉类型（Intersection Types）
+交叉类型是将多个类型合并为一个类型。大多是在混入（mixins）或其它不适合典型面向对象模型的地方看到交叉类型的使用。
+#### 联合类型（Union Types）
+```ts
+function padLeft(value: string, padding: string | number) {
+    // ...
+}
+```
+#### 类型保护与区分类型（Type Guards and Differentiating Types）
+
+
 ### Symbols
 ### 迭代器和生成器
 ### 模块
@@ -473,5 +527,7 @@ function loggingIdentity<T>(arg: Array<T>): Array<T> {
 ## 进阶
 
 ## 常见问题
+#### 泛型
 
+#### 类型推断
 ## 扩展
