@@ -273,6 +273,17 @@ module.exports = {
             '/interview/': [
                 '/interview/',
                 '/interview/总结',
+                '/interview/2019-10',
+                '/interview/1-JavaScript基础',
+                '/interview/2-HTML和CSS',
+                '/interview/3-计算机基础',
+                '/interview/4-数据结构和算法',
+                '/interview/5-运行环境',
+                '/interview/6-框架和类库',
+                '/interview/7-前端工程',
+                '/interview/8-项目和业务',
+                '/interview/9-学习提升',
+                '/interview/10-技术之外',
             ]
         }
     }
