@@ -45,7 +45,8 @@ module.exports = {
         sidebar: {
             '/JavaScript/': [
                 '/JavaScript/',
-                '/JavaScript/手写instanceof'
+                '/JavaScript/手写instanceof',
+                '/JavaScript/Array'
             ],
             '/dataStructure/': [
                 '/dataStructure/',
