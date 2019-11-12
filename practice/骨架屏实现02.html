@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>移除class</title>
+    <style>
+      .list .avatar {
+        float: left;
+        width: 5em;
+        height: 5em;
+        border-radius: 50%;
+        margin-right: 1em;
+      }
+      .list .title {
+        height: 5em;
+        overflow: hidden;
+        background: yellowgreen;
+      }
+      .placeholder .avatar {
+        background: #ccc;
+      }
+      .placeholder .title {
+        background: pink;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="list placeholder">
+      <img src="" alt="" class="avatar" />
+      <div class="title"></div>
+    </div>
+    <script>
+      setTimeout(() => {
+        document.querySelector("img").src = "../assets/img/zixuan1.jpg";
+        document.querySelector(".title").innerHTML = "紫萱";
+        document.querySelector(".list").className = "list";
+      }, 5000);
+    </script>
+  </body>
+</html>

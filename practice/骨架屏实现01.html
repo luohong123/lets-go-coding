@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>移除dom</title>
+    <style>
+      .shell .placeholder-block {
+        display: block;
+        height: 5em;
+        background: #eee;
+        margin: 1em;
+      }
+      .novel {
+        height: 5em;
+        background: blue;
+        margin: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="placeholder-block"></div>
+    </div>
+    <script>
+      setTimeout(function() {
+        let shell = document.querySelector(".shell");
+        document.querySelector(".shell").innerHTML = "";
+        let p = document.createElement("p");
+        p.innerHTML = "我是青成";
+        p.className = "novel";
+        shell.appendChild(p);
+      }, 5000);
+    </script>
+  </body>
+</html>
