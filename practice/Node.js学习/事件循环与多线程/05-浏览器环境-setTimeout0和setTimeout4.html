@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      setTimeout(() => {
+        console.log("setTimeout4");
+      }, 4);
+      setTimeout(() => {
+        console.log("setTimeout1");
+      }, 1);
+
+      setTimeout(() => {
+        console.log("setTimeout0");
+      }, 0);
+      setTimeout(() => {
+        console.log("setTimeout1第二个");
+      }, 1);
+      // 1. setTimeout1
+      // 2. setTimeout0
+      // 3. setTimeout1第二个
+      // 4. setTimeout4
+    </script>
+  </body>
+</html>

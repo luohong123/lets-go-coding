@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      setTimeout(() => {
+        Promise.resolve().then(()=>{
+          console.log('promise5');
+        })
+        console.log("setTimeout"); // 先进入IO, 所以先出来
+      }, 0);
+
+      Promise.resolve().then(() => {
+        console.log("promise");
+        Promise.resolve().then(() => {
+          console.log("promise2"); // 在微任务队列中 会执行所有的微任务后再开始新的一轮事件循环
+          Promise.resolve().then(() => {});
+          console.log("promise3");
+        });
+        setTimeout(() => {
+          console.log("setTimeout2");
+        }, 0);
+      });
+
+      console.log("main");
+      // 1. main
+      // 2. promise
+      // 3. promise2
+      // 4. setTimeout
+      // 5. promise5
+      // 6. setTimeout2
+
+      // 任务队列保持先进先出的原则
+    </script>
+  </body>
+</html>
