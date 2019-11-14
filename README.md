@@ -2,7 +2,7 @@
 
 让我们编码吧! 动起手来～
 
-- 预览地址: https://luohong123.github.io/lets-go-coding/docs/fe/
+- 预览地址: https://luohong123.github.io/lets-go-coding/
 
 <p>
   <img src="./docs/.vuepress/public/logo.png" width="60%"/>
@@ -19,7 +19,7 @@ npm run docs:dev
 npm run docs:build
 ```
 
-#### 发布
+#### 打包并自动发布到gh-page分支
 ```bash
 ./deploy.sh
 ```
