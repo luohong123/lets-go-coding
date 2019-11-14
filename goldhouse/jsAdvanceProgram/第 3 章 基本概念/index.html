@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>第 3 章 基本概念 | lets-go-coding</title>
+    <meta name="description" content="动起手来，让我们一起编码吧~">
+    
+    
+    <link rel="preload" href="/lets-go-coding/assets/css/0.styles.c0a6a970.css" as="style"><link rel="preload" href="/lets-go-coding/assets/js/app.26b350a5.js" as="script"><link rel="preload" href="/lets-go-coding/assets/js/2.081fdc5d.js" as="script"><link rel="preload" href="/lets-go-coding/assets/js/60.7b47a93a.js" as="script"><link rel="prefetch" href="/lets-go-coding/assets/js/10.ec1b4719.js"><link rel="prefetch" href="/lets-go-coding/assets/js/100.d6f38683.js"><link rel="prefetch" href="/lets-go-coding/assets/js/101.ffbf9665.js"><link rel="prefetch" href="/lets-go-coding/assets/js/102.05efabcf.js"><link rel="prefetch" href="/lets-go-coding/assets/js/103.35eade40.js"><link rel="prefetch" href="/lets-go-coding/assets/js/104.b2354524.js"><link rel="prefetch" href="/lets-go-coding/assets/js/105.a86611fa.js"><link rel="prefetch" href="/lets-go-coding/assets/js/106.05a64b79.js"><link rel="prefetch" href="/lets-go-coding/assets/js/107.42389bc4.js"><link rel="prefetch" href="/lets-go-coding/assets/js/108.90e3e8ca.js"><link rel="prefetch" href="/lets-go-coding/assets/js/109.7a899ed0.js"><link rel="prefetch" href="/lets-go-coding/assets/js/11.68c29210.js"><link rel="prefetch" href="/lets-go-coding/assets/js/110.0ccddbbc.js"><link rel="prefetch" href="/lets-go-coding/assets/js/111.dd992dde.js"><link rel="prefetch" href="/lets-go-coding/assets/js/112.26085a7d.js"><link rel="prefetch" href="/lets-go-coding/assets/js/12.8a76f3df.js"><link rel="prefetch" href="/lets-go-coding/assets/js/13.1406cd46.js"><link rel="prefetch" href="/lets-go-coding/assets/js/14.432101f9.js"><link rel="prefetch" href="/lets-go-coding/assets/js/15.b332aaa6.js"><link rel="prefetch" href="/lets-go-coding/assets/js/16.626e83d2.js"><link rel="prefetch" href="/lets-go-coding/assets/js/17.a0a9234c.js"><link rel="prefetch" href="/lets-go-coding/assets/js/18.a4d844da.js"><link rel="prefetch" href="/lets-go-coding/assets/js/19.6333c979.js"><link rel="prefetch" href="/lets-go-coding/assets/js/20.8d468387.js"><link rel="prefetch" href="/lets-go-coding/assets/js/21.d7efccd3.js"><link rel="prefetch" href="/lets-go-coding/assets/js/22.dde9c99d.js"><link rel="prefetch" href="/lets-go-coding/assets/js/23.5bdd09ae.js"><link rel="prefetch" href="/lets-go-coding/assets/js/24.66e3d82f.js"><link rel="prefetch" href="/lets-go-coding/assets/js/25.f7787513.js"><link rel="prefetch" href="/lets-go-coding/assets/js/26.be2b6d5c.js"><link rel="prefetch" href="/lets-go-coding/assets/js/27.fb78f833.js"><link rel="prefetch" href="/lets-go-coding/assets/js/28.ecc817c7.js"><link rel="prefetch" href="/lets-go-coding/assets/js/29.68304a8f.js"><link rel="prefetch" href="/lets-go-coding/assets/js/3.ae82ac91.js"><link rel="prefetch" href="/lets-go-coding/assets/js/30.8896646d.js"><link rel="prefetch" href="/lets-go-coding/assets/js/31.c8d92029.js"><link rel="prefetch" href="/lets-go-coding/assets/js/32.77f1c086.js"><link rel="prefetch" href="/lets-go-coding/assets/js/33.c28b5b69.js"><link rel="prefetch" href="/lets-go-coding/assets/js/34.a03bcad7.js"><link rel="prefetch" href="/lets-go-coding/assets/js/35.3c4797ff.js"><link rel="prefetch" href="/lets-go-coding/assets/js/36.b200deac.js"><link rel="prefetch" href="/lets-go-coding/assets/js/37.e8a1f82d.js"><link rel="prefetch" href="/lets-go-coding/assets/js/38.b46cba4c.js"><link rel="prefetch" href="/lets-go-coding/assets/js/39.60eca418.js"><link rel="prefetch" href="/lets-go-coding/assets/js/4.4f698e63.js"><link rel="prefetch" href="/lets-go-coding/assets/js/40.124c1cd5.js"><link rel="prefetch" href="/lets-go-coding/assets/js/41.1b1ac8d8.js"><link rel="prefetch" href="/lets-go-coding/assets/js/42.4a6d8a06.js"><link rel="prefetch" href="/lets-go-coding/assets/js/43.dadbba41.js"><link rel="prefetch" href="/lets-go-coding/assets/js/44.ce556a05.js"><link rel="prefetch" href="/lets-go-coding/assets/js/45.2be4e72f.js"><link rel="prefetch" href="/lets-go-coding/assets/js/46.675015ee.js"><link rel="prefetch" href="/lets-go-coding/assets/js/47.1e884d1c.js"><link rel="prefetch" href="/lets-go-coding/assets/js/48.d9475f9c.js"><link rel="prefetch" href="/lets-go-coding/assets/js/49.f669da21.js"><link rel="prefetch" href="/lets-go-coding/assets/js/5.477b80c3.js"><link rel="prefetch" href="/lets-go-coding/assets/js/50.85fd309a.js"><link rel="prefetch" href="/lets-go-coding/assets/js/51.c99d48a5.js"><link rel="prefetch" href="/lets-go-coding/assets/js/52.ed2f54b7.js"><link rel="prefetch" href="/lets-go-coding/assets/js/53.2e204be4.js"><link rel="prefetch" href="/lets-go-coding/assets/js/54.7036102d.js"><link rel="prefetch" href="/lets-go-coding/assets/js/55.e0f74f8c.js"><link rel="prefetch" href="/lets-go-coding/assets/js/56.4aecf359.js"><link rel="prefetch" href="/lets-go-coding/assets/js/57.e9c43770.js"><link rel="prefetch" href="/lets-go-coding/assets/js/58.6ac17a02.js"><link rel="prefetch" href="/lets-go-coding/assets/js/59.f9398bf3.js"><link rel="prefetch" href="/lets-go-coding/assets/js/6.f2ba695d.js"><link rel="prefetch" href="/lets-go-coding/assets/js/61.5f7662c3.js"><link rel="prefetch" href="/lets-go-coding/assets/js/62.7ca90b83.js"><link rel="prefetch" href="/lets-go-coding/assets/js/63.165e6b36.js"><link rel="prefetch" href="/lets-go-coding/assets/js/64.6a541403.js"><link rel="prefetch" href="/lets-go-coding/assets/js/65.53b67df2.js"><link rel="prefetch" href="/lets-go-coding/assets/js/66.81bf5c46.js"><link rel="prefetch" href="/lets-go-coding/assets/js/67.16ef372e.js"><link rel="prefetch" href="/lets-go-coding/assets/js/68.a888038c.js"><link rel="prefetch" href="/lets-go-coding/assets/js/69.0cd03721.js"><link rel="prefetch" href="/lets-go-coding/assets/js/7.6fe79e11.js"><link rel="prefetch" href="/lets-go-coding/assets/js/70.f191a8a7.js"><link rel="prefetch" href="/lets-go-coding/assets/js/71.3f11a24c.js"><link rel="prefetch" href="/lets-go-coding/assets/js/72.59b1eb39.js"><link rel="prefetch" href="/lets-go-coding/assets/js/73.fa51416e.js"><link rel="prefetch" href="/lets-go-coding/assets/js/74.04171db1.js"><link rel="prefetch" href="/lets-go-coding/assets/js/75.4e1d3fb9.js"><link rel="prefetch" href="/lets-go-coding/assets/js/76.8982bbad.js"><link rel="prefetch" href="/lets-go-coding/assets/js/77.c32a7672.js"><link rel="prefetch" href="/lets-go-coding/assets/js/78.048b58d6.js"><link rel="prefetch" href="/lets-go-coding/assets/js/79.2541f2be.js"><link rel="prefetch" href="/lets-go-coding/assets/js/8.7e2df71e.js"><link rel="prefetch" href="/lets-go-coding/assets/js/80.62067b0f.js"><link rel="prefetch" href="/lets-go-coding/assets/js/81.f847f757.js"><link rel="prefetch" href="/lets-go-coding/assets/js/82.636b765d.js"><link rel="prefetch" href="/lets-go-coding/assets/js/83.ad1d9a9e.js"><link rel="prefetch" href="/lets-go-coding/assets/js/84.a71da39f.js"><link rel="prefetch" href="/lets-go-coding/assets/js/85.03e1eb1c.js"><link rel="prefetch" href="/lets-go-coding/assets/js/86.4ba32db1.js"><link rel="prefetch" href="/lets-go-coding/assets/js/87.77b10ba5.js"><link rel="prefetch" href="/lets-go-coding/assets/js/88.1fd3c9b1.js"><link rel="prefetch" href="/lets-go-coding/assets/js/89.2e15b517.js"><link rel="prefetch" href="/lets-go-coding/assets/js/9.e45b34ab.js"><link rel="prefetch" href="/lets-go-coding/assets/js/90.6caf2b23.js"><link rel="prefetch" href="/lets-go-coding/assets/js/91.250570df.js"><link rel="prefetch" href="/lets-go-coding/assets/js/92.4b8786fd.js"><link rel="prefetch" href="/lets-go-coding/assets/js/93.5a38e839.js"><link rel="prefetch" href="/lets-go-coding/assets/js/94.f8ce9ff7.js"><link rel="prefetch" href="/lets-go-coding/assets/js/95.c8968d1c.js"><link rel="prefetch" href="/lets-go-coding/assets/js/96.4f92b02b.js"><link rel="prefetch" href="/lets-go-coding/assets/js/97.3c981ab0.js"><link rel="prefetch" href="/lets-go-coding/assets/js/98.d00a96be.js"><link rel="prefetch" href="/lets-go-coding/assets/js/99.bd98fd5e.js">
+    <link rel="stylesheet" href="/lets-go-coding/assets/css/0.styles.c0a6a970.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/lets-go-coding/" class="home-link router-link-active"><!----> <span class="site-name">lets-go-coding</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/lets-go-coding/" class="nav-link">首页</a></div><div class="nav-item"><a href="/lets-go-coding/goldhouse/" class="nav-link router-link-active">阅读</a></div><div class="nav-item"><a href="/lets-go-coding/practice/" class="nav-link">实践</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">技能提升</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/lets-go-coding/JavaScript/" class="nav-link">JavaScript</a></li><li class="dropdown-item"><!----> <a href="/lets-go-coding/visual/Threejs基础/" class="nav-link">three.js</a></li><li class="dropdown-item"><!----> <a href="/lets-go-coding/visual/" class="nav-link">可视化</a></li><li class="dropdown-item"><!----> <a href="/lets-go-coding/dataStructure/" class="nav-link">数据结构</a></li><li class="dropdown-item"><!----> <a href="/lets-go-coding/algorithm/" class="nav-link">算法</a></li></ul></div></div><div class="nav-item"><a href="/lets-go-coding/share/" class="nav-link">分享</a></div><div class="nav-item"><a href="/lets-go-coding/interview/" class="nav-link">interview</a></div><div class="nav-item"><a href="https://github.com/luohong123/lets-go-coding" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  github
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/lets-go-coding/" class="nav-link">首页</a></div><div class="nav-item"><a href="/lets-go-coding/goldhouse/" class="nav-link router-link-active">阅读</a></div><div class="nav-item"><a href="/lets-go-coding/practice/" class="nav-link">实践</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">技能提升</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/lets-go-coding/JavaScript/" class="nav-link">JavaScript</a></li><li class="dropdown-item"><!----> <a href="/lets-go-coding/visual/Threejs基础/" class="nav-link">three.js</a></li><li class="dropdown-item"><!----> <a href="/lets-go-coding/visual/" class="nav-link">可视化</a></li><li class="dropdown-item"><!----> <a href="/lets-go-coding/dataStructure/" class="nav-link">数据结构</a></li><li class="dropdown-item"><!----> <a href="/lets-go-coding/algorithm/" class="nav-link">算法</a></li></ul></div></div><div class="nav-item"><a href="/lets-go-coding/share/" class="nav-link">分享</a></div><div class="nav-item"><a href="/lets-go-coding/interview/" class="nav-link">interview</a></div><div class="nav-item"><a href="https://github.com/luohong123/lets-go-coding" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  github
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/lets-go-coding/goldhouse/" class="sidebar-link">黄金屋</a></li><li><a href="/lets-go-coding/goldhouse/article/" class="sidebar-link">好文收藏</a></li><li><a href="/lets-go-coding/goldhouse/mdn/" class="sidebar-link">mdn 学习笔记</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>JavaScript高级程序设计</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%201%20%E7%AB%A0%20JavaScript%E7%AE%80%E4%BB%8B/" class="sidebar-link">第 1 章 JavaScript简介</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%202%20%E7%AB%A0%20%E5%9C%A8HTML%E4%B8%AD%E4%BD%BF%E7%94%A8JavaScript/" class="sidebar-link">第 2 章 在HTML中使用JavaScript</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="active sidebar-link">第 3 章 基本概念</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_3-1-语法" class="sidebar-link">3.1 语法</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_1、区分大小写" class="sidebar-link">1、区分大小写</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_2、标识符" class="sidebar-link">2、标识符</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_3、注释" class="sidebar-link">3、注释</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_4、严格模式-strict-mode" class="sidebar-link">4、严格模式(strict mode)</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_5、语句" class="sidebar-link">5、语句</a></li></ul></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_3-2-关键字和保留字" class="sidebar-link">3.2 关键字和保留字</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_1、关键字" class="sidebar-link">1、关键字</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_2、保留字" class="sidebar-link">2、保留字</a></li></ul></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_3-3-变量" class="sidebar-link">3.3 变量</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#var-name" class="sidebar-link">var name;</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#在函数内省略-var-操作符，会创建一个全局变量" class="sidebar-link">在函数内省略 var 操作符，会创建一个全局变量</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#给未声明的变量赋值，在严格模式下会抛出-referenceerror-错误" class="sidebar-link">给未声明的变量赋值，在严格模式下会抛出 ReferenceError 错误</a></li></ul></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_3-4-数据类型" class="sidebar-link">3.4 数据类型</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_1、typeof-操作符" class="sidebar-link">1、typeof 操作符</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_2、undefined-类型" class="sidebar-link">2、Undefined 类型</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_3、null-类型" class="sidebar-link">3、Null 类型</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_4、boolean-类型" class="sidebar-link">4、Boolean 类型</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_5、number-类型" class="sidebar-link">5、Number 类型</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_6、string-类型" class="sidebar-link">6、String 类型</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_7、object-类型" class="sidebar-link">7、Object 类型</a></li></ul></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_3-5-操作符" class="sidebar-link">3.5 操作符</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_1、一元操作符" class="sidebar-link">1、一元操作符</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_2、位操作符" class="sidebar-link">2、位操作符</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_3、布尔操作符" class="sidebar-link">3、布尔操作符</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_4、乘性操作符" class="sidebar-link">4、乘性操作符</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_5、加性操作符" class="sidebar-link">5、加性操作符</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_6、关系操作符" class="sidebar-link">6、关系操作符</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_7、相等操作符" class="sidebar-link">7、相等操作符</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_8、条件操作符" class="sidebar-link">8、条件操作符</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_9、赋值操作符" class="sidebar-link">9、赋值操作符</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_10、逗号操作符" class="sidebar-link">10、逗号操作符</a></li></ul></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_3-6-语句" class="sidebar-link">3.6 语句</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_1、if-语句" class="sidebar-link">1、if 语句</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_2、do-while-语句" class="sidebar-link">2、do-while 语句</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_3、while-语句" class="sidebar-link">3、while 语句</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_4、for-语句" class="sidebar-link">4、for 语句</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_5、for-in-语句" class="sidebar-link">5、for-in 语句</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_6、label-语句" class="sidebar-link">6、label 语句</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_7、break-和-continue-语句" class="sidebar-link">7、break 和 continue 语句</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_8、with-语句" class="sidebar-link">8、with 语句</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_9、switch-语句" class="sidebar-link">9、switch 语句</a></li></ul></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_3-7-函数" class="sidebar-link">3.7 函数</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_1、严格模式对函数有一些限制" class="sidebar-link">1、严格模式对函数有一些限制</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_2、理解函数" class="sidebar-link">2、理解函数</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_3、没有重载" class="sidebar-link">3、没有重载</a></li></ul></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#_3-8-小结" class="sidebar-link">3.8 小结</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#理解-ecmascript-及其纷繁复杂的各种细节，是理解其在-web-浏览器中的实现——javascript-的关键" class="sidebar-link">理解 ECMAScript 及其纷繁复杂的各种细节，是理解其在 Web 浏览器中的实现——JavaScript 的关键</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#基本数据类型包括-undefined、null、boolean、number-和-string" class="sidebar-link">基本数据类型包括 Undefined、Null、Boolean、Number 和 String</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#未指定返回值的函数返回的是一个特殊的-undefined-值" class="sidebar-link">未指定返回值的函数返回的是一个特殊的 undefined 值</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#可以向-ecmascript-函数传递任意数量的参数，并且可以通过-arguments-对象来访问这些参数" class="sidebar-link">可以向 ECMAScript 函数传递任意数量的参数，并且可以通过 arguments 对象来访问这些参数</a></li><li class="sidebar-sub-header"><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#由于不存在函数签名的特性，ecmascript-函数不能重载" class="sidebar-link">由于不存在函数签名的特性，ECMAScript 函数不能重载</a></li></ul></li></ul></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%204%20%E7%AB%A0%20%E5%8F%98%E9%87%8F%E3%80%81%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%92%8C%E5%86%85%E5%AD%98%E9%97%AE%E9%A2%98/" class="sidebar-link">第 4 章 变量、作用域和内存问题</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%205%20%E7%AB%A0%20%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B/" class="sidebar-link">第 5 章 引用类型</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%206%20%E7%AB%A0%20%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" class="sidebar-link">第 6 章 面向对象的程序设计</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%207%20%E7%AB%A0%20%E5%87%BD%E6%95%B0%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="sidebar-link">第 7 章 函数表达式</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%208%20%E7%AB%A0%20BOM/" class="sidebar-link">第 8 章 BOM</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%209%20%E7%AB%A0%20%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%A3%80%E6%B5%8B/" class="sidebar-link">第 9 章 客户端检测</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%2010%20%E7%AB%A0%20DOM/" class="sidebar-link">第 10 章 DOM</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%2011%20%E7%AB%A0%20DOM%20%E6%89%A9%E5%B1%95/" class="sidebar-link">第 11 章 DOM 扩展</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%2012%20%E7%AB%A0%20DOM2%20%E5%92%8C%20DOM3/" class="sidebar-link">第 12 章 DOM2 和 DOM3</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%2013%20%E7%AB%A0%20%E4%BA%8B%E4%BB%B6/" class="sidebar-link">第 13 章 事件</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%2014%20%E7%AB%A0%20%E8%A1%A8%E5%8D%95%E8%84%9A%E6%9C%AC/" class="sidebar-link">第 14 章 表单脚本</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%2015%20%E7%AB%A0%20%E4%BD%BF%E7%94%A8%20Canvas%20%E7%BB%98%E5%9B%BE/" class="sidebar-link">第 15 章 使用 Canvas 绘图</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%2016%20%E7%AB%A0%20HTML5%E8%84%9A%E6%9C%AC%E7%BC%96%E7%A8%8B/" class="sidebar-link">第 16 章 HTML5脚本编程</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%2017%20%E7%AB%A0%20%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E4%B8%8E%E8%B0%83%E8%AF%95/" class="sidebar-link">第 17 章 错误处理与调试</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%2018%20%E7%AB%A0%20JavaScript%20%E4%B8%8E%20XML/" class="sidebar-link">第 18 章 JavaScript 与 XML</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%2019%20%E7%AB%A0%20E4X/" class="sidebar-link">第 19 章 E4X</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%2020%20%E7%AB%A0%20JSON/" class="sidebar-link">第 20 章 JSON</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%2021%20%E7%AB%A0%20Ajax%20%E4%B8%8E%20Comet/" class="sidebar-link">第 21 章 Ajax 与 Comet</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%2022%20%E7%AB%A0%20%E9%AB%98%E7%BA%A7%E6%8A%80%E5%B7%A7/" class="sidebar-link">第 22 章 高级技巧</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%2023%20%E7%AB%A0%20%E7%A6%BB%E7%BA%BF%E5%BA%94%E7%94%A8%E4%B8%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%AD%98%E5%82%A8/" class="sidebar-link">第 23 章 离线应用与客户端存储</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%2024%20%E7%AB%A0%20%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" class="sidebar-link">第 24 章 最佳实践</a></li><li><a href="/lets-go-coding/goldhouse/jsAdvanceProgram/%E7%AC%AC%2025%20%E7%AB%A0%20%E6%96%B0%E5%85%B4%E7%9A%84%20API/" class="sidebar-link">第 25 章 新兴的 API</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="第-3-章-基本概念"><a href="#第-3-章-基本概念" aria-hidden="true" class="header-anchor">#</a> 第 3 章 基本概念</h1> <img src="https://github.com/luohong123/js-advance-program/blob/master/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/%E7%9B%B8%E7%AD%89%E5%92%8C%E4%B8%8D%E7%9B%B8%E7%AD%89.png"> <img src="https://github.com/luohong123/js-advance-program/blob/master/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/%E7%AC%AC%203%20%E7%AB%A0%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5.png"> <ul><li>break</li></ul> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token keyword">var</span> num <span class="token operator">=</span> <span class="token number">0</span>
+outermost<span class="token punctuation">:</span> <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">==</span> <span class="token number">5</span> <span class="token operator">&amp;&amp;</span> j <span class="token operator">==</span> <span class="token number">5</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">break</span> outermost
+    <span class="token punctuation">}</span>
+    num<span class="token operator">++</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span> <span class="token comment">//55</span>
+</code></pre></div><ul><li>continue</li></ul> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token keyword">var</span> num <span class="token operator">=</span> <span class="token number">0</span>
+outermost<span class="token punctuation">:</span> <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">==</span> <span class="token number">5</span> <span class="token operator">&amp;&amp;</span> j <span class="token operator">==</span> <span class="token number">5</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">continue</span> outermost
+    <span class="token punctuation">}</span>
+    num<span class="token operator">++</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span> <span class="token comment">//95</span>
+</code></pre></div><h2 id="_3-1-语法"><a href="#_3-1-语法" aria-hidden="true" class="header-anchor">#</a> 3.1 语法</h2> <h3 id="_1、区分大小写"><a href="#_1、区分大小写" aria-hidden="true" class="header-anchor">#</a> 1、区分大小写</h3> <ul><li><p>变量、函数名、操作符需要区分大小写</p> <pre><code>	- 如变量 test 和变量 Test 表示不同的变量
+</code></pre></li> <li><p>函数名不能使用关键字如 typeof</p></li></ul> <h3 id="_2、标识符"><a href="#_2、标识符" aria-hidden="true" class="header-anchor">#</a> 2、标识符</h3> <ul><li><p>标识符表示变量、函数、属性的名字或者函数的参数</p></li> <li><p>格式规则</p> <pre><code>	- 第一个字符必须是一个字母、下划线(_)或一个美元符号($)
+	- 其他字符可以是字母、下划线、美元符号或数字
+	- 采用驼峰大小写格式，第一个字母小写，剩下的每一个单词首字母大写如 firstName
+</code></pre></li></ul> <h3 id="_3、注释"><a href="#_3、注释" aria-hidden="true" class="header-anchor">#</a> 3、注释</h3> <ul><li>单行注释</li> <li>多行注释(块级注释)</li></ul> <h3 id="_4、严格模式-strict-mode"><a href="#_4、严格模式-strict-mode" aria-hidden="true" class="header-anchor">#</a> 4、严格模式(strict mode)</h3> <ul><li><p>启用严格模式</p> <pre><code>	- 在代码顶部添加 'use strict'; 这是一个编译指示(pragma)，告诉JavaScript 引擎切换到严格模式
+</code></pre></li></ul> <h3 id="_5、语句"><a href="#_5、语句" aria-hidden="true" class="header-anchor">#</a> 5、语句</h3> <h2 id="_3-2-关键字和保留字"><a href="#_3-2-关键字和保留字" aria-hidden="true" class="header-anchor">#</a> 3.2 关键字和保留字</h2> <h3 id="_1、关键字"><a href="#_1、关键字" aria-hidden="true" class="header-anchor">#</a> 1、关键字</h3> <h3 id="_2、保留字"><a href="#_2、保留字" aria-hidden="true" class="header-anchor">#</a> 2、保留字</h3> <h2 id="_3-3-变量"><a href="#_3-3-变量" aria-hidden="true" class="header-anchor">#</a> 3.3 变量</h2> <h3 id="var-name"><a href="#var-name" aria-hidden="true" class="header-anchor">#</a> var name;</h3> <ul><li>console.log(name); // undefined</li></ul> <h3 id="在函数内省略-var-操作符，会创建一个全局变量"><a href="#在函数内省略-var-操作符，会创建一个全局变量" aria-hidden="true" class="header-anchor">#</a> 在函数内省略 var 操作符，会创建一个全局变量</h3> <h3 id="给未声明的变量赋值，在严格模式下会抛出-referenceerror-错误"><a href="#给未声明的变量赋值，在严格模式下会抛出-referenceerror-错误" aria-hidden="true" class="header-anchor">#</a> 给未声明的变量赋值，在严格模式下会抛出 ReferenceError 错误</h3> <h2 id="_3-4-数据类型"><a href="#_3-4-数据类型" aria-hidden="true" class="header-anchor">#</a> 3.4 数据类型</h2> <h3 id="_1、typeof-操作符"><a href="#_1、typeof-操作符" aria-hidden="true" class="header-anchor">#</a> 1、typeof 操作符</h3> <ul><li><p>返回 undefined</p> <pre><code>	- 如果这个值未定义
+</code></pre></li> <li><p>返回 boolean</p> <pre><code>	- 如果这个值是布尔值
+</code></pre></li> <li><p>返回 string</p> <pre><code>	- 如果这个值是字符串
+</code></pre></li> <li><p>返回 number</p> <pre><code>	- 如果这个值是数值
+</code></pre></li> <li><p>返回 object</p> <pre><code>	- 如果这个值是 对象或 null
+</code></pre></li> <li><p>返回 function</p> <pre><code>	- 如果这个值是函数
+</code></pre></li></ul> <h3 id="_2、undefined-类型"><a href="#_2、undefined-类型" aria-hidden="true" class="header-anchor">#</a> 2、Undefined 类型</h3> <ul><li>未初始化的变量会自动被赋予 undefined 值</li> <li>建议不要显式的把变量设置为 undefined</li></ul> <h3 id="_3、null-类型"><a href="#_3、null-类型" aria-hidden="true" class="header-anchor">#</a> 3、Null 类型</h3> <ul><li>空对象指针</li> <li>明确的让变量保存 null 值</li></ul> <h3 id="_4、boolean-类型"><a href="#_4、boolean-类型" aria-hidden="true" class="header-anchor">#</a> 4、Boolean 类型</h3> <ul><li><p>使用 Boolean() 转换</p> <pre><code>	- 返回 true
+
+		- String 任何非空字符串
+		- Number 任何非零数字值(包括无穷大)
+		- Object 任何对象
+		- Undefined n/a, not applicable 的缩写，意思是“不适用”
+
+	- 返回 false
+
+		- String 空字符串 ''
+		- Number 0 和 NAN
+		- Object null
+		- Undefined  undefined
+</code></pre></li></ul> <h3 id="_5、number-类型"><a href="#_5、number-类型" aria-hidden="true" class="header-anchor">#</a> 5、Number 类型</h3> <ul><li><p>（1）浮点数值</p> <pre><code>	- 0.1 加 0.2 的结果不是 0.3，而是 0.30000000000000004
+	- 浮点数值的最高精度是 17 位小数
+</code></pre></li> <li><p>（2）数值范围</p> <pre><code>	- Number.MIN_VALUE
+
+		- 5e-324
+
+	- Number.MAX_VALUE
+
+		- 1.7976931348623157e+308
+
+	- 超出数值范围
+
+		- 数值将被自动转换成特殊的 Infinity 值
+
+			- 数值是负数，被转换成-Infinity(负无穷)
+			- 数值是正数，被转换成 Infinity(正无穷)
+
+		- 使用 isFinite() 检测是否超出范围，超出返回false，在数值范围内，返回 true
+</code></pre></li> <li><p>（3）NaN 非数值(Not a Number)</p> <pre><code>	- 使用 isNaN() 检测参数不是数值，返回 boolean
+	- 代码示例
+
+		- console.log(NaN == NaN); //false
+		- console.log(25 % 0); // NaN
+</code></pre></li> <li><p>（4）数值转换</p> <pre><code>	- Number()
+
+		- Boolean
+
+			- true 转为 1
+			- false 转为 0
+
+		- null
+
+			- 返回 0
+
+		- undefined
+
+			- 返回 NaN
+
+		- 字符串
+
+			- 只包含数字
+
+				- 省掉第一个 0
+
+			- 包含十六进制格式
+
+				- 转换为相同大小的十进制整数值
+
+			- 空字符串
+
+				- 转换为 0
+
+			- 其它
+
+				- NaN
+
+		- 对象
+
+			- 调用对象的 valueOf(), 再依照前面的顺序返回值
+
+	- parseInt() 处理整数
+	- parseFloat() 处理浮点数
+</code></pre></li></ul> <h3 id="_6、string-类型"><a href="#_6、string-类型" aria-hidden="true" class="header-anchor">#</a> 6、String 类型</h3> <ul><li><p>(1) 字符字面量</p> <pre><code>	- 特殊的字符字面量，也叫转义序列
+</code></pre></li> <li><p>(2)字符串的特点</p> <pre><code>	- 不可变
+	- 拼接字符串时速度很慢
+</code></pre></li> <li><p>(3)转换为字符串</p> <pre><code>	- 使用 toString() 方法 或者 + &quot; &quot;
+	- 规则
+
+		- 如果值有 toString()方法，则调用该方法(没有参数)并返回相应的结果
+		- 如果值是 null，则返回&quot;null&quot;
+		- 如果值是 undefined，则返回&quot;undefined&quot;
+</code></pre></li></ul> <h3 id="_7、object-类型"><a href="#_7、object-类型" aria-hidden="true" class="header-anchor">#</a> 7、Object 类型</h3> <ul><li><p>实例对象包含的属性和方法</p> <pre><code>	- constructor:保存着用于创建当前对象的函数。
+	- hasOwnProperty(propertyName):用于检查给定的属性在当前对象实例中(而不是在实例 的原型中)是否存在。
+	- isPrototypeOf(object):用于检查传入的对象是否是传入对象的原型
+	- propertyIsEnumerable(propertyName):用于检查给定的属性是否能够使用 for-in 语句来枚举
+	- toLocaleString():返回对象的字符串表示，该字符串与执行环境的地区对应
+	- toString():返回对象的字符串表示
+	- valueOf():返回对象的字符串、数值或布尔值表示。
+</code></pre></li></ul> <h2 id="_3-5-操作符"><a href="#_3-5-操作符" aria-hidden="true" class="header-anchor">#</a> 3.5 操作符</h2> <h3 id="_1、一元操作符"><a href="#_1、一元操作符" aria-hidden="true" class="header-anchor">#</a> 1、一元操作符</h3> <ul><li><p>(1)递增和递减操作符</p> <pre><code>	- 递增操作符
+
+		- i++
+
+			- 先使用 i 的值，再计算
+
+		- ++i
+
+			- 先计算，再使用计算后的值
+
+	- 递减操作符
+
+		- i--
+
+			- 先使用 i 的值，再计算
+
+		- --i
+
+			- 先计算，再使用计算后的值
+
+	- 计算规则
+
+		- 在应用于一个包含有效数字字符的字符串时，先将其转换为数字值，再执行加减 1 的操作
+		- 在应用于一个不包含有效数字字符的字符串时，将变量的值设置为 NaN
+		- 在应用于布尔值 false 时，先将其转换为 0 再执行加减 1 的操作
+		- 在应用于布尔值 true 时，先将其转换为 1 再执行加减 1 的操作
+		- 在应用于浮点数值时，执行加减 1 的操作
+		- 在应用于对象时，先调用对象的 valueOf()方法以取得一个可供操作的值
+</code></pre></li> <li><p>(2)一元加和减操作符</p> <pre><code>	- 一元加操作符
+
+		- 像 Number()转型函数一样对值执行转换
+
+	- 一元减操作符
+
+		- 表示负数
+		- 像 Number()转型函数一样对值执行转换
+</code></pre></li></ul> <h3 id="_2、位操作符"><a href="#_2、位操作符" aria-hidden="true" class="header-anchor">#</a> 2、位操作符</h3> <ul><li><p>(1)按位非（NOT）</p> <pre><code>	- ~
+</code></pre></li> <li><p>(2)按位与（AND）</p> <pre><code>	- &amp;
+</code></pre></li> <li><p>(3)按位或（OR）</p> <pre><code>	- |
+</code></pre></li> <li><p>(4)按位异或（XOR）</p> <pre><code>	- ^
+</code></pre></li> <li><p>(5)左移</p> <pre><code>	- &lt;&lt;
+</code></pre></li> <li><p>(6)有符号的右移</p> <pre><code>	- &gt;&gt;
+</code></pre></li> <li><p>(7)无符号右移</p> <pre><code>	- &gt;&gt;&gt;
+</code></pre></li></ul> <h3 id="_3、布尔操作符"><a href="#_3、布尔操作符" aria-hidden="true" class="header-anchor">#</a> 3、布尔操作符</h3> <ul><li><p>(1)逻辑非</p> <pre><code>	- ! 取反
+	- 规则
+
+		- 如果操作数是一个对象，返回 false
+		- 如果操作数是一个空字符串，返回 true
+		- 如果操作数是一个非空字符串，返回 false
+		- 如果操作数是数值 0，返回 true
+		- 如果操作数是任意非 0 数值(包括 Infinity)，返回 false
+		- 如果操作数是 null，返回 true
+		- 如果操作数是 NaN，返回 true
+		- 如果操作数是 undefined，返回 true
+
+	- 两个逻辑非操作符，会模拟Boolean()
+
+		- 第一个逻辑非操作会基于无论什么操作数返回一个布尔值
+		- 第二个逻辑非操作则对该布尔值求反
+</code></pre></li> <li><p>(2)逻辑与</p> <pre><code>	- &amp;&amp;
+	- 真值表
+
+		- 真真为真，真假为假，假真为假，假假为假
+
+	- 规则
+
+		- 如果第一个操作数是对象，则返回第二个操作数
+		- 如果第二个操作数是对象，则只有在第一个操作数的求值结果为 true 的情况下才会返回该
+		- 如果两个操作数都是对象，则返回第二个操作数
+		- 如果有一个操作数是 null，则返回 null
+		- 如果有一个操作数是 NaN，则返回 NaN
+		- 如果有一个操作数是 undefined，则返回 undefined
+</code></pre></li> <li><p>(1)逻辑非</p> <pre><code>	- ||
+	- 真值表
+
+		- 真真为真，真假为真，假真为真，假假为假
+
+	- 规则
+
+		- 如果第一个操作数是对象，则返回第一个操作数
+		- 如果第一个操作数的求值结果为 false，则返回第二个操作数
+		- 如果两个操作数都是对象，则返回第一个操作数
+		- 如果两个操作数都是 null，则返回 null
+		- 如果两个操作数都是 NaN，则返回 NaN
+		- 如果两个操作数都是 undefined，则返回 undefined
+</code></pre></li></ul> <h3 id="_4、乘性操作符"><a href="#_4、乘性操作符" aria-hidden="true" class="header-anchor">#</a> 4、乘性操作符</h3> <ul><li><p>(1)乘法</p> <pre><code>	- *
+	- 规则
+
+		- 如果操作数都是数值，执行常规的乘法计算
+		- 如果有一个操作数是 NaN，则结果是 NaN
+		- 如果是 Infinity 与 0 相乘，则结果是 NaN
+		- 如果是 Infinity 与非 0 数值相乘，则结果是 Infinity 或-Infinity
+		- 如果是 Infinity 与 Infinity 相乘，则结果是 Infinity
+		- 如果有一个操作数不是数值，则在后台调用 Number()将其转换为数值，然后再应用上面的规则
+</code></pre></li> <li><p>(2)除法</p> <pre><code>	- /
+	- 规则
+
+		- 如果操作数都是数值，执行常规的除法计算
+		- 如果有一个操作数是 NaN，则结果是 NaN
+		- 如果是 Infinity 被 Infinity 除，则结果是 NaN
+		- 如果是零被零除，则结果是 NaN
+		- 如果是非零的有限数被零除，则结果是 Infinity 或-Infinity，取决于有符号操作数的符号
+		- 如果是 Infinity 被任何非零数值除，则结果是 Infinity 或-Infinity，取决于有符号操作数的符号
+		- 如果有一个操作数不是数值，则在后台调用 Number()将其转换为数值，然后再应用上面的规则
+</code></pre></li></ul> <h3 id="_5、加性操作符"><a href="#_5、加性操作符" aria-hidden="true" class="header-anchor">#</a> 5、加性操作符</h3> <ul><li><p>(1)加法</p> <pre><code>	- +
+	- 规则
+
+		- 如果有一个操作数是 NaN，则结果是 NaN
+		- 如果是 Infinity 加 Infinity，则结果是 Infinity
+		- 如果是-Infinity 加-Infinity，则结果是-Infinity
+		- 如果是 Infinity 加-Infinity，则结果是 NaN
+		- 如果是+0 加+0，则结果是+0
+		- 如果是-0 加-0，则结果是-0
+		- 如果是+0 加-0，则结果是+0
+		- 一个操作数是字符串
+
+			-  如果两个操作数都是字符串，则将第二个操作数与第一个操作数拼接起来
+			- 如果只有一个操作数是字符串，则将另一个操作数转换为字符串，然后再将两个字符串拼接起来
+
+		- 如果有一个操作数是对象、数值或布尔值，则调用它们的 toString()方法取得相应的字符串值，
+		- 然后再应用前面关于字符串的规则。
+		- 对于 undefined 和 null，则分别调用 String()函数并取得字符 串&quot;undefined&quot;和&quot;null&quot;
+</code></pre></li> <li><p>(2)减法</p> <pre><code>	- -
+	- 规则
+
+		- 如果两个操作符都是数值，则执行常规的算术减法操作并返回结果
+		- 如果有一个操作数是 NaN，则结果是 NaN
+		- 如果是 Infinity 减 Infinity，则结果是 NaN
+		- 如果是-Infinity 减-Infinity，则结果是 NaN
+		- 如果是 Infinity 减-Infinity，则结果是 Infinity
+		- 如果是-Infinity 减 Infinity，则结果是-Infinity
+		- 如果是+0 减+0，则结果是+0
+		- 如果是+0 减-0，则结果是0
+		- 如果是-0 减-0，则结果是+0
+		- 如果有一个操作数是字符串、布尔值、null 或 undefined，则先在后台调用 Number()函数将
+		- 其转换为数值，然后再根据前面的规则执行减法计算
+		- 如果有一个操作数是对象，则调用对象的 valueOf()方法以取得表示该对象的数值
+		- 如果对象没有 valueOf()方法，则调用其 toString()
+		-  方法并将得到的字符串转换为数值
+</code></pre></li></ul> <h3 id="_6、关系操作符"><a href="#_6、关系操作符" aria-hidden="true" class="header-anchor">#</a> 6、关系操作符</h3> <ul><li><p>小于(&lt;)、大于(&gt;)、小于等于(&lt;=)和大于等于(&gt;=)</p></li> <li><p>规则</p> <pre><code>	- 如果两个操作数都是数值，则执行数值比较
+	- 如果两个操作数都是字符串，则比较两个字符串对应的字符编码值
+	- 如果一个操作数是数值，则将另一个操作数转换为一个数值，然后执行数值比较
+	- 如果一个操作数是对象，则调用这个对象的 valueOf()方法，用得到的结果按照前面的规则执
+	- 行比较。如果对象没有 valueOf()方法，则调用 toString()方法，并用得到的结果根据前面的规则执行比较
+	- 如果一个操作数是布尔值，则先将其转换为数值，然后再执行比较
+</code></pre></li></ul> <h3 id="_7、相等操作符"><a href="#_7、相等操作符" aria-hidden="true" class="header-anchor">#</a> 7、相等操作符</h3> <ul><li><p>(1)相等和不相等</p> <pre><code>	- 先转换再比较，强制转型
+	- 规则
+
+		- 如果有一个操作数是布尔值，则在比较相等性之前先将其转换为数值——false 转换为 0，而true 转换为 1
+		- 如果一个操作数是字符串，另一个操作数是数值，在比较相等性之前先将字符串转换为数值
+		- 如果一个操作数是对象，另一个操作数不是，则调用对象的 valueOf()方法，用得到的基本类型值按照前面的规则进行比较
+		- null == undefined // true
+		- 要比较相等性之前，不能将 null 和 undefined 转换成其他任何值
+		- 如果有一个操作数是 NaN，则相等操作符返回 false，而不相等操作符返回 true。即使两个操作数都是 NaN，相等操作符也返回 false;因为按照规则，NaN 不等于 NaN
+		- 如果两个操作数都是对象，则比较它们是不是同一个对象。如果两个操作数都指向同一个对象，则相等操作符返回 true;否则，返回 false
+</code></pre></li> <li><p>(2)全等和不全等</p> <pre><code>	- 仅比较而不转换
+	- 由于相等和不相等操作符存在类型转换问题，而为了保持代码中数据类型的完整性，我们推荐使用全等和不全等操作符
+</code></pre></li></ul> <h3 id="_8、条件操作符"><a href="#_8、条件操作符" aria-hidden="true" class="header-anchor">#</a> 8、条件操作符</h3> <ul><li><p>var max = (num1 &gt; num2) ? num1 : num2;</p> <pre><code>	- 如果 num1 大于 num2(关 系表达式返回 true)，则将 num1 的值赋给 max;如果 num1 小于或等于 num2(关系表达式返回 false)， 6 则将 num2 的值赋给 max
+</code></pre></li></ul> <h3 id="_9、赋值操作符"><a href="#_9、赋值操作符" aria-hidden="true" class="header-anchor">#</a> 9、赋值操作符</h3> <ul><li><p>=</p></li> <li><p>作用</p> <pre><code>	- 把右侧的值赋给左侧的变量
+</code></pre></li> <li><p>目的是简化赋值操作，但不会带来任何性能提升</p></li></ul> <h3 id="_10、逗号操作符"><a href="#_10、逗号操作符" aria-hidden="true" class="header-anchor">#</a> 10、逗号操作符</h3> <ul><li>，</li> <li>用于声明多个变量</li> <li>用于赋值，在用于赋值时，逗号 操作符总会返回表达式中的最后一项</li></ul> <h2 id="_3-6-语句"><a href="#_3-6-语句" aria-hidden="true" class="header-anchor">#</a> 3.6 语句</h2> <h3 id="_1、if-语句"><a href="#_1、if-语句" aria-hidden="true" class="header-anchor">#</a> 1、if 语句</h3> <ul><li>自动调用 Boolean()转换函数</li></ul> <h3 id="_2、do-while-语句"><a href="#_2、do-while-语句" aria-hidden="true" class="header-anchor">#</a> 2、do-while 语句</h3> <ul><li>后测试语句</li> <li>对条件表达式求值之前，循环体内的代码至少会被执行一次。</li></ul> <h3 id="_3、while-语句"><a href="#_3、while-语句" aria-hidden="true" class="header-anchor">#</a> 3、while 语句</h3> <ul><li>前测试语句</li></ul> <h3 id="_4、for-语句"><a href="#_4、for-语句" aria-hidden="true" class="header-anchor">#</a> 4、for 语句</h3> <ul><li>前测试语句</li></ul> <h3 id="_5、for-in-语句"><a href="#_5、for-in-语句" aria-hidden="true" class="header-anchor">#</a> 5、for-in 语句</h3> <ul><li>精准的迭代语句，可以用来枚举对象的属性</li> <li>在使用 for-in 循环之前，先检测确认该对象的值不是 null 或 undefined</li></ul> <h3 id="_6、label-语句"><a href="#_6、label-语句" aria-hidden="true" class="header-anchor">#</a> 6、label 语句</h3> <ul><li>使用 label 语句可以在代码中添加标签，以便将来使用</li></ul> <h3 id="_7、break-和-continue-语句"><a href="#_7、break-和-continue-语句" aria-hidden="true" class="header-anchor">#</a> 7、break 和 continue 语句</h3> <ul><li>break 语句会立即退出循环，强制继续执行循环后面的语句</li> <li>continue 语句虽然也是立即退出循环，但退出循环后会从循环的顶部继续执行,跳过</li></ul> <h3 id="_8、with-语句"><a href="#_8、with-语句" aria-hidden="true" class="header-anchor">#</a> 8、with 语句</h3> <ul><li><p>作用</p> <pre><code>	- 将代码的作用域设置到一个特定的对象中
+</code></pre></li> <li><p>不建议使用 with，因为大量使用 with 语句会导致性能下降，同时也会给调试代码造成困难</p></li></ul> <h3 id="_9、switch-语句"><a href="#_9、switch-语句" aria-hidden="true" class="header-anchor">#</a> 9、switch 语句</h3> <ul><li>在比较值时使用的是全等操作符，不会发生类型转换</li></ul> <h2 id="_3-7-函数"><a href="#_3-7-函数" aria-hidden="true" class="header-anchor">#</a> 3.7 函数</h2> <h3 id="_1、严格模式对函数有一些限制"><a href="#_1、严格模式对函数有一些限制" aria-hidden="true" class="header-anchor">#</a> 1、严格模式对函数有一些限制</h3> <ul><li>不能把函数命名为 eval 或 arguments</li> <li>不能把参数命名为 eval 或 arguments</li> <li>不能出现两个命名参数同名的情况</li></ul> <h3 id="_2、理解函数"><a href="#_2、理解函数" aria-hidden="true" class="header-anchor">#</a> 2、理解函数</h3> <ul><li>所有参数传递的都是值，不可能通过引用传递参数</li></ul> <h3 id="_3、没有重载"><a href="#_3、没有重载" aria-hidden="true" class="header-anchor">#</a> 3、没有重载</h3> <ul><li>后定义的函数会覆盖了先定义的函数</li></ul> <h2 id="_3-8-小结"><a href="#_3-8-小结" aria-hidden="true" class="header-anchor">#</a> 3.8 小结</h2> <h3 id="理解-ecmascript-及其纷繁复杂的各种细节，是理解其在-web-浏览器中的实现——javascript-的关键"><a href="#理解-ecmascript-及其纷繁复杂的各种细节，是理解其在-web-浏览器中的实现——javascript-的关键" aria-hidden="true" class="header-anchor">#</a> 理解 ECMAScript 及其纷繁复杂的各种细节，是理解其在 Web 浏览器中的实现——JavaScript 的关键</h3> <h3 id="基本数据类型包括-undefined、null、boolean、number-和-string"><a href="#基本数据类型包括-undefined、null、boolean、number-和-string" aria-hidden="true" class="header-anchor">#</a> 基本数据类型包括 Undefined、Null、Boolean、Number 和 String</h3> <h3 id="未指定返回值的函数返回的是一个特殊的-undefined-值"><a href="#未指定返回值的函数返回的是一个特殊的-undefined-值" aria-hidden="true" class="header-anchor">#</a> 未指定返回值的函数返回的是一个特殊的 undefined 值</h3> <h3 id="可以向-ecmascript-函数传递任意数量的参数，并且可以通过-arguments-对象来访问这些参数"><a href="#可以向-ecmascript-函数传递任意数量的参数，并且可以通过-arguments-对象来访问这些参数" aria-hidden="true" class="header-anchor">#</a> 可以向 ECMAScript 函数传递任意数量的参数，并且可以通过 arguments 对象来访问这些参数</h3> <h3 id="由于不存在函数签名的特性，ecmascript-函数不能重载"><a href="#由于不存在函数签名的特性，ecmascript-函数不能重载" aria-hidden="true" class="header-anchor">#</a> 由于不存在函数签名的特性，ECMAScript 函数不能重载</h3></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">10/15/2019, 4:55:10 PM</span></div></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/lets-go-coding/assets/js/app.26b350a5.js" defer></script><script src="/lets-go-coding/assets/js/2.081fdc5d.js" defer></script><script src="/lets-go-coding/assets/js/60.7b47a93a.js" defer></script>
+  </body>
+</html>
