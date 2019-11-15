@@ -40,7 +40,7 @@ npm run start
 - [ ] rem + vm 适配移动端
 - [ ] 优化代码
 - [ ] 使用xcode把页面嵌入到app里面并发布
-
+- [ ] 智能机器人聊天(图灵机器人)
 ## 三、目录结构
 
 自动生成目录结构是使用
@@ -53,7 +53,8 @@ server 服务端代码
 ## 四、记录我的实战过程
 ### 构思前端界面
 1. 下载AntDesign的 [Axure素材](http://library.ant.design/) 画原型
-
+2. https://socket.io/get-started/chat/
+3. socket.io-client 客户端
 原型地址: https://ncm6rr.axshare.com
 原型预览: 
 
