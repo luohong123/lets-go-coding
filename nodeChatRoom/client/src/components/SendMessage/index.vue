@@ -1,23 +1,26 @@
 <template>
 <div class="sendMessage">
-  <input type="text" />
+  <input type="text" v-model="message"/>
   <button type="submit" v-on:click="sendMessage">发送</button>
 </div>
 </template>
 
 <script>
-import io from 'socket.io-client';
+import { getGuid } from '@/utils';
+import { EventBus } from '@/utils/event-bus.js';
 export default {
   name: "SendMessage",
-  props: ["massege"],
+  data: function() {
+    return {
+      message: ''
+    }
+  },
   methods: {
     sendMessage: function () {
-      const socket = io('http://localhost:3000/');
-      socket.on('connect', function () {
-        console.log('连接成功');
-      });
-      socket.on('event', function (data) {});
-      socket.on('disconnect', function () {});
+      EventBus.$emit('sendMessage', {
+        id: getGuid(),
+        message: this.message
+      })
     }
   }
 };

@@ -1,7 +1,7 @@
 <template>
 <div class="chat">
   <ul>
-    <li v-for="item in chats" v-bind:key="item.id" class="chat-item">
+    <li v-for="item in list" v-bind:key="item.id" class="chat-item">
       <p class="time">{{ item.time }}</p>
       <div class="chat-conversation them" v-show="item.id!==3">
         <img v-bind:src="item.avatar" class="avatar" alt />
@@ -25,7 +25,9 @@
 <script>
 export default {
   name: "Chat",
-  props: ["chats"]
+  props: {
+    list: Array
+  }
 };
 </script>
 
