@@ -59,7 +59,7 @@ export default {
       this.$http({
           methods: 'get',
           url: 'http://localhost:3000/register',
-          data: {
+          params: {
             userName: this.userName,
             passWord: this.passWord
           }
