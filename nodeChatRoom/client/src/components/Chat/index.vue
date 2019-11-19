@@ -3,16 +3,16 @@
   <ul>
     <li v-for="item in list" v-bind:key="item.id" class="chat-item">
       <p class="time">{{ item.time }}</p>
-      <div class="chat-conversation them" v-show="item.id!==3">
+      <div class="chat-conversation them" v-if="item.userName !== userName">
         <img v-bind:src="item.avatar" class="avatar" alt />
         <div class="right">
-          <span class="chat-user">{{ item.name }}</span>
+          <span class="chat-user">{{ item.userName }}</span>
           <div class="chat-popover">{{ item.content }}</div>
         </div>
       </div>
-      <div class="chat-conversation me" v-show="item.id==3">
+      <div class="chat-conversation me" v-if="item.userName === userName">
         <div class="right">
-          <span class="chat-user">{{ item.name }}</span>
+          <span class="chat-user">{{ item.userName }}</span>
           <div class="chat-popover">{{ item.content }}</div>
         </div>
         <img v-bind:src="item.avatar" class="avatar" alt />
@@ -23,10 +23,16 @@
 </template>
 
 <script>
+import { getUserInfo } from '@/utils';
 export default {
   name: "Chat",
   props: {
     list: Array
+  },
+  data() {
+    return {
+      userName: getUserInfo().userName
+    }
   }
 };
 </script>

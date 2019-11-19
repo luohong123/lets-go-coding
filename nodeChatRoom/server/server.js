@@ -3,6 +3,7 @@ var fs = require('fs');
 var path = require('path');
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+const users = [];
 function getGuid() {
   return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
@@ -25,8 +26,10 @@ app.get('/', function(req, res) {
 app.get('/users', function(req, res) {});
 // 登录
 app.get('/login', function(req, res) {
-  let userName = req.query.userName;
-  let passWord = req.query.passWord;
+  let person = {
+    userName: req.query.userName,
+    passWord: req.query.passWord
+  };
   fs.readFile(path.resolve(__dirname, './users.json'), function(err, data) {
     if (err) {
       return console.err(err);
@@ -35,25 +38,30 @@ app.get('/login', function(req, res) {
     // 查找用户名和密码是否输入一致
     for (let i = 0; i < users.data.length; i++) {
       let everyone = users.data[i];
-      if (userName === everyone.userName && passWord === everyone.passWord) {
-        res.status(200).send({
+      console.log(everyone, 'everyone');
+      console.log(person, 'person');
+      if (
+        person.userName === everyone.userName &&
+        person.passWord === everyone.passWord
+      ) {
+        return res.status(200).send({
           message: '登录成功',
-          code: 0 
-        });
-      } else {
-        res.status(200).send({
-          code: -1,
-          message: '用户名或密码错误'
+          userName: person.userName,
+          code: '0'
         });
       }
     }
+    res.status(200).send({
+      code: '-1',
+      message: '用户名或密码错误'
+    });
   });
 });
 // 注册
 app.get('/register', function(req, res) {
   let userName = req.query.userName;
   let passWord = req.query.passWord;
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   console.log(req.query, 'req.query');
   let person = {
     id: getGuid(),
@@ -68,8 +76,11 @@ app.get('/register', function(req, res) {
     console.log(users, 'users');
     // 验证是否存在相同的用户, 如果存在提示用户名已被占用,请重新注册
     for (let i = 0; i < users.data.length; i++) {
-      if (users.data[i]['userName'].indexOf(userName) == -1) {
-        return res.send('用户名已被占用, 请重新注册');
+      if (users.data[i]['userName'].indexOf(person.userName) !== -1) {
+        return res.send({
+          message: '用户名已被占用, 请重新注册',
+          code: '-1'
+        });
       }
     }
     users.data.push(person);
@@ -79,22 +90,64 @@ app.get('/register', function(req, res) {
         console.log(err);
       }
       console.log('注册成功');
-      res.send('注册成功');
+      res.status(200).send({
+        message: '注册成功',
+        code: '0'
+      });
     });
   });
 });
 // 聊天内容
 app.get('/chats', function(req, res) {
-  let chats = [];
   res.setHeader('Access-Control-Allow-Origin', '*');
+  fs.readFile(path.resolve(__dirname, './chats.json'), function(err, data) {
+    if (err) {
+      return console.log(err);
+    }
+    let chats = JSON.parse(data);
+    res.status(200).send({
+      message: '请求成功',
+      result: chats,
+      code: '0'
+    });
+  });
+});
+// 新增一条聊天记录
+app.get('/chats/create', function(req, res) {
+  let chatOne = {
+    id: getGuid()
+  };
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  fs.readFile(path.resolve(__dirname, './chats.json'), function(err, data) {
+    if (err) {
+      return console.log(err);
+    }
+    let chats = JSON.parse(data);
+    chats.data.push(chatOne);
+  });
   res.send(chats);
 });
+// 客户端=》向服务端发送事件 enter进入 leave离开 sendMessage发送消息
+// 系统消息 systemMessage
+// 服务端=》向客户端发送事件 broadMessage广播消息 broadWhoEnter群通知谁进入、群broadWhoLeave
 io.on('connection', function(socket) {
   console.log('有新用户连接');
   // 服务端接收来自客户端的消息
-  socket.on('chat message', function(msg) {
-    console.log('message:' + msg);
-  });
+  // socket.on('chat message', function(chat) {
+  //   console.log('message:' + chat);
+  // });
+  socket.on('login', function(nickname) {
+    if (users.indexOf(nickname) > -1) {
+        socket.emit('nickExisted');
+    } else {
+        socket.userIndex = users.length;
+        socket.nickname = nickname;
+        // 新增在线人数
+        users.push(nickname);
+        socket.emit('loginSuccess');
+        io.sockets.emit('system', nickname); //向所有连接到服务器的客户端发送当前登陆用户的昵称 
+    };
+});
 });
 // 广播
 

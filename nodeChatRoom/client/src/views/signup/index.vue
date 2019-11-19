@@ -2,6 +2,7 @@
 <form class="signup">
   <div class="chat-form-main">
     <h3 class="title">聊天室</h3>
+    <p class="error">{{ tips }}</p>
     <div class="form-item-control">
       <input type="text" v-model="userName" />
     </div>
@@ -9,9 +10,9 @@
       <input type="password" v-model="passWord" />
     </div>
     <div class="form-item-control">
-      <button type="button" v-on:click="signup">注册</button>
+      <button type="button" class="btn btn-primary btn-block" v-on:click="signup">注册</button>
     </div>
-    <a href="javascript:;" class="link" v-on:click="signin">直接登录</a>
+    <a href="javascript:;" class="link signin-link" v-on:click="signin">直接登录</a>
   </div>
 </form>
 </template>
@@ -22,7 +23,8 @@ export default {
   data() {
     return {
       userName: '',
-      passWord: ''
+      passWord: '',
+      tips: ''
     }
   },
   methods: {
@@ -37,13 +39,14 @@ export default {
             userName: this.userName,
             passWord: this.passWord
           }
-
         })
         .then((response) => {
-          console.log('注册成功');
-          if (response.status === 200) {
+          if (response.data && response.data.code === '0') {
             // 跳转到上一个页面
-            this.$router.push('/chatDetail');
+            this.$router.push('/signin');
+            console.log(response.data.message);
+          } else if(response.data && response.data.status === '-1'){
+            this.tips = response.data.message;
           }
         })
         .catch(err => {
@@ -55,8 +58,9 @@ export default {
 </script>
 
 <style>
-.link {
-  color: #096dd9;
-  cursor: pointer;
+
+.signin-link {
+  margin-top: 20px;
+  float: right;
 }
 </style>
