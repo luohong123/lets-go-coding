@@ -4,11 +4,12 @@ var path = require('path');
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 const users = [];
+
 function getGuid() {
   return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
 // 允许跨域
-app.all('*', function(req, res, next) {
+app.all('*', function (req, res, next) {
   //设置允许跨域的域名，*代表允许任意域名跨域
   res.header('Access-Control-Allow-Origin', '*');
   //允许的header类型
@@ -20,17 +21,17 @@ app.all('*', function(req, res, next) {
   else next();
 });
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   res.send('<h1>Hello world</h1>');
 });
-app.get('/users', function(req, res) {});
+app.get('/users', function (req, res) {});
 // 登录
-app.get('/login', function(req, res) {
+app.get('/login', function (req, res) {
   let person = {
     userName: req.query.userName,
     passWord: req.query.passWord
   };
-  fs.readFile(path.resolve(__dirname, './users.json'), function(err, data) {
+  fs.readFile(path.resolve(__dirname, './users.json'), function (err, data) {
     if (err) {
       return console.err(err);
     }
@@ -58,7 +59,7 @@ app.get('/login', function(req, res) {
   });
 });
 // 注册
-app.get('/register', function(req, res) {
+app.get('/register', function (req, res) {
   let userName = req.query.userName;
   let passWord = req.query.passWord;
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -68,7 +69,7 @@ app.get('/register', function(req, res) {
     userName: userName,
     passWord: passWord
   };
-  fs.readFile(path.resolve(__dirname, './users.json'), function(err, data) {
+  fs.readFile(path.resolve(__dirname, './users.json'), function (err, data) {
     if (err) {
       return console.err(err);
     }
@@ -85,7 +86,7 @@ app.get('/register', function(req, res) {
     }
     users.data.push(person);
     let str = JSON.stringify(users);
-    fs.writeFile(path.resolve(__dirname, './users.json'), str, function(err) {
+    fs.writeFile(path.resolve(__dirname, './users.json'), str, function (err) {
       if (err) {
         console.log(err);
       }
@@ -98,27 +99,27 @@ app.get('/register', function(req, res) {
   });
 });
 // 聊天内容
-app.get('/chats', function(req, res) {
+app.get('/chats', function (req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  fs.readFile(path.resolve(__dirname, './chats.json'), function(err, data) {
+  fs.readFile(path.resolve(__dirname, './chats.json'), function (err, data) {
     if (err) {
       return console.log(err);
     }
     let chats = JSON.parse(data);
     res.status(200).send({
       message: '请求成功',
-      result: chats,
+      data: chats.data,
       code: '0'
     });
   });
 });
 // 新增一条聊天记录
-app.get('/chats/create', function(req, res) {
+app.get('/chats/create', function (req, res) {
   let chatOne = {
     id: getGuid()
   };
   res.setHeader('Access-Control-Allow-Origin', '*');
-  fs.readFile(path.resolve(__dirname, './chats.json'), function(err, data) {
+  fs.readFile(path.resolve(__dirname, './chats.json'), function (err, data) {
     if (err) {
       return console.log(err);
     }
@@ -130,27 +131,44 @@ app.get('/chats/create', function(req, res) {
 // 客户端=》向服务端发送事件 enter进入 leave离开 sendMessage发送消息
 // 系统消息 systemMessage
 // 服务端=》向客户端发送事件 broadMessage广播消息 broadWhoEnter群通知谁进入、群broadWhoLeave
-io.on('connection', function(socket) {
+io.on('connection', function (socket) {
   console.log('有新用户连接');
   // 服务端接收来自客户端的消息
   // socket.on('chat message', function(chat) {
   //   console.log('message:' + chat);
   // });
-  socket.on('login', function(nickname) {
+  socket.on('login', function (nickname) {
     if (users.indexOf(nickname) > -1) {
-        socket.emit('nickExisted');
+      socket.emit('nickExisted');
     } else {
-        socket.userIndex = users.length;
-        socket.nickname = nickname;
-        // 新增在线人数
-        users.push(nickname);
-        socket.emit('loginSuccess');
-        io.sockets.emit('system', nickname); //向所有连接到服务器的客户端发送当前登陆用户的昵称 
+      socket.userIndex = users.length;
+      socket.nickname = nickname;
+      // 新增在线人数
+      users.push(nickname);
+      socket.emit('loginSuccess');
+      io.sockets.emit('system', nickname); //向所有连接到服务器的客户端发送当前登陆用户的昵称 
     };
-});
+  });
+  // 接收消息后，发送群消息
+  socket.on('sendMessage', function (msg) {
+    fs.readFile(path.resolve(__dirname, './chats.json'), function (err, data) {
+      if (err) {
+        return console.log(err);
+      }
+      let chats = JSON.parse(data);
+      chats.data.push(msg);
+      // 新增一条消息
+      fs.writeFile(path.resolve(__dirname, './chats.json'), JSON.stringify(chats), function (err) {
+        if (err) {
+          return console.log(err);
+        }
+        io.broadcast.emit('broadMessage', msg)
+      })
+    })
+  })
 });
 // 广播
 
-http.listen(3000, function() {
+http.listen(3000, function () {
   console.log('listening on *:3000');
 });

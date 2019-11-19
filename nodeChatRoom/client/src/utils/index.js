@@ -1,3 +1,11 @@
+/*
+ * @Author: honghong
+ * @Date: 2019-11-19 19:38:43
+ * @LastEditors: honghong
+ * @LastEditTime: 2019-11-19 20:49:31
+ * @Description: 
+ * @email: 3300536651@qq.com
+ */
 /**
  * 获取guid
  */
