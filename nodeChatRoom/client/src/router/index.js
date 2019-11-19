@@ -25,6 +25,14 @@ const router = new Router({
     {
       path: '/chatDetail', // 聊天室
       component: () => import('@/views/chatDetail/index')
+    },
+    {
+      path: '/signin', // 登录
+      component: () => import('@/views/signin/index')
+    },
+    {
+      path: '/signup', // 注册
+      component: () => import('@/views/signup/index')
     }
   ]
 });

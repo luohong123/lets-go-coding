@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import '@/styles/resets.css';
+import '@/styles/global.css';
 Vue.config.productionTip = false
 import axios from 'axios';
 Vue.prototype.$http = axios;

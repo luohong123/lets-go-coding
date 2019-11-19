@@ -1,11 +1,6 @@
 <template>
 <div class="chatDetail">
   <button type="button" v-on:click="signin">登录</button>
-  <div class="signup">
-    <input type="text" v-model="userName" />
-    <input type="password" v-model="passWord" />
-    <button type="button" v-on:click="signup">注册</button>
-  </div>
   <p v-if="goIn">进入聊天室</p>
   <chat :list="chats" v-if="chats.length" />
   <sendMessage />
@@ -53,25 +48,9 @@ export default {
   },
   methods: {
     signin: function () {
-
+      this.$router.push('/signin');
     },
-    signup: function () {
-      this.$http({
-          methods: 'get',
-          url: 'http://localhost:3000/register',
-          params: {
-            userName: this.userName,
-            passWord: this.passWord
-          }
-
-        })
-        .then((response) => {
-          console.log('注册成功');
-        })
-        .catch(err => {
-          console.error(err);
-        })
-    },
+  
     getChats: function () {
 
     },

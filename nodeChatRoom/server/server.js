@@ -22,13 +22,32 @@ app.all('*', function(req, res, next) {
 app.get('/', function(req, res) {
   res.send('<h1>Hello world</h1>');
 });
-app.get('/users', function(req, res) {
-  res.send('user');
-});
+app.get('/users', function(req, res) {});
 // 登录
 app.get('/login', function(req, res) {
   let userName = req.query.userName;
   let passWord = req.query.passWord;
+  fs.readFile(path.resolve(__dirname, './users.json'), function(err, data) {
+    if (err) {
+      return console.err(err);
+    }
+    let users = JSON.parse(data.toString());
+    // 查找用户名和密码是否输入一致
+    for (let i = 0; i < users.data.length; i++) {
+      let everyone = users.data[i];
+      if (userName === everyone.userName && passWord === everyone.passWord) {
+        res.status(200).send({
+          message: '登录成功',
+          code: 0 
+        });
+      } else {
+        res.status(200).send({
+          code: -1,
+          message: '用户名或密码错误'
+        });
+      }
+    }
+  });
 });
 // 注册
 app.get('/register', function(req, res) {
@@ -47,15 +66,14 @@ app.get('/register', function(req, res) {
     }
     let users = JSON.parse(data.toString());
     console.log(users, 'users');
-    users.data.push(person);
-    let str = JSON.stringify(users);
-    console.log(str, 'str');
     // 验证是否存在相同的用户, 如果存在提示用户名已被占用,请重新注册
     for (let i = 0; i < users.data.length; i++) {
       if (users.data[i]['userName'].indexOf(userName) == -1) {
         return res.send('用户名已被占用, 请重新注册');
       }
     }
+    users.data.push(person);
+    let str = JSON.stringify(users);
     fs.writeFile(path.resolve(__dirname, './users.json'), str, function(err) {
       if (err) {
         console.log(err);
