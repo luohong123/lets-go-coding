@@ -3,7 +3,7 @@
  * @Date: 2019-11-19 19:38:43
  * @LastEditors: honghong
  * @LastEditTime: 2019-11-19 20:49:31
- * @Description: 
+ * @Description:
  * @email: 3300536651@qq.com
  */
 /**
@@ -41,6 +41,20 @@ export function getTime(format) {
   return format;
 }
 
-export function getUserInfo() {
-  return JSON.parse(window.localStorage.getItem('userInfo'));
+export function getUserName() {
+  let userInfo = window.localStorage.getItem('userInfo');
+  return userInfo ? JSON.parse(userInfo.userInfo) : null;
+}
+/**
+ * 防抖
+ * @param {*} fn 
+ * @param {*} wait 
+ */
+export function debounce(fn, wait) {
+  var timeout = null;
+  return function () {
+    if (timeout !== null)
+      clearTimeout(timeout);
+    timeout = setTimeout(fn, wait);
+  }
 }

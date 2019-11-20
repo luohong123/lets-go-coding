@@ -37,7 +37,7 @@ export default {
     signin: function() {
       this.$http({
         method: 'get',
-        url: 'http://localhost:3000/login',
+        url: 'http://192.168.0.118:3000/login',
         params: {
           userName: this.userName,
           passWord: this.passWord
@@ -48,12 +48,9 @@ export default {
             console.log(response, 'res:登录');
             this.$router.push('/chatDetail');
             // 登录成功后可以评论了
-            let userInfo = {
-              userName: response.data.userName
-            }
             window.localStorage.setItem(
-              'userInfo',
-              JSON.stringify(userInfo)
+              'userName',
+              response.data.userName
             );
           }
           console.log(response, 'response');

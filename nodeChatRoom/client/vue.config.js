@@ -6,6 +6,7 @@ function resolve(dir) {
 // 默认端口为 8080
 // const port = 8080;
 const port = process.env.port || 8080;
+const isDev = process.env.NODE_ENV;
 const VUE_APP_BASE_API = '/dev-api';
 const name = 'nodeChatRoom';
 module.exports = {
@@ -16,11 +17,11 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: process.env.NODE_ENV === 'production' ? '/nodeChatRoom/' : '/',
+  publicPath: isDev === 'production' ? '/nodeChatRoom/' : '/',
   outputDir: 'docs',
   assetsDir: 'static',
-  lintOnSave: process.env.NODE_ENV === 'development',
-  productionSourceMap: false,
+  lintOnSave: isDev === 'development',
+  productionSourceMap: isDev === 'development', // 开发环境打开源码模式
   devServer: {
     port: port,
     open: true,
@@ -33,7 +34,7 @@ module.exports = {
       // change xxx-api/login => mock/login
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [VUE_APP_BASE_API]: {
-        target: `http://localhost:3000`,
+        target: `http://192.168.0.118:3000`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + VUE_APP_BASE_API]: ''
@@ -49,14 +50,14 @@ module.exports = {
       }
     }
   },
-  configureWebpack: {
-    // provide the app's title in webpack's name field, so that
-    // it can be accessed in index.html to inject the correct title.
-    name: name,
-    resolve: {
-      alias: {
-        '@': resolve('src')
-      }
+  configureWebpack: config => {
+    if (isDev) {
+      // 开发环境配置
+      config.devtool = 'source-map';
+    }
+    config.name = name;
+    config.resolve.alias = {
+      '@': resolve('src')
     }
   },
   chainWebpack(config) {

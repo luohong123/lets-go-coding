@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { getUserInfo } from '@/utils';
+import { getUserName } from '@/utils';
 export default {
   name: "Chat",
   props: {
@@ -31,7 +31,7 @@ export default {
   },
   data() {
     return {
-      userName: getUserInfo().userName
+      userName: getUserName()
     }
   }
 };
@@ -40,6 +40,8 @@ export default {
 <style>
 .chat {
   background: #f5f5f5;
+  height: 300px;
+  overflow: auto;
 }
 
 .chat-item {
