@@ -22,9 +22,9 @@
 import chat from '@/components/Chat';
 import sendMessage from '@/components/SendMessage';
 import io from 'socket.io-client';
-import {
-  EventBus
-} from '@/utils/event-bus.js';
+// import {
+//   EventBus
+// } from '@/utils/event-bus.js';
 import {
   getGuid,
   getUserName,
@@ -56,8 +56,10 @@ export default {
     }
   },
   mounted() {
-    // 发送消息
-    this.sendMessage();
+    // 发送消息，并群消息通知所有人
+    // EventBus.$off('sendMessage', this.sendMessage);
+    EventBus.$on(['sendmessage'], this.sendMessage1);
+    // 系统消息
     socket.on('system', message => {
       console.dir(message, 'system-message');
       console.log('========================》system-message');
@@ -81,6 +83,13 @@ export default {
     this.connectServer();
   },
   updated: function () {},
+  beforeDestroy() {
+    // 注意：注册的 Bus 要在组件销毁时卸载，否则会多次挂载，造成触发一次但多个响应的情况。
+    EventBus.$off(['sendmessage']);
+  },
+  destroyed() {
+    EventBus.$off(['sendmessage']);
+  },
   methods: {
     signout: function () {
       this.leaveUser = getUserName();
@@ -123,36 +132,36 @@ export default {
           console.error(error, 'initMessage');
         });
     },
-    sendMessage: function () {
-      EventBus.$on('sendMessage', ({
-        message
-      }) => {
-        let chatone;
-        if (getUserName()) {
-          chatone = {
-            userName: getUserName(),
-            avatar: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3199241964,979639112&fm=26&gp=0.jpg',
-            time: getTime('yyyy-MM-dd'),
-            content: message,
-            isRead: 'Y'
-          };
-          // 发出事件,客户端向服务端传数据
-          socket.emit('sendMessage', chatone);
-        } else {
-          alert('请登录后再评论!');
+    sendMessage1: function (message) {
+      let chatone;
+      console.log('============》节流');
+      if (getUserName()) {
+        chatone = {
+          userName: getUserName(),
+          avatar: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3199241964,979639112&fm=26&gp=0.jpg',
+          time: getTime('yyyy-MM-dd'),
+          content: message,
+          isRead: 'Y'
+        };
+        // 发出事件,客户端向服务端传数据
+        socket.emit('sendMessage', chatone);
+      } else {
+        alert('请登录后再评论!');
+      }
+      socket.on('broadMessage', msg => {
+        if (msg) {
+          // EventBus被多次触发、次数累加, 尤大回复：https://github.com/vuejs/vue/issues/3399
+          // https://github.com/Pasoul/blog/issues/12
+          this.chats.push(msg);
+          console.log(this.chats, '接收群消息');
         }
-        socket.on('broadMessage', msg => {
-          if(msg) {
-            this.chats.push(msg);
-            console.log(this.chats, '接收群消息');
-          }
-        });
-        socket.on('connect', function () {
-          console.log('连接成功');
-        });
-        socket.on('event', function (data) {});
-        socket.on('disconnect', function () {});
       });
+      socket.on('connect', function () {
+        console.log('连接成功');
+      });
+      socket.on('event', function (data) {});
+      socket.on('disconnect', function () {});
+
     }
   }
 };

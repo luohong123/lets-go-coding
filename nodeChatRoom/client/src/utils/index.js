@@ -42,8 +42,8 @@ export function getTime(format) {
 }
 
 export function getUserName() {
-  let userInfo = window.localStorage.getItem('userInfo');
-  return userInfo ? JSON.parse(userInfo.userInfo) : null;
+  let userName = window.localStorage.getItem('userName');
+  return userName ? userName : null;
 }
 /**
  * 防抖

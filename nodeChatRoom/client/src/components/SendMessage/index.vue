@@ -1,6 +1,6 @@
 <template>
 <div class="sendMessage">
-  <input type="text" class="message-input" v-model="message" />
+  <input type="text" class="message-input" v-model="message" v-on:keyup.enter="sendMessage" />
   <button type="submit" class="btn btn-primary" v-on:click="sendMessage">发送</button>
 </div>
 </template>
@@ -22,10 +22,16 @@ export default {
   },
   methods: {
     sendMessage: function () {
-      debounce(EventBus.$emit('sendMessage', {
+      EventBus.$emit('sendmessage', {
         message: this.message
-      }), 1000);
+      })
     }
+  },
+  beforeDestroy() {
+    EventBus.$off(['sendmessage']);
+  },
+  destroyed() {
+     EventBus.$off(['sendmessage']);
   }
 };
 </script>
