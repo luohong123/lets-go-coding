@@ -11,7 +11,7 @@ import {
   debounce
 } from '@/utils';
 import {
-  EventBus
+  eventHub
 } from '@/utils/event-bus.js';
 export default {
   name: "SendMessage",
@@ -22,16 +22,11 @@ export default {
   },
   methods: {
     sendMessage: function () {
-      EventBus.$emit('sendmessage', {
+      eventHub.$emit('send', {
         message: this.message
       })
+      // this.message = '';
     }
-  },
-  beforeDestroy() {
-    EventBus.$off(['sendmessage']);
-  },
-  destroyed() {
-     EventBus.$off(['sendmessage']);
   }
 };
 </script>

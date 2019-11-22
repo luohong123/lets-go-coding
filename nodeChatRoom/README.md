@@ -58,7 +58,7 @@ server 服务端代码
 原型地址: https://ncm6rr.axshare.com
 原型预览: 
 ### 遇到的问题
-1. vue中eventbus被多次触发, 比如点击一次按钮增加两条数据
+1. vue中eventHub被多次触发, 比如点击一次按钮增加两条数据
 ### 接口设计
 
 ## 五、建议

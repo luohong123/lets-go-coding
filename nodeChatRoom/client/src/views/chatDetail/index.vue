@@ -22,16 +22,22 @@
 import chat from '@/components/Chat';
 import sendMessage from '@/components/SendMessage';
 import io from 'socket.io-client';
-// import {
-//   EventBus
-// } from '@/utils/event-bus.js';
+import {
+  eventHub
+} from '@/utils/event-bus.js';
 import {
   getGuid,
   getUserName,
   getTime,
   debounce
 } from '@/utils';
-const socket = io('http://192.168.0.118:3000/');
+var opts = {
+  extraHeaders: {
+    'X-Custom-Header-For-My-Project': 'my-secret-access-token',
+    'Cookie': 'user_session=NI2JlCKF90aE0sJZD9ZzujtdsUqNYSBYxzlTsvdSUe35ZzdtVRGqYFr0kdGxbfc5gUOkR9RGp20GVKza; path=/; expires=Tue, 07-Apr-2015 18:18:08 GMT; secure; HttpOnly'
+  }
+};
+const socket = io('http://192.168.0.118:3000/',opts);
 export default {
   name: 'chatDetail',
   components: {
@@ -57,8 +63,8 @@ export default {
   },
   mounted() {
     // 发送消息，并群消息通知所有人
-    // EventBus.$off('sendMessage', this.sendMessage);
-    EventBus.$on(['sendmessage'], this.sendMessage1);
+    // eventHub.$off('sendMessage', this.sendMessage);
+    // this.eventHub.$on(['sendmessage'], this.sendMessage1);
     // 系统消息
     socket.on('system', message => {
       console.dir(message, 'system-message');
@@ -75,21 +81,23 @@ export default {
       this.online = message.online;
     });
     this.userName = getUserName();
+    eventHub.$on('send', this.sendMsg);
   },
   created: function () {
     // 初始化消息
     this.initMessage();
     // 连接服务端
-    this.connectServer();
+    // this.connectServer();
+    // eventHub.$on('send', this.sendMsg)
   },
   updated: function () {},
   beforeDestroy() {
     // 注意：注册的 Bus 要在组件销毁时卸载，否则会多次挂载，造成触发一次但多个响应的情况。
-    EventBus.$off(['sendmessage']);
+    // eventHub.$off('send', this.sendMsg);
   },
-  destroyed() {
-    EventBus.$off(['sendmessage']);
-  },
+  // destroyed() {
+  //  eventHub.$off('send', this.sendMessage1);
+  // },
   methods: {
     signout: function () {
       this.leaveUser = getUserName();
@@ -132,9 +140,8 @@ export default {
           console.error(error, 'initMessage');
         });
     },
-    sendMessage1: function (message) {
+    sendMsg: function (message) {
       let chatone;
-      console.log('============》节流');
       if (getUserName()) {
         chatone = {
           userName: getUserName(),
@@ -148,19 +155,23 @@ export default {
       } else {
         alert('请登录后再评论!');
       }
+      // socket.on('connect', function () {
+      //   console.log('连接成功');
+      // });
+      console.log(socket,'socket总共多少');
+      //  socket.on 的原因引起多次触发
       socket.on('broadMessage', msg => {
         if (msg) {
-          // EventBus被多次触发、次数累加, 尤大回复：https://github.com/vuejs/vue/issues/3399
+          // eventHub被多次触发、次数累加, 尤大回复：https://github.com/vuejs/vue/issues/3399
           // https://github.com/Pasoul/blog/issues/12
           this.chats.push(msg);
           console.log(this.chats, '接收群消息');
+          // socket.close();
         }
       });
-      socket.on('connect', function () {
-        console.log('连接成功');
+      socket.on('disconnect', function () {
+        console.log('disconnect');
       });
-      socket.on('event', function (data) {});
-      socket.on('disconnect', function () {});
 
     }
   }

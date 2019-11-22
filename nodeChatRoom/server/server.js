@@ -2,9 +2,12 @@ var app = require('express')();
 var fs = require('fs');
 var path = require('path');
 var http = require('http').createServer(app);
+// 服务端
 var io = require('socket.io')(http);
 var UUID = require('uuid');
-const users = [];
+var times = 0;
+
+const clientUsers = [];
 
 function getGuid() {
   return UUID.v1();
@@ -118,6 +121,7 @@ app.get('/chats', function(req, res) {
 // 系统消息 systemMessage
 // 服务端=》向客户端发送事件 broadMessage广播消息 broadWhoEnter群通知谁进入、群broadWhoLeave
 io.on('connection', function(socket) {
+  clientUsers.push(socket);
   console.log('有新用户连接');
   // 服务端接收来自客户端的消息
   systemMessage = {
@@ -126,16 +130,15 @@ io.on('connection', function(socket) {
     online: 0
   };
   // 游客身份
-
   // 登录，群通知谁进入了房间
   socket.on('login', function(nickname) {
-    if (users.indexOf(nickname) > -1) {
+    if (clientUsers.indexOf(nickname) > -1) {
       socket.emit('nickExisted');
     } else {
-      socket.userIndex = users.length;
+      socket.userIndex = clientUsers.length;
       socket.nickname = nickname;
       // 新增在线人数
-      users.push(nickname);
+      clientUsers.push(nickname);
       socket.emit('loginSuccess');
       // 在线人数
       systemMessage.newUser = nickname;
@@ -148,11 +151,11 @@ io.on('connection', function(socket) {
   // 退出登录，广播谁离开了房间
   socket.on('leave', function(name) {
     let index;
-    for (let i = 0; i < users.length; i++) {
-      console.log(users, 'users[i]');
-      if (users[i] && users[i].indexOf(name) > -1) {
+    for (let i = 0; i < clientUsers.length; i++) {
+      console.log(clientUsers, 'users[i]');
+      if (clientUsers[i] && clientUsers[i].indexOf(name) > -1) {
         index = i;
-        users.splice(index, 1);
+        clientUsers.splice(index, 1);
       }
     }
     // 通知其他人
@@ -172,7 +175,6 @@ io.on('connection', function(socket) {
         writable: true,
         value: getGuid()
       });
-      console.log(chatsone, 'chatsone');
       fs.readFile(path.resolve(__dirname, './chats.json'), function(err, data) {
         if (err) {
           return console.log(err);
@@ -187,12 +189,33 @@ io.on('connection', function(socket) {
             if (err) {
               return console.log(err);
             }
+            times++;
+            console.log(times, 'times');
+            // clientUsers.forEach(socket1 => {
+            //   if (socket1 !== socket) {
+            //     io.emit('broadMessage', msg);
+            //   }
+            // });
+            // 发送群消息
+            console.log(socket);
+            // JSON.stringify(users)
+            // let socketStr = socket.toString();
+            // fs.writeFile(path.resolve(__dirname,'log.json'),socketStr,function(err){
+            //   if(err) {
+            //     console.log(err);
+            //   }
+            // })
             io.emit('broadMessage', msg);
+            // 所有的socket连接都会被保存在某个变量（列表）中（具体是什么需要你自己查），你可以定时轮训这个列表，
+            // 然后向具体的连接发送数据。
+            // 如果不想重复发送的话，你可以维护一个缓存列表，记录是否已经发送过，发现已经发送就不再发了
+            // console.log(clientUsers, '已连接的users');
           }
         );
       });
     }
   });
+  // 客户端重复累加接收 有两个解决方案：1. 根据客户机的原始地址进行路由 2.基于cookie路由客户端 https://socket.io/docs/using-multiple-nodes/
 });
 // 广播
 
