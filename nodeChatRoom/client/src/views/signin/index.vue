@@ -1,3 +1,11 @@
+<!--
+ * @Author: honghong
+ * @Date: 2019-11-23 10:17:20
+ * @LastEditors: honghong
+ * @LastEditTime: 2019-11-23 10:20:38
+ * @Description: 
+ * @email: 3300536651@qq.com
+ -->
 <template>
   <div class="signup">
     <div class="chat-form-main">
@@ -37,7 +45,7 @@ export default {
     signin: function() {
       this.$http({
         method: 'get',
-        url: 'http://192.168.0.118:3000/login',
+        url: 'http://localhost:3000/login',
         params: {
           userName: this.userName,
           passWord: this.passWord

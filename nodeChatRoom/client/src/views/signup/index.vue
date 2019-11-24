@@ -34,7 +34,7 @@ export default {
     signup: function () {
       this.$http({
           methods: 'get',
-          url: 'http://192.168.0.118:3000/register',
+          url: 'http://localhost:3000/register',
           params: {
             userName: this.userName,
             passWord: this.passWord

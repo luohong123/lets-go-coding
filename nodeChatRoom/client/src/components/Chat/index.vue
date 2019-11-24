@@ -1,29 +1,37 @@
+<!--
+ * @Author: honghong
+ * @Date: 2019-11-23 10:17:20
+ * @LastEditors: honghong
+ * @LastEditTime: 2019-11-23 10:46:21
+ * @Description: 
+ * @email: 3300536651@qq.com
+ -->
 <template>
-<div class="chat">
-  <ul>
-    <li v-for="item in list" v-bind:key="item.id" class="chat-item">
-      <p class="time">{{ item.time }}</p>
-      <div class="chat-conversation them" v-if="item.userName !== userName">
-        <img v-bind:src="item.avatar" class="avatar" alt />
-        <div class="right">
-          <span class="chat-user">{{ item.userName }}</span>
-          <div class="chat-popover">{{ item.content }}</div>
+  <div class="chat">
+    <ul>
+      <li v-for="item in list" v-bind:key="item.id" class="chat-item">
+        <p class="time">{{ item.time }}</p>
+        <div class="chat-conversation them" v-if="item.userName !== userName">
+          <img v-bind:src="item.avatar" class="avatar" alt />
+          <div class="right">
+            <span class="chat-user">{{ item.userName }}</span>
+            <div class="chat-popover">{{ item.content }}</div>
+          </div>
         </div>
-      </div>
-      <div class="chat-conversation me" v-if="item.userName === userName">
-        <div class="right">
-          <span class="chat-user">{{ item.userName }}</span>
-          <div class="chat-popover">{{ item.content }}</div>
+        <div class="chat-conversation me" v-if="item.userName === userName">
+          <div class="right">
+            <span class="chat-user">{{ item.userName }}</span>
+            <div class="chat-popover">{{ item.content }}</div>
+          </div>
+          <img v-bind:src="item.avatar" class="avatar" alt />
         </div>
-        <img v-bind:src="item.avatar" class="avatar" alt />
-      </div>
-    </li>
-  </ul>
-</div>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
-import { getUserName } from '@/utils';
+import { getUserName } from "@/utils";
 export default {
   name: "Chat",
   props: {
@@ -31,8 +39,13 @@ export default {
   },
   data() {
     return {
-      userName: getUserName()
-    }
+      userName: getUserName(),
+      chatContent: {}
+    };
+  },
+  mounted() {
+    this.chatContent = document.querySelector(".chat");
+    this.chatContent.scrollTop = this.chatContent.scrollHeight;
   }
 };
 </script>

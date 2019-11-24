@@ -6,14 +6,13 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var UUID = require('uuid');
 var times = 0;
-
 const clientUsers = [];
 
 function getGuid() {
   return UUID.v1();
 }
 // 允许跨域
-app.all('*', function(req, res, next) {
+app.all('*', function (req, res, next) {
   //设置允许跨域的域名，*代表允许任意域名跨域
   res.header('Access-Control-Allow-Origin', '*');
   //允许的header类型
@@ -25,17 +24,17 @@ app.all('*', function(req, res, next) {
   else next();
 });
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   res.send('<h1>Hello world</h1>');
 });
-app.get('/users', function(req, res) {});
+app.get('/users', function (req, res) {});
 // 登录
-app.get('/login', function(req, res) {
+app.get('/login', function (req, res) {
   let person = {
     userName: req.query.userName,
     passWord: req.query.passWord
   };
-  fs.readFile(path.resolve(__dirname, './users.json'), function(err, data) {
+  fs.readFile(path.resolve(__dirname, './users.json'), function (err, data) {
     if (err) {
       return console.err(err);
     }
@@ -62,9 +61,9 @@ app.get('/login', function(req, res) {
   });
 });
 // 退出登录
-app.get('signout', function(req, res) {});
+app.get('signout', function (req, res) {});
 // 注册
-app.get('/register', function(req, res) {
+app.get('/register', function (req, res) {
   let userName = req.query.userName;
   let passWord = req.query.passWord;
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -73,7 +72,7 @@ app.get('/register', function(req, res) {
     userName: userName,
     passWord: passWord
   };
-  fs.readFile(path.resolve(__dirname, './users.json'), function(err, data) {
+  fs.readFile(path.resolve(__dirname, './users.json'), function (err, data) {
     if (err) {
       return console.err(err);
     }
@@ -90,7 +89,7 @@ app.get('/register', function(req, res) {
     }
     users.data.push(person);
     let str = JSON.stringify(users);
-    fs.writeFile(path.resolve(__dirname, './users.json'), str, function(err) {
+    fs.writeFile(path.resolve(__dirname, './users.json'), str, function (err) {
       if (err) {
         console.log(err);
       }
@@ -103,9 +102,9 @@ app.get('/register', function(req, res) {
   });
 });
 // 聊天内容
-app.get('/chats', function(req, res) {
+app.get('/chats', function (req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  fs.readFile(path.resolve(__dirname, './chats.json'), function(err, data) {
+  fs.readFile(path.resolve(__dirname, './chats.json'), function (err, data) {
     if (err) {
       return console.log(err);
     }
@@ -120,7 +119,7 @@ app.get('/chats', function(req, res) {
 // 客户端=》向服务端发送事件 enter进入 leave离开 sendMessage发送消息
 // 系统消息 systemMessage
 // 服务端=》向客户端发送事件 broadMessage广播消息 broadWhoEnter群通知谁进入、群broadWhoLeave
-io.on('connection', function(socket) {
+io.on('connection', function (socket) {
   clientUsers.push(socket);
   console.log('有新用户连接');
   // 服务端接收来自客户端的消息
@@ -131,7 +130,7 @@ io.on('connection', function(socket) {
   };
   // 游客身份
   // 登录，群通知谁进入了房间
-  socket.on('login', function(nickname) {
+  socket.on('login', function (nickname) {
     if (clientUsers.indexOf(nickname) > -1) {
       socket.emit('nickExisted');
     } else {
@@ -149,7 +148,7 @@ io.on('connection', function(socket) {
     }
   });
   // 退出登录，广播谁离开了房间
-  socket.on('leave', function(name) {
+  socket.on('leave', function (name) {
     let index;
     for (let i = 0; i < clientUsers.length; i++) {
       console.log(clientUsers, 'users[i]');
@@ -163,7 +162,7 @@ io.on('connection', function(socket) {
     io.emit('system', systemMessage);
   });
   // 接收消息后，发送群消息
-  socket.on('sendMessage', function(msg) {
+  socket.on('sendMessage', function (msg) {
     let chatsone;
     if (msg == null) {
       return;
@@ -175,7 +174,7 @@ io.on('connection', function(socket) {
         writable: true,
         value: getGuid()
       });
-      fs.readFile(path.resolve(__dirname, './chats.json'), function(err, data) {
+      fs.readFile(path.resolve(__dirname, './chats.json'), function (err, data) {
         if (err) {
           return console.log(err);
         }
@@ -185,7 +184,7 @@ io.on('connection', function(socket) {
         fs.writeFile(
           path.resolve(__dirname, './chats.json'),
           JSON.stringify(chats),
-          function(err) {
+          function (err) {
             if (err) {
               return console.log(err);
             }
@@ -219,6 +218,6 @@ io.on('connection', function(socket) {
 });
 // 广播
 
-http.listen(3000, function() {
+http.listen(3000, function () {
   console.log('listening on *:3000');
 });
