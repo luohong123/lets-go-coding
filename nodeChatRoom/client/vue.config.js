@@ -4,8 +4,8 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 // 默认端口为 8080
-// const port = 8080;
-const port = process.env.port || 8080;
+const port = 8080;
+// const port = process.env.port || 8080;
 const isDev = process.env.NODE_ENV;
 const VUE_APP_BASE_API = '/dev-api';
 const name = 'nodeChatRoom';

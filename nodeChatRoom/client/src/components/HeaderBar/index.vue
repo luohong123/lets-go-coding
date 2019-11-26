@@ -1,15 +1,15 @@
 <template>
   <div class="headerbar">
-      <span class="left">{{left}}</span>
-      <span class="title">{{title}}</span>
-      <span class="more">{{more}}</span>
+      <span class="left" v-if="left">{{left}}</span>
+      <span class="title" v-if="title">{{title}}</span>
+      <span class="more" v-if="more">{{more}}</span>
       <span></span>
     </div>
 </template>
 <script>
 export default {
   name: 'HeaderBar',
-  props:['title','more']
+  props:['title','more','left']
 }
 </script>
 <style>
