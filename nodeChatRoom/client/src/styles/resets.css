@@ -86,7 +86,7 @@ video {
   font: inherit;
   font-weight: normal;
   vertical-align: baseline;
-  font-family: sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 }
 
 /* HTML5 display-role reset for older browsers */
@@ -137,11 +137,6 @@ a {
   -webkit-backface-visibility: hidden;
 }
 
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
-
 ::-webkit-scrollbar-track-piece {
   background-color: rgba(0, 0, 0, 0.2);
   -webkit-border-radius: 6px;
@@ -157,6 +152,22 @@ a {
   width: 5px;
   background-color: rgba(125, 125, 125, 0.7);
   -webkit-border-radius: 6px;
+}
+
+/* 滚动条样式 */
+
+::-webkit-scrollbar{
+  width: 5px;
+  height: 30px;
+}
+
+
+
+/* 这是针对缺省样式 (必须的) */
+
+::-webkit-scrollbar-track {
+  /* background: rgba(0, 0, 0, 0); */
+  background: rgba(255, 255, 255, 0.1);
 }
 
 html,

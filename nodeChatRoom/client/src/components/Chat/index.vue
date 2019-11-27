@@ -13,14 +13,14 @@
       <p class="time-show"><span class="time">{{ item.time }}</span></p>
       <div class="chat-conversation them" v-if="item.userName !== userName">
         <img v-bind:src="item.avatar" class="avatar" alt />
-        <div class="right">
+        <div class="chat-message">
           <span class="chat-user">{{ item.userName }}</span>
           <div class="chat-popover">{{ item.content }}</div>
         </div>
       </div>
       <div class="chat-conversation me" v-if="item.userName === userName">
-        <div class="right">
-          <span class="chat-user">{{ item.userName }}</span>
+        <div class="chat-message">
+          <!-- <span class="chat-user">{{ item.userName }}</span> -->
           <div class="chat-popover">{{ item.content }}</div>
         </div>
         <img v-bind:src="item.avatar" class="avatar" alt />
@@ -61,16 +61,19 @@ export default {
       message: ''
     };
   },
-  mounted() {
-    this.chatContent = document.querySelector(".chat");
-    this.chatContent.scrollTop = this.chatContent.scrollHeight;
-  },
+  mounted() {},
   methods: {
     sendMessage: function () {
       eventHub.$emit('send', {
         message: this.message
       })
-      // this.message = '';
+      this.message = '';
+      this.scrollTop();
+    },
+    scrollTop: function () {
+      this.chatContent = document.querySelector(".message-list");
+      console.log(this.chatContent.scrollHeight, 'scrollHeight');
+      this.chatContent.scrollTop = this.chatContent.scrollHeight;
     }
   }
 };
@@ -83,17 +86,30 @@ export default {
   background: #f5f5f5;
 }
 
+.message-list {
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .chat-item {
-  margin-top: 20px;
+  margin-top: 30px;
   padding: 0 20px;
+}
+
+.chat-item:first-child {
+  margin-top: 0px;
+  /* margin-top: 20px; */
 }
 
 .chat-item-me {
   justify-content: flex-end;
 }
+
 .chat-item .time-show {
   text-align: center;
 }
+
 .chat-item .time {
   background: #DADADA;
   color: #fff;
@@ -104,19 +120,38 @@ export default {
 }
 
 .chat-item .avatar {
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   object-fit: cover;
   margin-right: 10px;
+}
+
+.me .avatar {
+  margin-left: 10px;
+
+}
+
+.them .avatar {
+  margin-right: 10px;
+
 }
 
 .chat-conversation {
   display: flex;
   flex-direction: row;
+  margin-top: 15px;
 }
 
 .me {
   justify-content: flex-end;
+}
+
+.chat-message {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .chat-user {
@@ -130,8 +165,44 @@ export default {
   padding: 5px;
   border-radius: 2px;
   min-width: 100px;
+  min-height: 20px;
   border: 1px solid #ccc;
   position: relative;
+  max-width: 70%;
+  user-select: text;
+  word-break: break-word;
+}
+
+.me .chat-popover {
+  background: #9EEA6A;
+  color: #fff;
+  border: 1px solid #9EEA6A;
+}
+
+.me .chat-popover::after {
+  content: '';
+  width: 0;
+  height: 0;
+  display: block;
+  border-top: 4px solid transparent;
+  border-left: 5px solid #9EEA6A;
+  border-bottom: 4px solid transparent;
+  position: absolute;
+  right: -6px;
+  top: 15px;
+}
+
+.them .chat-popover::before {
+  content: '';
+  width: 0;
+  height: 0;
+  display: block;
+  border-top: 4px solid transparent;
+  border-right: 5px solid #9EEA6A;
+  border-bottom: 4px solid transparent;
+  position: absolute;
+  left: -6px;
+  top: 15px;
 }
 
 /* 发送消息 */
@@ -139,9 +210,6 @@ export default {
   width: 100%;
   height: 150px;
   padding: 10px 30px;
-  position: absolute;
-  left: 0;
-  bottom: 0;
   border-top: 1px solid #ECECEC;
   background: #fff;
   box-sizing: border-box;

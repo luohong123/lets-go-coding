@@ -87,7 +87,7 @@ export default {
   display: -ms-flexbox;
   display: flex;
   box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.9);
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
 .container:hover {

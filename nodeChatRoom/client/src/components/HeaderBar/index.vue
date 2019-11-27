@@ -15,6 +15,16 @@ export default {
 <style>
 .headerbar {
   display: flex;
-  
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  color: #000;
+  padding-left: 30px;
+  padding-right: 15px;
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box;
+}
+.headerbar .title {
+  font-size: 20px;
 }
 </style>

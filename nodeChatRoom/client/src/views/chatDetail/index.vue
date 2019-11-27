@@ -8,7 +8,7 @@
   </div>
   <div class="right">
     <headerbar v-bind:title="title" />
-    <chat :list="chats" v-if="chats.length" />
+    <chat class="chat-wrap" :list="chats" v-if="chats.length" />
   </div>
   <!-- <a v-on:click="signin" v-if="!userName" class="link">登录</a> -->
   <!-- <a v-on:click="signout" v-if="userName" class="link">退出登录</a> -->
@@ -249,12 +249,34 @@ export default {
 
 .left-list {
   flex: 1;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.left-list::-webkit-scrollbar{
+  width: 0;
+}
+.left-list::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 
+/* 滚动条的滑轨背景颜色 */
+
+.left-list::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+/* 滑块颜色 */
 .right {
   flex: 1;
   position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.right .chat-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .chat-subtitle {

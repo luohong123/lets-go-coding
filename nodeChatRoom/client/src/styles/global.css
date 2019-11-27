@@ -4,16 +4,17 @@
   margin: 0 auto;
 }
 
-
-.chat-form-main .title{
+.chat-form-main .title {
   font-size: 32px;
   text-align: center;
   padding: 20px 0;
 }
+
 .form-item-control {
   width: 100%;
   margin-top: 20px;
 }
+
 .form-item-control>input {
   display: block;
   width: 100%;
@@ -23,10 +24,12 @@
   border: 1px solid #ddd;
   outline: none;
 }
+
 .link {
   color: #096dd9;
   cursor: pointer;
 }
+
 .btn {
   cursor: pointer;
   border-radius: 2px;
@@ -38,19 +41,24 @@
   font-size: 16px;
   font-weight: bold;
 }
+
 .btn-primary {
   color: #fff;
   background-color: #47c479;
   border-color: #47c479;
 }
+
 .btn-block {
   width: 100%;
   display: block;
 }
+
 .link {
   color: #096dd9;
   cursor: pointer;
 }
+
 .error {
   color: red;
 }
+
