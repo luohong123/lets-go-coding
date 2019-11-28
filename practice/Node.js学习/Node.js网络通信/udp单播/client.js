@@ -1,7 +1,7 @@
 const dgram = require('dgram');
 const client = dgram.createSocket('udp4');
 
-client.send('hello', 3000, 'localhost');
+client.send('hello', 3000, '192.168.0.111');
 
 client.on('listening', ()=>{
   const address = client.address();

@@ -12,7 +12,7 @@ function getGuid() {
   return UUID.v1();
 }
 // 允许跨域
-app.all('*', function (req, res, next) {
+app.all('*', function(req, res, next) {
   //设置允许跨域的域名，*代表允许任意域名跨域
   res.header('Access-Control-Allow-Origin', '*');
   //允许的header类型
@@ -24,17 +24,17 @@ app.all('*', function (req, res, next) {
   else next();
 });
 
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
   res.send('<h1>Hello world</h1>');
 });
-app.get('/users', function (req, res) { });
+app.get('/users', function(req, res) {});
 // 登录
-app.get('/login', function (req, res) {
+app.get('/login', function(req, res) {
   let person = {
     userName: req.query.userName,
     passWord: req.query.passWord
   };
-  fs.readFile(path.resolve(__dirname, './users.json'), function (err, data) {
+  fs.readFile(path.resolve(__dirname, './users.json'), function(err, data) {
     if (err) {
       return console.err(err);
     }
@@ -61,9 +61,9 @@ app.get('/login', function (req, res) {
   });
 });
 // 退出登录
-app.get('signout', function (req, res) { });
+app.get('signout', function(req, res) {});
 // 注册
-app.get('/register', function (req, res) {
+app.get('/register', function(req, res) {
   let userName = req.query.userName;
   let passWord = req.query.passWord;
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -72,7 +72,7 @@ app.get('/register', function (req, res) {
     userName: userName,
     passWord: passWord
   };
-  fs.readFile(path.resolve(__dirname, './users.json'), function (err, data) {
+  fs.readFile(path.resolve(__dirname, './users.json'), function(err, data) {
     if (err) {
       return console.err(err);
     }
@@ -89,7 +89,7 @@ app.get('/register', function (req, res) {
     }
     users.data.push(person);
     let str = JSON.stringify(users);
-    fs.writeFile(path.resolve(__dirname, './users.json'), str, function (err) {
+    fs.writeFile(path.resolve(__dirname, './users.json'), str, function(err) {
       if (err) {
         console.log(err);
       }
@@ -102,9 +102,12 @@ app.get('/register', function (req, res) {
   });
 });
 // 消息列表
-app.get('/messageList', function(req,res) {
+app.get('/messageList', function(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  fs.readFile(path.resolve(__dirname,'./messageList.json'),function(err,data) {
+  fs.readFile(path.resolve(__dirname, './messageList.json'), function(
+    err,
+    data
+  ) {
     if (err) {
       return console.log(err);
     }
@@ -114,12 +117,12 @@ app.get('/messageList', function(req,res) {
       data: chats.data,
       code: '0'
     });
-  })
-})
+  });
+});
 // 聊天内容
-app.get('/chats', function (req, res) {
+app.get('/chats', function(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  fs.readFile(path.resolve(__dirname, './chats.json'), function (err, data) {
+  fs.readFile(path.resolve(__dirname, './chats.json'), function(err, data) {
     if (err) {
       return console.log(err);
     }
@@ -134,7 +137,7 @@ app.get('/chats', function (req, res) {
 // 客户端=》向服务端发送事件 enter进入 leave离开 sendMessage发送消息
 // 系统消息 systemMessage
 // 服务端=》向客户端发送事件 broadMessage广播消息 broadWhoEnter群通知谁进入、群broadWhoLeave
-io.on('connection', (socket) => {
+io.on('connection', socket => {
   clientUsers.push(socket);
   var addedUser = false;
   console.log('有新用户连接');
@@ -166,7 +169,7 @@ io.on('connection', (socket) => {
   socket.on('addUser', username => {
     if (addedUser) return;
     // we store the username in the socket session for this client
-    socket.username = username;
+    // socket.username = username;
     ++numUsers;
     addedUser = true;
     socket.emit('login', {
@@ -179,7 +182,7 @@ io.on('connection', (socket) => {
     });
   });
   // 退出登录，广播谁离开了房间
-  socket.on('leave', (name) => {
+  socket.on('leave', name => {
     let index;
     for (let i = 0; i < clientUsers.length; i++) {
       console.log(clientUsers, 'users[i]');
@@ -195,31 +198,38 @@ io.on('connection', (socket) => {
   // 接收消息后，发送群消息
   socket.on('new message', msg => {
     let chatsone = msg;
+    console.log(socket.username, 'socket.username');
     Object.defineProperty(chatsone, 'id', {
       enumerable: true,
       configurable: true,
       writable: true,
       value: getGuid()
     });
-    fs.readFile(path.resolve(__dirname, './chats.json'), function (err, data) {
+    socket.emit('login', {
+      numUsers: numUsers
+    });
+    // 通知他人
+    socket.broadcast.emit('new message', msg);
+    // 通知自己
+    socket.emit('new message', msg);
+    fs.readFile(path.resolve(__dirname, './chats.json'), (err, data) => {
       if (err) {
         return console.log(err);
       }
-      let chats = JSON.parse(data);
+      let chats;
+      chats = JSON.parse(data);
       chats.data.push(chatsone);
       // 新增一条消息
       fs.writeFile(
         path.resolve(__dirname, './chats.json'),
         JSON.stringify(chats),
-        function (err) {
+        function(err) {
           if (err) {
             return console.log(err);
           }
           console.log(msg, 'msg');
-          socket.emit('login', {
-            numUsers: numUsers
-          });
-          socket.emit('new message', msg);
+
+          // socket.broadcast.emit('new message', msg);
           // 所有的socket连接都会被保存在某个变量（列表）中（具体是什么需要你自己查），你可以定时轮训这个列表，
           // 然后向具体的连接发送数据。
           // 如果不想重复发送的话，你可以维护一个缓存列表，记录是否已经发送过，发现已经发送就不再发了
@@ -228,8 +238,20 @@ io.on('connection', (socket) => {
       );
     });
   });
+  // 当客户端出现打字时,我们将其广播给其他人
+  socket.on('typing', () => {
+    socket.broadcast.emit('typing', {
+      username: socket.username
+    });
+  });
+  // 当客户发出“停止键入”时，我们会将其广播给其他人
+  socket.on('stop typing', () => {
+    socket.broadcast.emit('stop typing', {
+      username: socket.username
+    });
+  });
   // 客户端重复累加接收 有两个解决方案：1. 根据客户机的原始地址进行路由 2.基于cookie路由客户端 https://socket.io/docs/using-multiple-nodes/
-  socket.on('disconnect', function () {
+  socket.on('disconnect', function() {
     if (addedUser) {
       --numUsers;
       // 在全局范围内回显此客户端已离开
@@ -242,6 +264,6 @@ io.on('connection', (socket) => {
 });
 // 广播
 
-http.listen(3000, function () {
+http.listen(3000, function() {
   console.log('listening on *:3000');
 });

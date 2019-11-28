@@ -7,8 +7,12 @@
     <listitem :data="list" class="left-list" />
   </div>
   <div class="right">
-    <headerbar v-bind:title="title" />
-    <chat class="chat-wrap" :list="chats" v-if="chats.length" />
+    <headerbar v-bind:title="title" v-on:toggle="toggle" ref="headerbar" />
+    <chat class="chat-wrap" :list="chats" />
+    <!-- 隐藏区域 -->
+    <div class="more-introduce" v-bind:class="{'show':isOpen}">
+      <managepanel :group="group" />
+    </div>
   </div>
   <!-- <a v-on:click="signin" v-if="!userName" class="link">登录</a> -->
   <!-- <a v-on:click="signout" v-if="userName" class="link">退出登录</a> -->
@@ -27,6 +31,7 @@
 import chat from "@/components/Chat";
 import headerbar from "@/components/HeaderBar";
 import listitem from "@/components/ListItem";
+import managepanel from "@/components/ManagePanel";
 import io from "socket.io-client";
 // import io from "socket.io-client";
 import {
@@ -36,7 +41,8 @@ import {
   getGuid,
   getUserName,
   getTime,
-  debounce
+  debounce,
+  showDeskTopNotice
 } from "@/utils";
 var opts = {
   extraHeaders: {
@@ -44,7 +50,7 @@ var opts = {
     Cookie: "user_session=NI2JlCKF90aE0sJZD9ZzujtdsUqNYSBYxzlTsvdSUe35ZzdtVRGqYFr0kdGxbfc5gUOkR9RGp20GVKza; path=/; expires=Tue, 07-Apr-2015 18:18:08 GMT; secure; HttpOnly"
   }
 };
-const socket = io("http://localhost:3000/", {
+const socket = io("http://192.168.0.111:3000/", {
   forceNew: true
 });
 
@@ -53,7 +59,8 @@ export default {
   components: {
     chat,
     headerbar,
-    listitem
+    listitem,
+    managepanel
   },
   data() {
     return {
@@ -66,7 +73,14 @@ export default {
       leaveUser: "",
       connected: false,
       list: [],
-      title: '前端技术优选'
+      title: '前端技术优选',
+      chatContent: {},
+      group: {
+        NAME: '前端技术优选',
+        DESCRIBE: '本群为技术交流群，请勿发无关广告，定期处理非技术人员推广。谢谢支持。群内发助力一律踢！',
+        MYNAME: '红红'
+      },
+      isOpen: false // 是否展开
     };
   },
   computed: {},
@@ -76,6 +90,8 @@ export default {
     }
   },
   mounted() {
+
+    this.userName = getUserName();
     //  socket.on 的原因引起多次触发
     // 解决方法: https://github.com/socketio/socket.io/issues/474#issuecomment-2833227
     // https://groups.google.com/forum/?hl=en&fromgroups#!topic/socket_io/X9FRMjCkPco
@@ -89,6 +105,10 @@ export default {
     });
     socket.on("new message", data => {
       this.addChatMessage(data);
+      let title = `${data.userName}对大家说:`;
+      let msg = `${data.content}`;
+      let icon = data.avatar;
+      showDeskTopNotice(title, icon, msg);
     });
     socket.on("disconnect", function () {
       console.log("disconnect");
@@ -111,15 +131,23 @@ export default {
       // 在线人数
       this.online = message.online;
     });
-    this.userName = getUserName();
     // 发送群消息
     eventHub.$on("send", this.sendMsg);
+    eventHub.$on('toggle', this.toggle);
     // 初始化消息列表
     this.initMessageList();
   },
   created: function () {
+    // 点击其他区域关闭面板
+    document.addEventListener('click', e => {
+      let box = document.querySelector('.toggle');
+      if (!box.contains(e.target)) {
+        this.isOpen = false;
+      }
+    })
     // 初始化消息
     this.initMessage();
+
     // 连接服务端
     // this.connectServer();
     // eventHub.$on('send', this.sendMsg)
@@ -133,10 +161,19 @@ export default {
   //  eventHub.$off('send', this.sendMessage1);
   // },
   methods: {
+    toggle: function () {
+      this.isOpen = !this.isOpen;
+      document.body.removeEventListener('click', this.toggle)
+    },
+    scrollTop: function () {
+      this.chatContent = document.querySelector(".message-list");
+      console.log(this.chatContent.scrollHeight, 'scrollHeight');
+      this.chatContent.scrollTop = this.chatContent.scrollHeight;
+    },
     initMessageList: function () {
       this.$http({
           methods: "get",
-          url: "http://localhost:3000/messageList"
+          url: "http://192.168.0.111:3000/messageList"
         })
         // this 指向问题
         .then(response => {
@@ -162,9 +199,7 @@ export default {
       // 告诉服务端已离开聊天室
       socket.emit("leave", this.leaveUser);
     },
-    signin: function () {
-      this.$router.push("/signin");
-    },
+
     connectServer: function () {
       // 如果没有登录，分配一个游客身份，客户端向服务端发起请求,
       socket.on("connect", function () {
@@ -183,7 +218,7 @@ export default {
     initMessage: function () {
       this.$http({
           methods: "get",
-          url: "http://localhost:3000/chats"
+          url: "http://192.168.0.111:3000/chats"
         })
         // this 指向问题
         .then(response => {
@@ -201,10 +236,16 @@ export default {
      * 新增一条消息
      */
     addChatMessage: function (data) {
-      if (data && this.connected) {
+      if (data) {
         // eventHub被多次触发、次数累加, 尤大回复：https://github.com/vuejs/vue/issues/3399
         // https://github.com/Pasoul/blog/issues/12
         this.chats.push(data);
+        // if (this.userName) {
+
+        // }
+        setTimeout(() => {
+          this.scrollTop();
+        }, 50);
         console.log(this.chats, "接收群消息");
       }
     },
@@ -217,7 +258,7 @@ export default {
         message = {
           userName: getUserName(),
           avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3199241964,979639112&fm=26&gp=0.jpg",
-          time: getTime("yyyy-MM-dd"),
+          time: getTime("yyyy-MM-dd hh:mm"),
           content: data.message,
           isRead: "Y"
         };
@@ -237,6 +278,7 @@ export default {
   background: #F5F5F5;
   display: flex;
   flex-direction: row;
+  overflow: hidden;
 }
 
 .left {
@@ -252,9 +294,11 @@ export default {
   overflow-x: hidden;
   overflow-y: auto;
 }
-.left-list::-webkit-scrollbar{
+
+.left-list::-webkit-scrollbar {
   width: 0;
 }
+
 .left-list::-webkit-scrollbar-track {
   background-color: transparent;
 }
@@ -277,10 +321,27 @@ export default {
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .chat-subtitle {
   height: 32px;
   line-height: 32px;
+}
+
+.more-introduce {
+  width: 250px;
+  height: calc(100% - 50px);
+  position: absolute;
+  background: #fff;
+  top: 50px;
+  right: -250px;
+  visibility: hidden;
+  transition: all .2s ease-in;
+}
+
+.more-introduce.show {
+  right: 0;
+  visibility: visible;
 }
 </style>

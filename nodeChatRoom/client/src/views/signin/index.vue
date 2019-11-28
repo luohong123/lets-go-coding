@@ -45,7 +45,7 @@ export default {
     signin: function() {
       this.$http({
         method: 'get',
-        url: 'http://localhost:3000/login',
+        url: 'http://192.168.0.111:3000/login',
         params: {
           userName: this.userName,
           passWord: this.passWord
@@ -54,7 +54,7 @@ export default {
         .then(response => {
           if (response.data && response.data.code === '0') {
             console.log(response, 'res:登录');
-            this.$router.push('/chatDetail');
+            this.$router.push('/');
             // 登录成功后可以评论了
             window.localStorage.setItem(
               'userName',

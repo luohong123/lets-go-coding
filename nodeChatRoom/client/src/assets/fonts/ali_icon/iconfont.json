@@ -76,6 +76,13 @@
       "unicode_decimal": 58895
     },
     {
+      "icon_id": "3180782",
+      "name": "下",
+      "font_class": "xia",
+      "unicode": "e6ff",
+      "unicode_decimal": 59135
+    },
+    {
       "icon_id": "4000760",
       "name": "o",
       "font_class": "o",
@@ -172,6 +179,13 @@
       "font_class": "pingbixiaoxi",
       "unicode": "e605",
       "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "10102471",
+      "name": "修改",
+      "font_class": "xiugai",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
     },
     {
       "icon_id": "10262050",

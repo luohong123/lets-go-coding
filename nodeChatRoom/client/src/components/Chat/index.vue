@@ -29,11 +29,19 @@
   </ul>
   <div class="sendMessage">
     <div class="message-toolbar">
+      <div class="message-toolbar-left">
 
+      </div>
+      <div class="message-toolbar-left">
+
+      </div>
     </div>
     <textarea class="message-control" v-model="message" rows="3" cols="20" v-on:keyup.enter="sendMessage">
     </textarea>
     <div class="send-control">
+      <div class="popover" v-if="showTips">
+        <div class="tips">{{tips}}</div>
+      </div>
       <button type="submit" class="btn btn-primary" v-on:click="sendMessage">发送(S)</button>
     </div>
   </div>
@@ -58,21 +66,41 @@ export default {
     return {
       userName: getUserName(),
       chatContent: {},
-      message: ''
+      message: '',
+      tips: '不能发送空白消息',
+      showTips: false
     };
   },
-  mounted() {},
+  mounted() {
+
+  },
+  created() {
+    setTimeout(() => {
+      this.scrollTop();
+    }, 50);
+  },
   methods: {
     sendMessage: function () {
-      eventHub.$emit('send', {
-        message: this.message
-      })
-      this.message = '';
-      this.scrollTop();
+      console.log(this.message == true, 'this.message ===');
+      if (this.message.match(/^\s*$/)) {
+        this.showTips = true;
+        setTimeout(() => {
+          this.showTips = false;
+        }, 3000);
+      } else {
+        eventHub.$emit('send', {
+          message: this.message
+        })
+        // 解决滚动条不能完全滚到底部的问题
+        setTimeout(() => {
+          this.scrollTop();
+          this.message = '';
+          this.showTips = false;
+        }, 50);
+      }
     },
     scrollTop: function () {
       this.chatContent = document.querySelector(".message-list");
-      console.log(this.chatContent.scrollHeight, 'scrollHeight');
       this.chatContent.scrollTop = this.chatContent.scrollHeight;
     }
   }
@@ -90,6 +118,7 @@ export default {
   flex: 1;
   overflow-x: hidden;
   overflow-y: auto;
+  padding-bottom: 15px;
 }
 
 .chat-item {
@@ -99,7 +128,7 @@ export default {
 
 .chat-item:first-child {
   margin-top: 0px;
-  /* margin-top: 20px; */
+  margin-top: 10px;
 }
 
 .chat-item-me {
@@ -154,6 +183,12 @@ export default {
   align-items: center;
 }
 
+.them .chat-message {
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .chat-user {
   color: #ccc;
   font-size: 12px;
@@ -162,21 +197,21 @@ export default {
 
 .chat-popover {
   background: #fff;
-  padding: 5px;
-  border-radius: 2px;
+  padding: 9px 10px;
+  border-radius: 4px;
   min-width: 100px;
-  min-height: 20px;
   border: 1px solid #ccc;
   position: relative;
   max-width: 70%;
   user-select: text;
   word-break: break-word;
+  cursor: text;
 }
 
 .me .chat-popover {
   background: #9EEA6A;
   color: #fff;
-  border: 1px solid #9EEA6A;
+  border: 0.5px solid #9EEA6A;
 }
 
 .me .chat-popover::after {
@@ -184,25 +219,43 @@ export default {
   width: 0;
   height: 0;
   display: block;
-  border-top: 4px solid transparent;
-  border-left: 5px solid #9EEA6A;
-  border-bottom: 4px solid transparent;
+  border-top: 8px solid transparent;
+  border-left: 8px solid #9EEA6A;
+  border-bottom: 8px solid transparent;
   position: absolute;
-  right: -6px;
-  top: 15px;
+  right: -7px;
+  top: 9px;
+}
+
+.me .chat-popover:hover {
+  background: #8BDB56;
+}
+
+.me .chat-popover:hover::after {
+  border-left: 8px solid #8BDB56;
 }
 
 .them .chat-popover::before {
   content: '';
-  width: 0;
-  height: 0;
+  width: 8px;
+  height: 8px;
   display: block;
-  border-top: 4px solid transparent;
-  border-right: 5px solid #9EEA6A;
-  border-bottom: 4px solid transparent;
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  background: #fff;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
   position: absolute;
-  left: -6px;
-  top: 15px;
+  left: -5px;
+  top: 8px;
+}
+
+.them .chat-popover:hover {
+  background: #F6F6F6;
+}
+
+.them .chat-popover:hover::before {
+  background: #F6F6F6;
 }
 
 /* 发送消息 */
@@ -251,5 +304,38 @@ export default {
   background: #09BB07;
   color: #fff;
   border: 1px solid #09BB07;
+}
+
+.popover {
+  position: absolute;
+  right: 0px;
+  bottom: 40px;
+}
+
+.popover .tips {
+  padding: 0px 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 4px;
+  color: #000;
+  font-size: 12px;
+  transform: scale(0.8);
+  position: relative;
+  box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.2);
+}
+
+.popover .tips::after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  border-left: 1px solid #ccc;
+  position: absolute;
+  border-bottom: 1px solid #ccc;
+  bottom: -7px;
+  right: 30px;
+  -webkit-transform: rotate(90deg);
+  transform: rotate(-45deg);
+  background: #fff;
+  z-index: 100;
 }
 </style>

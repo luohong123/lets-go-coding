@@ -43,18 +43,67 @@ export function getTime(format) {
 
 export function getUserName() {
   let userName = window.localStorage.getItem('userName');
-  return userName ? userName : null;
+  return userName;
 }
 /**
  * 防抖
- * @param {*} fn 
- * @param {*} wait 
+ * @param {*} fn
+ * @param {*} wait
  */
 export function debounce(fn, wait) {
   var timeout = null;
-  return function () {
-    if (timeout !== null)
-      clearTimeout(timeout);
+  return function() {
+    if (timeout !== null) clearTimeout(timeout);
     timeout = setTimeout(fn, wait);
+  };
+}
+/**
+ * 桌面消息提醒
+ * @param {*} title
+ * @param {*} msg
+ */
+export function showDeskTopNotice(title, icon, msg) {
+  let Notification =
+    window.Notification || window.mozNotification || window.webkitNotification;
+  // eslint-disable-next-line no-console
+  console.dir(Notification, 'Notification');
+  if (Notification) {
+    Notification.requestPermission(status => {
+      //status默认值'default'等同于拒绝 'denied' 意味着用户不想要通知,'granted' 意味着用户同意启用通知
+      if ('granted' != status) {
+        return;
+      } else {
+        let tag = 'sds' + Math.random();
+        let notify = new Notification(title, {
+          dir: 'auto',
+          lang: 'zh-CN',
+          tag: tag, //实例化的notification的id
+          icon: icon, //通知的缩略图,//icon 支持ico、png、jpg、jpeg格式
+          body: msg //通知的具体内容
+        });
+        (notify.onclick = () => {
+          //如果通知消息被点击,通知窗口将被激活
+          window.focus();
+        }),
+          (notify.onerror = () => {
+            // eslint-disable-next-line no-console
+            console.log('HTML5桌面消息出错！！！');
+          });
+        notify.onshow = () => {
+          // eslint-disable-next-line no-console
+          console.log('msg', '桌面消息');
+          setTimeout(() => {
+            notify.close();
+          }, 2000);
+        };
+        notify.onclose = () => {
+          // eslint-disable-next-line no-console
+          console.log('HTML5桌面消息关闭！！！');
+        };
+      }
+    });
+  } else {
+    // eslint-disable-next-line no-console
+    console.log('您的浏览器不支持桌面消息');
   }
 }

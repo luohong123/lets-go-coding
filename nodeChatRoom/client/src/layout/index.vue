@@ -3,7 +3,7 @@
   <div class="tips">
     <p v-if="!userName" class="tourist">
       您现在是
-      <span class="error">游客 </span>,请 <a class="link"> 登录 </a> 后一起聊天吧!
+      <span class="error">游客 </span>,请 <a class="link" v-on:click="signin"> 登录 </a> 后一起聊天吧!
     </p>
   </div>
   <div class="container">
@@ -19,6 +19,9 @@
 
 <script>
 import tabbar from '@/components/TabBar';
+import {
+  getUserName
+} from '@/utils/index';
 export default {
   name: 'Layout',
   components: {
@@ -27,6 +30,7 @@ export default {
   data: function () {
     return {
       transitionName: 'slideleft',
+      userName: '',
       tabs: [{
         id: 1,
         name: '聊天',
@@ -54,6 +58,9 @@ export default {
       }]
     }
   },
+  mounted() {
+    this.userName = getUserName()
+  },
   watch: {
     $route() { // 监听路由变化重新赋值
       if (this.$router.isleft) {
@@ -63,6 +70,11 @@ export default {
         this.transitionName = 'slideright';
       }
     }
+  },
+  methods: {
+    signin: function () {
+      this.$router.push("/signin");
+    },
   }
 };
 </script>
@@ -109,5 +121,6 @@ export default {
   position: absolute;
   top: 20px;
   right: 20px;
+  background: ivory;
 }
 </style>
