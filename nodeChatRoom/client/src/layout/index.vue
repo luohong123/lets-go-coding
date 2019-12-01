@@ -1,70 +1,83 @@
 <template>
-<div class="layout">
-  <div class="tips">
-    <p v-if="!userName" class="tourist">
-      您现在是
-      <span class="error">游客 </span>,请 <a class="link"> 登录 </a> 后一起聊天吧!
-    </p>
+  <div class="layout">
+    <div class="tips">
+      <p v-if="!userName" class="tourist">
+        您现在是
+        <span class="error">游客 </span>,请
+        <a class="link" v-on:click="sigin"> 登录 </a> 后一起聊天吧!
+      </p>
+    </div>
+    <div class="container">
+      <nav class="nav">
+        <tabbar v-bind:tabs="tabs" />
+      </nav>
+      <transition :name="transitionName">
+        <router-view class="Router main"></router-view>
+      </transition>
+    </div>
   </div>
-  <div class="container">
-    <nav class="nav">
-      <tabbar v-bind:tabs="tabs" />
-    </nav>
-    <transition :name="transitionName">
-      <router-view class="Router main"></router-view>
-    </transition>
-  </div>
-</div>
 </template>
 
 <script>
-import tabbar from '@/components/TabBar';
+import tabbar from '@/components/TabBar'
 export default {
   name: 'Layout',
   components: {
     tabbar
   },
-  data: function () {
+  data: function() {
     return {
+      userName: '',
       transitionName: 'slideleft',
-      tabs: [{
-        id: 1,
-        name: '聊天',
-        icon: 'icon-xiaoxi',
-        activeIcon: 'home-active',
-        router: '/'
-      }, {
-        id: 2,
-        name: '通讯录',
-        icon: 'icon-tongxunlu',
-        activeIcon: 'message-active',
-        router: '/addresslist'
-      }, {
-        id: 3,
-        name: '收藏',
-        icon: 'icon-shoucang',
-        activeIcon: 'profile-active',
-        router: '/collection'
-      }, {
-        id: 4,
-        name: '文件夹',
-        icon: 'icon-wenjianjia',
-        activeIcon: 'profile-active',
-        router: '/folder'
-      }]
+      tabs: [
+        {
+          id: 1,
+          name: '聊天',
+          icon: 'icon-xiaoxi',
+          activeIcon: 'home-active',
+          router: '/'
+        },
+        {
+          id: 2,
+          name: '通讯录',
+          icon: 'icon-tongxunlu',
+          activeIcon: 'message-active',
+          router: '/addresslist'
+        },
+        {
+          id: 3,
+          name: '收藏',
+          icon: 'icon-shoucang',
+          activeIcon: 'profile-active',
+          router: '/collection'
+        },
+        {
+          id: 4,
+          name: '文件夹',
+          icon: 'icon-wenjianjia',
+          activeIcon: 'profile-active',
+          router: '/folder'
+        }
+      ]
     }
   },
   watch: {
-    $route() { // 监听路由变化重新赋值
+    $route() {
+      // 监听路由变化重新赋值
       if (this.$router.isleft) {
-        this.transitionName = 'slideleft';
+        this.transitionName = 'slideleft'
       }
       if (this.$router.isright) {
-        this.transitionName = 'slideright';
+        this.transitionName = 'slideright'
       }
     }
+  },
+  methods: {
+    sigin: function() {
+      this.$router.push('/signin')
+    }
   }
-};
+}
 </script>
 
 <style scoped>
