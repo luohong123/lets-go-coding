@@ -2,7 +2,7 @@
  * @Author: honghong
  * @Date: 2019-11-19 19:38:43
  * @LastEditors: honghong
- * @LastEditTime: 2019-11-19 20:49:31
+ * @LastEditTime: 2019-11-30 13:40:13
  * @Description:
  * @email: 3300536651@qq.com
  */
@@ -43,7 +43,9 @@ export function getTime(format) {
 
 export function getUserName() {
   let userName = window.localStorage.getItem('userName');
-  return userName;
+  // eslint-disable-next-line no-console
+  console.log(userName, 'userName');
+  return userName ? userName : null;
 }
 /**
  * 防抖

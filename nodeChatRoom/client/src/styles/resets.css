@@ -156,7 +156,7 @@ a {
 
 /* 滚动条样式 */
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   width: 5px;
   height: 30px;
 }

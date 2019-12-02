@@ -1,15 +1,21 @@
+/*
+ * @Author: honghong
+ * @Date: 2019-11-30 09:59:07
+ * @LastEditors: honghong
+ * @LastEditTime: 2019-11-30 14:17:31
+ * @Description: 
+ * @email: 3300536651@qq.com
+ */
 import Vue from 'vue';
 import Router from 'vue-router';
 Vue.use(Router);
 import Layout from '../layout';
 const router = new Router({
-  routes: [
-    {
+  routes: [{
       path: '/',
       component: Layout,
-      children: [
-        {
-          path: '/', // 首页-tab
+      children: [{
+          path: '', // 首页-tab
           component: () => import('@/views/chatDetail/index')
         },
         {

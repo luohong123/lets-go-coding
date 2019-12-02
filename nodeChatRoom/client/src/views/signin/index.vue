@@ -2,7 +2,7 @@
  * @Author: honghong
  * @Date: 2019-11-23 10:17:20
  * @LastEditors: honghong
- * @LastEditTime: 2019-11-23 10:20:38
+ * @LastEditTime: 2019-11-30 11:13:29
  * @Description: 
  * @email: 3300536651@qq.com
  -->
@@ -17,58 +17,44 @@
         <input type="password" v-model="passWord" />
       </div>
       <div class="form-item-control">
-        <button
-          type="button"
-          class="btn btn-primary btn-block"
-          v-on:click="signin"
-        >
-          登录
-        </button>
+        <button type="button" class="btn btn-primary btn-block" v-on:click="signin">登录</button>
       </div>
-      <a href="javascript:;" class="link signup-link" v-on:click="signup"
-        >快速注册</a
-      >
+      <a href="javascript:;" class="link signup-link" v-on:click="signup">快速注册</a>
     </div>
   </div>
 </template>
 
 <script>
+import { login } from "@/api/userinfo";
 export default {
-  name: 'signin',
+  name: "signin",
   data() {
     return {
-      userName: '',
-      passWord: ''
+      userName: "",
+      passWord: ""
     };
   },
   methods: {
     signin: function() {
-      this.$http({
-        method: 'get',
-        url: 'http://192.168.0.111:3000/login',
-        params: {
-          userName: this.userName,
-          passWord: this.passWord
-        }
+      login({
+        userName: this.userName,
+        passWord: this.passWord
       })
         .then(response => {
-          if (response.data && response.data.code === '0') {
-            console.log(response, 'res:登录');
-            this.$router.push('/');
+          if (response.data && response.data.code === "0") {
+            console.log(response, "res:登录");
+            this.$router.push("/chatDetail");
             // 登录成功后可以评论了
-            window.localStorage.setItem(
-              'userName',
-              response.data.userName
-            );
+            window.localStorage.setItem("userName", response.data.userName);
           }
-          console.log(response, 'response');
+          console.log(response, "response");
         })
         .catch(err => {
-          alert('用户名或密码错误');
+          alert("用户名或密码错误");
         });
     },
     signup: function() {
-      this.$router.push('/signup');
+      this.$router.push("/signup");
     }
   }
 };
