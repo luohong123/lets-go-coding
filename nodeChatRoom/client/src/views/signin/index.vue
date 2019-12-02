@@ -7,25 +7,28 @@
  * @email: 3300536651@qq.com
  -->
 <template>
-  <div class="signup">
-    <div class="chat-form-main">
-      <h3 class="title">聊天室</h3>
-      <div class="form-item-control">
-        <input type="text" v-model="userName" />
-      </div>
-      <div class="form-item-control">
-        <input type="password" v-model="passWord" />
-      </div>
-      <div class="form-item-control">
-        <button type="button" class="btn btn-primary btn-block" v-on:click="signin">登录</button>
-      </div>
-      <a href="javascript:;" class="link signup-link" v-on:click="signup">快速注册</a>
+<div class="signup">
+  <div class="chat-form-main">
+    <h3 class="title">聊天室</h3>
+    <div class="form-item-control">
+      <input type="text" v-model="userName" />
     </div>
+    <div class="form-item-control">
+      <input type="password" v-model="passWord" />
+    </div>
+    <div class="form-item-control">
+      <button type="button" class="btn btn-primary btn-block" v-on:click="signin">登录</button>
+    </div>
+    <a href="javascript:;" class="link signup-link" v-on:click="signup">快速注册</a>
   </div>
+</div>
 </template>
 
 <script>
-import { login } from "@/api/userinfo";
+import md5 from 'md5';
+import {
+  login
+} from "@/api/userinfo";
 export default {
   name: "signin",
   data() {
@@ -35,17 +38,18 @@ export default {
     };
   },
   methods: {
-    signin: function() {
+    signin: function () {
       login({
-        userName: this.userName,
-        passWord: this.passWord
-      })
+          userName: this.userName,
+          passWord: md5(this.passWord)
+        })
         .then(response => {
-          if (response.data && response.data.code === "0") {
+          if (response.code === "0" && response.data) {
             console.log(response, "res:登录");
-            this.$router.push("/chatDetail");
             // 登录成功后可以评论了
             window.localStorage.setItem("userName", response.data.userName);
+            window.localStorage.setItem("token", response.token);
+            this.$router.push("/");
           }
           console.log(response, "response");
         })
@@ -53,7 +57,7 @@ export default {
           alert("用户名或密码错误");
         });
     },
-    signup: function() {
+    signup: function () {
       this.$router.push("/signup");
     }
   }

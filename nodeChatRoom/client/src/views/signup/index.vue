@@ -7,34 +7,31 @@
  * @email: 3300536651@qq.com
  -->
 <template>
-  <form class="signup">
-    <div class="chat-form-main">
-      <h3 class="title">聊天室</h3>
-      <p class="error">{{ tips }}</p>
-      <div class="form-item-control">
-        <input type="text" v-model="userName" />
-      </div>
-      <div class="form-item-control">
-        <input type="password" v-model="passWord" />
-      </div>
-      <div class="form-item-control">
-        <button
-          type="button"
-          class="btn btn-primary btn-block"
-          v-on:click="signup"
-        >
-          注册
-        </button>
-      </div>
-      <a href="javascript:;" class="link signin-link" v-on:click="signin"
-        >直接登录</a
-      >
+<form class="signup">
+  <div class="chat-form-main">
+    <h3 class="title">聊天室</h3>
+    <p class="error">{{ tips }}</p>
+    <div class="form-item-control">
+      <input type="text" v-model="userName" />
     </div>
-  </form>
+    <div class="form-item-control">
+      <input type="password" v-model="passWord" />
+    </div>
+    <div class="form-item-control">
+      <button type="button" class="btn btn-primary btn-block" v-on:click="signup">
+        注册
+      </button>
+    </div>
+    <a href="javascript:;" class="link signin-link" v-on:click="signin">直接登录</a>
+  </div>
+</form>
 </template>
 
 <script>
-import { register } from '@/api/userinfo'
+import md5 from 'md5';
+import {
+  register
+} from '@/api/userinfo'
 export default {
   name: 'signup',
   data() {
@@ -45,16 +42,16 @@ export default {
     }
   },
   methods: {
-    signin: function() {
+    signin: function () {
       this.$router.push('/signin')
     },
-    signup: function() {
+    signup: function () {
       register({
-        userName: this.userName,
-        passWord: this.passWord
-      })
+          userName: this.userName,
+          passWord: md5(this.passWord)
+        })
         .then(response => {
-          if (response.data && response.data.code === '0') {
+          if (response.code === '0') {
             // 跳转到上一个页面
             this.$router.push('/signin')
             console.log(response.data.message)

@@ -109,3 +109,7 @@ export function showDeskTopNotice(title, icon, msg) {
     console.log('您的浏览器不支持桌面消息');
   }
 }
+
+export function getToken() {
+  return window.localStorage.getItem('token');
+}

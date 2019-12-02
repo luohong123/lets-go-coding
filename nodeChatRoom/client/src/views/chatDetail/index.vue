@@ -32,7 +32,8 @@ import {
   showDeskTopNotice
 } from "@/utils";
 import {
-  messageList
+  messageList,
+  getGroupInfoById
 } from '@/api/chat'
 var opts = {
   extraHeaders: {
@@ -122,22 +123,20 @@ export default {
     eventHub.$on("send", this.sendMsg);
     eventHub.$on('toggle', this.toggle);
     // 发送群消息
-    eventHub.$on('send', this.sendMsg) >>>
-
-      // 初始化消息列表
-      this.initMessageList()
+    eventHub.$on('send', this.sendMsg);
+    // 初始化消息列表
+    this.getMessageList();
+    // 初始化群消息
+    this.initGroupInfo()
   },
   created: function () {
     // 点击其他区域关闭面板
     document.addEventListener('click', e => {
       let box = document.querySelector('.toggle');
-      if (!box.contains(e.target)) {
+      if (box && !box.contains(e.target)) {
         this.isOpen = false;
       }
     })
-    // 初始化消息
-    this.initMessage();
-
     // 连接服务端
     // this.connectServer();
     // eventHub.$on('send', this.sendMsg)
@@ -147,6 +146,17 @@ export default {
     // eventHub.$off('send', this.sendMsg);
   },
   methods: {
+    getMessageList: function () {
+      messageList()
+        .then(response => {
+          if (response.code === '0' && response.data) {
+            this.list = response.data;
+          }
+        })
+        .catch(err => {
+          console.errpr(errr)
+        })
+    },
     toggle: function () {
       this.isOpen = !this.isOpen;
       document.body.removeEventListener('click', this.toggle)
@@ -159,8 +169,8 @@ export default {
     /**
      * 初始化消息列表
      */
-    initMessageList: function () {
-      messageList('')
+    initGroupInfo: function () {
+      getGroupInfoById('123')
         // this 指向问题
         .then(response => {
           if (response['data'] && response.data.code == '0') {
@@ -193,23 +203,6 @@ export default {
       socket.on('connect', function () {
         console.log('连接成功')
       })
-    },
-    initMessage: function () {
-      this.$http({
-          methods: "get",
-          url: "http://192.168.0.111:3000/chats"
-        })
-        // this 指向问题
-        .then(response => {
-          console.log(response, "response");
-          if (response["data"] && response.data.code == "0") {
-            this.chats = response["data"].data;
-            console.log(this.chats, "newArr");
-          }
-        })
-        .catch(function (error) {
-          console.error(error, "initMessage");
-        });
     },
     /**
      * 新增一条消息

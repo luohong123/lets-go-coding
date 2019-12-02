@@ -8,6 +8,7 @@
  */
 import Vue from 'vue';
 import Router from 'vue-router';
+import { getToken } from '@/utils/index';
 Vue.use(Router);
 import Layout from '../layout';
 const router = new Router({
@@ -15,7 +16,7 @@ const router = new Router({
       path: '/',
       component: Layout,
       children: [{
-          path: '', // 首页-tab
+          path: '/', // 首页-tab
           component: () => import('@/views/chatDetail/index')
         },
         {
@@ -57,5 +58,18 @@ const router = new Router({
       component: () => import('@/views/signup/index')
     }
   ]
+});
+
+const whiteList = ['/signin', '/signup']; // 不重定向白名单
+router.beforeEach((to, from, next) => {
+  if (whiteList.indexOf(to.path) !== -1) {
+    next();
+  } else {
+    if (getToken() === 'true') {
+      next();
+    } else {
+      // next({ path: '/signin' });
+    }
+  }
 });
 export default router;
