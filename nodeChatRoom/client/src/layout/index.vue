@@ -1,21 +1,21 @@
 <template>
-  <div class="layout">
-    <div class="tips">
-      <p v-if="!userName" class="tourist">
-        您现在是
-        <span class="error">游客 </span>,请
-        <a class="link" v-on:click="sigin"> 登录 </a> 后一起聊天吧!
-      </p>
-    </div>
-    <div class="container">
-      <nav class="nav">
-        <tabbar v-bind:tabs="tabs" />
-      </nav>
-      <transition :name="transitionName">
-        <router-view class="Router main"></router-view>
-      </transition>
-    </div>
+<div class="layout">
+  <div class="tips">
+    <p class="tourist">
+      您现在是
+      <span class="error">游客 </span>,请
+      <a class="link" v-on:click="sigin"> 登录 </a> 后一起聊天吧!
+    </p>
   </div>
+  <div class="container">
+    <nav class="nav">
+      <tabbar v-bind:tabs="tabs" />
+    </nav>
+    <transition :name="transitionName">
+      <router-view class="Router main"></router-view>
+    </transition>
+  </div>
+</div>
 </template>
 
 <script>
@@ -25,12 +25,11 @@ export default {
   components: {
     tabbar
   },
-  data: function() {
+  data: function () {
     return {
       userName: '',
       transitionName: 'slideleft',
-      tabs: [
-        {
+      tabs: [{
           id: 1,
           name: '聊天',
           icon: 'icon-xiaoxi',
@@ -61,9 +60,7 @@ export default {
       ]
     }
   },
-  mounted() {
-    this.userName = getUserName()
-  },
+  mounted() {},
   watch: {
     $route() {
       // 监听路由变化重新赋值
@@ -76,7 +73,7 @@ export default {
     }
   },
   methods: {
-    sigin: function() {
+    sigin: function () {
       this.$router.push('/signin')
     }
   }
