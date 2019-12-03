@@ -55,8 +55,8 @@ export default {
             // 跳转到上一个页面
             this.$router.push('/signin')
             console.log(response.data.message)
-          } else if (response.data && response.data.status === '-1') {
-            this.tips = response.data.message
+          } else if (response.code === '-1') {
+            this.tips = response.message
           }
         })
         .catch(err => {

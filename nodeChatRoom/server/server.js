@@ -9,6 +9,12 @@
 var app = require('express')();
 var path = require('path');
 var http = require('http').createServer(app);
+// 解析body字段模块,post请求数据是在req.body中取
+const bodyParser = require('body-parser');
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+// 数据库
+require('./db.js');
 var myroute = require('./routes');
 var port = 3000;
 var io = require('socket.io')(http);

@@ -63,3 +63,6 @@ server 服务端代码
 
 ## 五、建议
 > 如果有什么建议可以到issue区留言
+
+### sqlite参考文章
+https://blog.csdn.net/qq_38081746/article/details/90673681

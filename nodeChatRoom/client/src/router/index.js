@@ -60,7 +60,7 @@ const router = new Router({
   ]
 });
 
-const whiteList = ['/signin', '/signup']; // 不重定向白名单
+const whiteList = ['/','/signin', '/signup']; // 不重定向白名单
 router.beforeEach((to, from, next) => {
   if (whiteList.indexOf(to.path) !== -1) {
     next();
