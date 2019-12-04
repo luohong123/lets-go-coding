@@ -1,7 +1,12 @@
 <template>
 <div class="chatDetail">
   <div class="left">
-    <div class="searchbar"></div>
+    <div class="searchbar-wrap">
+      <searchbar />
+      <div class="action-add">
+        <a-icon type="plus-square" v-on:click="groupAdd" />
+      </div>
+    </div>
     <listitem :data="list" class="left-list" />
   </div>
   <div class="right">
@@ -12,6 +17,13 @@
       <managepanel :group="group" />
     </div>
   </div>
+  <!-- 创建群 -->
+  <a-modal title="创建群聊" :visible="groupVisible" @ok="groupInfoAdd" :confirmLoading="groupConfirmLoading" @cancel="groupCancel">
+    <div>
+      <p>请输入群聊名称</p>
+      <a-input v-model="groupName" />
+    </div>
+  </a-modal>
 </div>
 </template>
 
@@ -20,6 +32,7 @@ import chat from "@/components/Chat";
 import headerbar from "@/components/HeaderBar";
 import listitem from "@/components/ListItem";
 import managepanel from "@/components/ManagePanel";
+import searchbar from '@/components/SearchBar';
 import io from "socket.io-client";
 import {
   eventHub
@@ -29,11 +42,13 @@ import {
   getUserName,
   getTime,
   debounce,
-  showDeskTopNotice
+  showDeskTopNotice,
+  getUserInfo
 } from "@/utils";
 import {
   messageList,
-  getGroupInfoById
+  getGroupInfoById,
+  groupInfoAdd
 } from '@/api/chat'
 var opts = {
   extraHeaders: {
@@ -49,7 +64,8 @@ export default {
     chat,
     headerbar,
     listitem,
-    managepanel
+    managepanel,
+    searchbar
   },
   data() {
     return {
@@ -69,6 +85,13 @@ export default {
         DESCRIBE: '本群为技术交流群，请勿发无关广告，定期处理非技术人员推广。谢谢支持。群内发助力一律踢！',
         MYNAME: '红红'
       },
+      groupName: '',
+      groupInfo: {
+
+      },
+      groupVisible: false,
+      groupConfirmLoading: false,
+
       isOpen: false // 是否展开
     };
     title: '前端技术优选'
@@ -133,8 +156,12 @@ export default {
     // 点击其他区域关闭面板
     document.addEventListener('click', e => {
       let box = document.querySelector('.toggle');
+      let c1 = document.querySelector('.ManagePanel');
       if (box && !box.contains(e.target)) {
         this.isOpen = false;
+      }
+      if (c1 && c1.contains(e.target)) {
+        this.isOpen = true;
       }
     })
     // 连接服务端
@@ -146,6 +173,34 @@ export default {
     // eventHub.$off('send', this.sendMsg);
   },
   methods: {
+    groupAdd: function () {
+      this.groupVisible = true;
+    },
+    groupInfoAdd: function () {
+     let a =  getUserInfo();
+      this.groupInfo = {
+        GROUPID: getGuid(),
+        GROUPNAME: this.groupName,
+        GROUPREMARK: '',
+        CREATEUSERID: 'test1',
+        CREATETIME: getTime('yyyy-MM-dd'),
+        DISSOLUTIONTIME: '',
+        GROUPSTATE: '0'
+      }
+      console.log(this.groupInfo, 'this.groupInfo');
+      groupInfoAdd({
+          groupInfo: this.groupInfo
+        })
+        .then(response => {
+          if (response.code === '0') {
+            this.$message.info(response.message);
+            this.groupVisible = false;
+          }
+        })
+    },
+    groupCancel(e) {
+      this.groupVisible = false;
+    },
     getMessageList: function () {
       messageList()
         .then(response => {
@@ -195,9 +250,6 @@ export default {
       // 告诉服务端已离开聊天室
       socket.emit('leave', this.leaveUser)
     },
-    signin: function () {
-      this.$router.push('/signin')
-    },
     connectServer: function () {
       // 如果没有登录，分配一个游客身份，客户端向服务端发起请求,
       socket.on('connect', function () {
@@ -243,6 +295,26 @@ export default {
   background: #edeae8;
   display: flex;
   flex-direction: column;
+}
+
+.left .searchbar-wrap {
+  padding: 10px;
+}
+
+.left .searchbar-wrap::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.left .searchbar {
+  width: calc(100% - 40px);
+  float: left;
+}
+
+.left .action-add {
+  width: 26px;
+  float: right;
 }
 
 .left-list {

@@ -3,7 +3,7 @@
  * @Date: 2019-11-30 09:59:07
  * @LastEditors: honghong
  * @LastEditTime: 2019-11-30 14:17:31
- * @Description: 
+ * @Description:
  * @email: 3300536651@qq.com
  */
 import Vue from 'vue';
@@ -12,10 +12,12 @@ import { getToken } from '@/utils/index';
 Vue.use(Router);
 import Layout from '../layout';
 const router = new Router({
-  routes: [{
+  routes: [
+    {
       path: '/',
       component: Layout,
-      children: [{
+      children: [
+        {
           path: '/', // 首页-tab
           component: () => import('@/views/chatDetail/index')
         },
@@ -45,10 +47,6 @@ const router = new Router({
         }
       ]
     },
-    // {
-    //   path: '/chatDetail', // 聊天室
-    //   component: () => import('@/views/chatDetail/index')
-    // },
     {
       path: '/signin', // 登录
       component: () => import('@/views/signin/index')
@@ -60,15 +58,21 @@ const router = new Router({
   ]
 });
 
-const whiteList = ['/','/signin', '/signup']; // 不重定向白名单
+const whiteList = ['/signin']; // 不重定向白名单
 router.beforeEach((to, from, next) => {
-  if (whiteList.indexOf(to.path) !== -1) {
-    next();
+  //  如果token没有过期,直接跳转到聊天室界面
+  if (getToken()) {
+    if (to.path === '/signin') {
+      next({ path: '/' });
+    } else {
+      next();
+    }
   } else {
-    if (getToken() === 'true') {
+    if (whiteList.indexOf(to.path) !== -1) {
       next();
     } else {
-      // next({ path: '/signin' });
+      // 如果token过期,跳转到登录页面,用户可以选择账号密码登录,也可以选择游客身份登录
+      next('/signin');
     }
   }
 });

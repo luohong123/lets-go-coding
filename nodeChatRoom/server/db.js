@@ -29,23 +29,14 @@ exports.userInfoAdd = function(data) {
  * 根据USERNAME查询用户信息,用于用户名查重、登录验证
  */
 exports.getUserInfoByName = function(userName) {
-  db.get(
-    `SELECT * FROM USERINFO WHERE USERNAME = '${userName}';`,
-    (err, row) => {
-      if (err) throw err;
-      console.log(row);
-      return row;
-    }
-  );
-};
-/**
- * 根据USERNAME查询用户信息,用于用户名查重、登录验证
- */
-exports.getUserInfoById = function(userId) {
-  db.get(`SELECT * FROM USERINFO WHERE USERNAME = '${userId}';`, (err, row) => {
-    if (err) throw err;
-    console.log(row);
-    return row;
+  return new Promise((resolve, reject) => {
+    db.get(
+      `SELECT * FROM USERINFO WHERE USERNAME = '${userName}';`,
+      (err, row) => {
+        if (err) return reject(err);
+        return resolve(row);
+      }
+    );
   });
 };
 /**
@@ -53,19 +44,63 @@ exports.getUserInfoById = function(userId) {
  */
 exports.loginValid = function(userInfo) {
   let query = `SELECT * FROM USERINFO WHERE USERNAME = '${userInfo.USERNAME}' AND PASSWORD = '${userInfo.PASSWORD}'`;
-  db.get(query, (err, row) => {
-    if (err) throw err;
-    console.log(row, 'row');
+  let promise = new Promise((resolve, reject) => {
+    db.get(query, (err, row) => {
+      if (err) return reject(err);
+      return resolve(row);
+    });
+  });
+  // .then 总是返回一个承诺
+  return promise.then(result => {
     if (
       userInfo.USERNAME &&
       userInfo.PASSWORD &&
-      userInfo.USERNAME === row.USERNAME &&
-      userInfo.PASSWORD === row.PASSWORD
+      userInfo.USERNAME === result.USERNAME &&
+      userInfo.PASSWORD === result.PASSWORD
     ) {
       return true;
     } else {
       return false;
     }
+  });
+};
+/**
+ * 创建新群
+ */
+exports.groupInfoAdd = function(data) {
+  console.log(data, 'userInfo');
+  return new Promise((resolve, reject) => {
+    db.run(
+      `INSERT INTO USERINFO (GROUPID,GROUPNAME,GROUPREMARK,CREATEUSERID,CREATETIME,DISSOLUTIONTIME,DISSOLUTIONTIME,GROUPSTATE)
+  VALUES (
+    '${data.GROUPID}',
+    '${data.GROUPNAME}',
+    '${data.GROUPREMARK}'
+    '${data.CREATEUSERID}'
+    '${data.CREATETIME}'
+    '${data.DISSOLUTIONTIME}'
+    '${data.GROUPSTATE}'
+    );`,
+      err => {
+        if (err) return reject(err);
+        return resolve({
+          code: '0',
+          message: '新增群成功'
+        });
+      }
+    );
+  });
+};
+/**
+ * 根据群ID查询
+ */
+exports.getGroupUsersById = function(groupInfo) {
+  let query = `SELECT * FROM GROUPUSER WHERE GROUPID = '${groupInfo.GROUPID}'`;
+  return new Promise((resolve, reject) => {
+    db.get(query, (err, row) => {
+      if (err) return reject(err);
+      return resolve(row);
+    });
   });
 };
 // 使用代码创建表,创建用户信息表

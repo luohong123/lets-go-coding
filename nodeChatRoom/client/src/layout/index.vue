@@ -1,6 +1,6 @@
 <template>
 <div class="layout">
-  <div class="tips">
+  <div class="tips" v-if="!isLogin">
     <p class="tourist">
       您现在是
       <span class="error">游客 </span>,请
@@ -12,6 +12,7 @@
       <tabbar v-bind:tabs="tabs" />
     </nav>
     <transition :name="transitionName">
+      <!-- <RouterView class="Router main" /> -->
       <router-view class="Router main"></router-view>
     </transition>
   </div>
@@ -19,7 +20,8 @@
 </template>
 
 <script>
-import tabbar from '@/components/TabBar'
+import tabbar from '@/components/TabBar';
+import {getToken} from '@/utils/index';
 export default {
   name: 'Layout',
   components: {
@@ -27,7 +29,7 @@ export default {
   },
   data: function () {
     return {
-      userName: '',
+      isLogin: getToken(),
       transitionName: 'slideleft',
       tabs: [{
           id: 1,

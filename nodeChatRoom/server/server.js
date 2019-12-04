@@ -3,7 +3,7 @@
  * @Date: 2019-11-30 09:59:07
  * @LastEditors: honghong
  * @LastEditTime: 2019-11-30 13:33:09
- * @Description: 
+ * @Description:
  * @email: 3300536651@qq.com
  */
 var app = require('express')();
@@ -20,7 +20,7 @@ var port = 3000;
 var io = require('socket.io')(http);
 // socket
 var socket = require('./core/socket.js');
-socket.socket(io)
+socket.socket(io);
 // 静态文件
 // app.use('/static', app.static(path.join(__dirname, 'public')))
 // 允许跨域
@@ -35,13 +35,16 @@ app.all('*', function(req, res, next) {
   //让options尝试请求快速结束
   else next();
 });
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
   res.send('<h1>Node聊天室</h1>');
 });
 // 登录
+
 app.post('/login', myroute.login);
+
 // 注册
 app.post('/register', myroute.register);
+
 // 退出登录
 app.get('signout', myroute.signout);
 // 消息列表
@@ -50,7 +53,11 @@ app.get('/messageList', myroute.messageList);
 app.get('/groupinfo/list', myroute.getGroupInfo);
 // 私聊
 app.get('/getPrivateInfo', myroute.getPrivateInfo);
+// 创建群聊
+app.post('/groupInfo/create', myroute.groupInfoAdd);
+// 获取用户信息
+app.get('/getUserInfo', myroute.getUserInfoByName);
 // 端口
-http.listen(port, function () {
+http.listen(port, function() {
   console.log(`listening on *:${port}`);
 });

@@ -6,9 +6,9 @@ const JWT = require('jsonwebtoken');
 const secret = 'chegi123456';
 const algorithm = 'HS256';
 const userInfoAdd = require('../db').userInfoAdd;
-const getUserInfoByName = require('../db').getUserInfoByName;
-const getUserInfoById = require('../db').getUserInfoById;
+const _getUserInfoByName = require('../db').getUserInfoByName;
 const loginValid = require('../db').loginValid;
+const _groupInfoAdd = require('../db').groupInfoAdd;
 function JWT_auth(req, res, next) {
   let authorization = req.headers['X-Token'];
   // 如果存在token
@@ -41,18 +41,20 @@ exports.register = function(req, res) {
     PASSWORD: req.body.passWord
   };
   console.log(getUserInfoByName(person.USERNAME));
-  if (getUserInfoByName(person.USERNAME)) {
-    return res.send({
-      message: '用户名已被占用, 请重新注册',
-      code: '-1'
-    });
-  } else {
-    userInfoAdd(person);
-    res.status(200).send({
-      message: '注册成功',
-      code: '0'
-    });
-  }
+  _getUserInfoByName(person.USERNAME).then(result => {
+    if (person.USERNAME === result.USERNAME) {
+      return res.send({
+        message: '用户名已被占用, 请重新注册',
+        code: '-1'
+      });
+    } else {
+      userInfoAdd(person);
+      res.status(200).send({
+        message: '注册成功',
+        code: '0'
+      });
+    }
+  });
 };
 // 登录
 exports.login = function(req, res) {
@@ -60,28 +62,29 @@ exports.login = function(req, res) {
     USERNAME: req.body.userName,
     PASSWORD: req.body.passWord
   };
-  console.log(loginValid(person), 'loginValid');
-  if (loginValid(person)) {
-    // 授权方法 2. JWT
-    let token = JWT.sign(
-      { username: person.userName, exp: Date.now() + 1000 * 60 }, // payload
-      secret, // 签名密钥
-      { algorithm } // 签名算法
-    );
-    return res.status(200).send({
-      code: '0',
-      message: '登录成功',
-      token: token,
-      data: {
-        userName: person.userName
-      }
-    });
-  } else {
-    return res.status(200).send({
-      code: '-1',
-      message: '用户名或密码错误'
-    });
-  }
+  loginValid(person).then(result => {
+    if (result) {
+      // 授权方法 2. JWT
+      let token = JWT.sign(
+        { username: person.USERNAME, exp: Date.now() + 1000 * 60 }, // payload
+        secret, // 签名密钥
+        { algorithm } // 签名算法
+      );
+      return res.status(200).send({
+        code: '0',
+        message: '登录成功',
+        token: token,
+        data: {
+          userName: person.USERNAME
+        }
+      });
+    } else {
+      return res.status(200).send({
+        code: '-1',
+        message: '用户名或密码错误'
+      });
+    }
+  });
 };
 
 // 登出
@@ -95,6 +98,7 @@ exports.signout = function(req, res) {
 // 消息列表
 exports.messageList = function(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
+  // 根据userId 查询和自己相关的群聊和私聊,加入到消息列表中,并根据群聊或者私聊的最后一条聊天记录时间倒序排序
   fs.readFile(path.resolve(__dirname, '../messageList.json'), function(
     err,
     data
@@ -110,19 +114,25 @@ exports.messageList = function(req, res) {
     });
   });
 };
-
+// 用户信息
+exports.getUserInfoByName = function(req, res) {
+  _getUserInfoByName(req.query.userName).then(result=>{
+    return res.status(200).send({
+      code: '0',
+      message:'请求成功',
+      data:result
+    });
+  })
+};
 // 群聊
 exports.getGroupInfo = function(req, res) {
-  fs.readFile(path.resolve(__dirname, '../chats.json'), function(err, data) {
-    if (err) {
-      return console.log(err);
+  
+};
+exports.groupInfoAdd = function(req, res) {
+  _groupInfoAdd(req.body.groupInfo).then(result => {
+    if (result.code === '0') {
+      res.status(200).send(result);
     }
-    let chats = JSON.parse(data);
-    res.status(200).send({
-      message: '请求成功',
-      data: chats.data,
-      code: '0'
-    });
   });
 };
 // 私聊

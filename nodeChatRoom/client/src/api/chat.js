@@ -44,9 +44,9 @@ export function getGroupUser(groupId) {
  * 新增群消息
  * @param {*} groupId
  */
-export function groupInfoAdd(groupId, data) {
+export function groupInfoAdd(data) {
   return request({
-    url: `/groupinfo/create/${groupId}`,
+    url: `/groupInfo/create`,
     method: 'post',
     data
   });

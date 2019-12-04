@@ -6,6 +6,7 @@
  * @Description:
  * @email: 3300536651@qq.com
  */
+import { SearchUserInfo } from '@/api/userinfo';
 /**
  * 获取guid
  */
@@ -111,5 +112,14 @@ export function showDeskTopNotice(title, icon, msg) {
 }
 
 export function getToken() {
+  console.log(window.localStorage.getItem('token'), 'token');
   return window.localStorage.getItem('token');
+}
+export function getUserInfo() {
+  let userName = window.localStorage.getItem('userName');
+  SearchUserInfo(userName).then(response => {
+    if (response.code === '0') {
+      return response.data;
+    }
+  });
 }
