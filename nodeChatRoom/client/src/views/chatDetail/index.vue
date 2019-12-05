@@ -1,7 +1,7 @@
 <template>
 <div class="chatDetail">
   <div class="left">
-    <div class="searchbar-wrap">
+    <div class="searchbar-wrap" v-if="userName&&userName!=='undefined'">
       <searchbar />
       <div class="action-add">
         <a-icon type="plus-square" v-on:click="groupAdd" />
@@ -14,7 +14,7 @@
     <chat class="chat-wrap" :list="chats" />
     <!-- 隐藏区域 -->
     <div class="more-introduce" v-bind:class="{'show':isOpen}">
-      <managepanel :group="group" />
+      <managepanel :group="group" :list="groupUsers"/>
     </div>
   </div>
   <!-- 创建群 -->
@@ -43,12 +43,13 @@ import {
   getTime,
   debounce,
   showDeskTopNotice,
-  getUserInfo
+  getUserInfo,
+  getToken
 } from "@/utils";
 import {
   messageList,
   getGroupInfoById,
-  groupInfoAdd
+  groupInfoCreate
 } from '@/api/chat'
 var opts = {
   extraHeaders: {
@@ -70,16 +71,18 @@ export default {
   data() {
     return {
       chats: [],
-      userName: '',
+      userName: getUserName(),
       passWord: '',
       times: 0,
       newUser: '',
       online: 0,
       leaveUser: '',
       connected: false,
+      userInfo: {},
       list: [],
       title: '前端技术优选',
       chatContent: {},
+      groupUsers:[], // 群成员
       group: {
         NAME: '前端技术优选',
         DESCRIBE: '本群为技术交流群，请勿发无关广告，定期处理非技术人员推广。谢谢支持。群内发助力一律踢！',
@@ -151,6 +154,9 @@ export default {
     this.getMessageList();
     // 初始化群消息
     this.initGroupInfo()
+    getUserInfo().then(result => {
+      this.userInfo = result;
+    })
   },
   created: function () {
     // 点击其他区域关闭面板
@@ -173,22 +179,22 @@ export default {
     // eventHub.$off('send', this.sendMsg);
   },
   methods: {
+
     groupAdd: function () {
       this.groupVisible = true;
     },
     groupInfoAdd: function () {
-     let a =  getUserInfo();
       this.groupInfo = {
-        GROUPID: getGuid(),
+        GROUPID: '',
         GROUPNAME: this.groupName,
         GROUPREMARK: '',
-        CREATEUSERID: 'test1',
-        CREATETIME: getTime('yyyy-MM-dd'),
+        CREATEUSERID: this.userInfo.USERID,
+        CREATETIME: getTime('yyyy-MM-dd hh:mm:ss'),
         DISSOLUTIONTIME: '',
         GROUPSTATE: '0'
       }
       console.log(this.groupInfo, 'this.groupInfo');
-      groupInfoAdd({
+      groupInfoCreate({
           groupInfo: this.groupInfo
         })
         .then(response => {
@@ -202,14 +208,15 @@ export default {
       this.groupVisible = false;
     },
     getMessageList: function () {
-      messageList()
+      let userId = (this.userInfo && this.userInfo['userId']) ? this.userInfo['userId'] : undefined;
+      messageList(userId)
         .then(response => {
-          if (response.code === '0' && response.data) {
+          if (response.code === '0') {
             this.list = response.data;
           }
         })
         .catch(err => {
-          console.errpr(errr)
+          console.errpr(errr);
         })
     },
     toggle: function () {
@@ -225,16 +232,16 @@ export default {
      * 初始化消息列表
      */
     initGroupInfo: function () {
-      getGroupInfoById('123')
-        // this 指向问题
-        .then(response => {
-          if (response['data'] && response.data.code == '0') {
-            this.list = response['data'].data
-          }
-        })
-        .catch(function (error) {
-          console.error(error, 'initMessage')
-        })
+      // getGroupInfoById('123')
+      //   // this 指向问题
+      //   .then(response => {
+      //     if (response['data'] && response.data.code == '0') {
+      //       this.list = response['data'].data
+      //     }
+      //   })
+      //   .catch(function (error) {
+      //     console.error(error, 'initMessage')
+      //   })
     },
     addParticipantsMessage: function (data) {
       let message = ''

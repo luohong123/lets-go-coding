@@ -34,15 +34,14 @@ function JWT_auth(req, res, next) {
 }
 // 注册
 exports.register = function(req, res) {
-  //   res.setHeader('Access-Control-Allow-Origin', '*');
   let person = {
     USERID: common.getGuid(),
     USERNAME: req.body.userName,
     PASSWORD: req.body.passWord
   };
-  console.log(getUserInfoByName(person.USERNAME));
+  console.log(person, 'person');
   _getUserInfoByName(person.USERNAME).then(result => {
-    if (person.USERNAME === result.USERNAME) {
+    if (result && person.USERNAME === result.USERNAME) {
       return res.send({
         message: '用户名已被占用, 请重新注册',
         code: '-1'
@@ -97,39 +96,43 @@ exports.signout = function(req, res) {
 };
 // 消息列表
 exports.messageList = function(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
   // 根据userId 查询和自己相关的群聊和私聊,加入到消息列表中,并根据群聊或者私聊的最后一条聊天记录时间倒序排序
-  fs.readFile(path.resolve(__dirname, '../messageList.json'), function(
-    err,
-    data
-  ) {
-    if (err) {
-      return console.log(err);
-    }
-    let chats = JSON.parse(data);
+  let userId = req.query.userId;
+  console.log(userId,'messageList');
+
+  if (userId) {
+    // 查询和此用户相关的私聊和群聊消息
     res.status(200).send({
-      message: '请求成功',
-      data: chats.data,
-      code: '0'
+      code: '0',
+      message: '以用户身份请求成功',
+      data: []
     });
-  });
+  } else {
+    // 游客身份
+    res.status(200).send({
+      code: '0',
+      message: '以游客身份请求成功',
+      data: []
+    });
+  }
 };
 // 用户信息
 exports.getUserInfoByName = function(req, res) {
-  _getUserInfoByName(req.query.userName).then(result=>{
+  _getUserInfoByName(req.query.userName).then(result => {
     return res.status(200).send({
       code: '0',
-      message:'请求成功',
-      data:result
+      message: '请求成功',
+      data: result
     });
-  })
+  });
 };
 // 群聊
-exports.getGroupInfo = function(req, res) {
-  
-};
-exports.groupInfoAdd = function(req, res) {
-  _groupInfoAdd(req.body.groupInfo).then(result => {
+exports.getGroupInfo = function(req, res) {};
+exports.groupInfoCreate = function(req, res) {
+  let groupInfo = req.body.groupInfo;
+  groupInfo.GROUPID = common.getGuid();
+  groupInfo.TS = common.getTimeS();
+  _groupInfoAdd(groupInfo).then(result => {
     if (result.code === '0') {
       res.status(200).send(result);
     }

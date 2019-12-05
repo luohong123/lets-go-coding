@@ -117,9 +117,16 @@ export function getToken() {
 }
 export function getUserInfo() {
   let userName = window.localStorage.getItem('userName');
-  SearchUserInfo(userName).then(response => {
-    if (response.code === '0') {
-      return response.data;
-    }
-  });
+  if (userName && userName !== 'undefined') {
+  return  new Promise((resolve, reject) => {
+      SearchUserInfo(userName).then(response => {
+        if (response.code === '0') {
+          let userInfo = response['data'];
+          return resolve(userInfo);
+        } else {
+          return reject(response);
+        }
+      });
+    });
+  }
 }

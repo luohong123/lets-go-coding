@@ -8,15 +8,19 @@
  */
 import request from '@/utils/request';
 /**
- * 根据 userId 获取消息列表
+ * 根据 userId 获取相关的消息列表，包括私聊和群聊
+ * 如果用户没有登录,身份为游客时,分配一个默认的群,只能查看群消息,不能发布评论
  * @param {*} userId
  */
-// `data` 是作为请求主体被发送的数据
-// 只适用于这些请求方法 "PUT", "POST", 和 "PATCH"
-export function messageList() {
+
+export function messageList(userId) {
   return request({
     url: '/messageList',
-    method: 'get'
+    method: 'get',
+    params: {
+      userId: userId,
+      // userId: userId
+    }
   });
 }
 /**
@@ -27,7 +31,7 @@ export function getGroupInfoById(groupId) {
   return request({
     url: `/groupinfo/list`,
     method: 'get',
-    // params: data 根据消息列表的id查找群消息
+    params: {}
   });
 }
 /**
@@ -44,10 +48,12 @@ export function getGroupUser(groupId) {
  * 新增群消息
  * @param {*} groupId
  */
-export function groupInfoAdd(data) {
+export function groupInfoCreate(data) {
   return request({
     url: `/groupInfo/create`,
     method: 'post',
+    // `data` 是作为请求主体被发送的数据,只适用于这些请求方法 "PUT", "POST", 和 "PATCH",
+    // 后台接参数需要序列化后在req.body中接,
     data
   });
 }

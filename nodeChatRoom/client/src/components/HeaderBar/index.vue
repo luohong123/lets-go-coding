@@ -8,9 +8,15 @@
 
 <script>
 import {eventHub} from '@/utils/event-bus';
+import {getUserName} from '@/utils';
 export default {
   name: 'HeaderBar',
   props: ['title', 'more', 'left'],
+  data(){
+    return {
+      userName:getUserName()
+    }
+  },
   methods: {
     toggle: function () {
       eventHub.$emit('toggle');

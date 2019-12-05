@@ -58,7 +58,7 @@ const router = new Router({
   ]
 });
 
-const whiteList = ['/signin']; // 不重定向白名单
+const whiteList = ['/signin','/signup','/']; // 不重定向白名单
 router.beforeEach((to, from, next) => {
   //  如果token没有过期,直接跳转到聊天室界面
   if (getToken()) {
@@ -72,7 +72,7 @@ router.beforeEach((to, from, next) => {
       next();
     } else {
       // 如果token过期,跳转到登录页面,用户可以选择账号密码登录,也可以选择游客身份登录
-      next('/signin');
+      next();
     }
   }
 });

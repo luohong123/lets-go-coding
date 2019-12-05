@@ -7,62 +7,11 @@
     <div class="contacts">
       <div class="contacts-list-wrap">
         <ul class="contacts-list">
-          <div class="contacts-list-item action">
+          <!-- <div class="contacts-list-item action">
             <span class="action-icon"> <i class="icon iconfont icon-jia"></i></span>
             <span class="text">添加</span>
-          </div>
-          <li class="contacts-list-item" title="我是新人">
-            <img src="http://img4.imgtn.bdimg.com/it/u=304455795,3763721893&fm=26&gp=0.jpg" alt="">
-            <span class="text" title="">我是新人</span>
-          </li>
-          <li class="contacts-list-item">
-            <img src="http://img5.imgtn.bdimg.com/it/u=3525785924,1491427393&fm=26&gp=0.jpg" alt="">
-            <span class="text">小明</span>
-          </li>
-          <li class="contacts-list-item">
-            <img src="http://img5.imgtn.bdimg.com/it/u=3525785924,1491427393&fm=26&gp=0.jpg" alt="">
-            <span class="text">小明</span>
-          </li>
-          <li class="contacts-list-item">
-            <img src="http://img5.imgtn.bdimg.com/it/u=3525785924,1491427393&fm=26&gp=0.jpg" alt="">
-            <span class="text">小明</span>
-          </li>
-          <li class="contacts-list-item">
-            <img src="http://img5.imgtn.bdimg.com/it/u=3525785924,1491427393&fm=26&gp=0.jpg" alt="">
-            <span class="text">小明</span>
-          </li>
-          <li class="contacts-list-item">
-            <img src="http://img5.imgtn.bdimg.com/it/u=3525785924,1491427393&fm=26&gp=0.jpg" alt="">
-            <span class="text">小明</span>
-          </li>
-          <li class="contacts-list-item">
-            <img src="http://img5.imgtn.bdimg.com/it/u=3525785924,1491427393&fm=26&gp=0.jpg" alt="">
-            <span class="text">小明</span>
-          </li>
-          <li class="contacts-list-item">
-            <img src="http://img5.imgtn.bdimg.com/it/u=3525785924,1491427393&fm=26&gp=0.jpg" alt="">
-            <span class="text">小明</span>
-          </li>
-          <li class="contacts-list-item">
-            <img src="http://img5.imgtn.bdimg.com/it/u=3525785924,1491427393&fm=26&gp=0.jpg" alt="">
-            <span class="text">小明</span>
-          </li>
-          <li class="contacts-list-item">
-            <img src="http://img5.imgtn.bdimg.com/it/u=3525785924,1491427393&fm=26&gp=0.jpg" alt="">
-            <span class="text">小明</span>
-          </li>
-          <li class="contacts-list-item">
-            <img src="http://img5.imgtn.bdimg.com/it/u=3525785924,1491427393&fm=26&gp=0.jpg" alt="">
-            <span class="text">小明</span>
-          </li>
-          <li class="contacts-list-item">
-            <img src="http://img5.imgtn.bdimg.com/it/u=3525785924,1491427393&fm=26&gp=0.jpg" alt="">
-            <span class="text">小明</span>
-          </li>
-          <li class="contacts-list-item">
-            <img src="http://img5.imgtn.bdimg.com/it/u=1760459477,2169522870&fm=26&gp=0.jpg" alt="">
-            <span class="text">小红</span>
-          </li>
+          </div> -->
+          <h5>在线用户 {{list.length}} 人</h5>
           <li class="contacts-list-item" v-for="item in list" v-bind:key="item.ID">
             <img v-bind:src="item.AVATAR" alt="">
             <span class="text">{{item.USERNAME}}</span>
@@ -106,6 +55,7 @@ export default {
     searchbar
   },
   props: ['list', 'group'],
+  // 根据群成员的USERID 去查找用户信息表对应的用户在线状态,就可以判断在线人数
   methods: {
     search: function () {
 

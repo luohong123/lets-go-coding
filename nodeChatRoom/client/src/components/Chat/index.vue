@@ -27,7 +27,7 @@
       </div>
     </li>
   </ul>
-  <div class="sendMessage">
+  <div v-if="userName&&userName!=='undefined'" class="sendMessage">
     <div class="message-toolbar">
       <div class="message-toolbar-left">
 
@@ -45,6 +45,9 @@
       <button type="submit" class="btn btn-primary" v-on:click="sendMessage">发送(S)</button>
     </div>
   </div>
+  <div v-if="!userName||userName==='undefined'" class="dontSend">
+    您现在是游客身份,请<a class="link" v-on:click="sigin">登录</a>后一起参与讨论吧！
+  </div>
 </div>
 </template>
 
@@ -52,7 +55,8 @@
 import {
   getUserName,
   getGuid,
-  debounce
+  debounce,
+  getUserInfo
 } from "@/utils";
 import {
   eventHub
@@ -64,6 +68,7 @@ export default {
   },
   data() {
     return {
+      userInfo: getUserInfo(),
       userName: getUserName(),
       chatContent: {},
       message: '',
@@ -80,6 +85,9 @@ export default {
     }, 50);
   },
   methods: {
+    sigin: function () {
+      this.$router.push('/signin')
+    },
     sendMessage: function () {
       console.log(this.message == true, 'this.message ===');
       if (this.message.match(/^\s*$/)) {
@@ -337,5 +345,14 @@ export default {
   transform: rotate(-45deg);
   background: #fff;
   z-index: 100;
+}
+
+.dontSend {
+  width: 100%;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  background: #77d376;
+  color: #000;
 }
 </style>

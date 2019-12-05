@@ -54,7 +54,7 @@ app.get('/groupinfo/list', myroute.getGroupInfo);
 // 私聊
 app.get('/getPrivateInfo', myroute.getPrivateInfo);
 // 创建群聊
-app.post('/groupInfo/create', myroute.groupInfoAdd);
+app.post('/groupInfo/create', myroute.groupInfoCreate);
 // 获取用户信息
 app.get('/getUserInfo', myroute.getUserInfoByName);
 // 端口

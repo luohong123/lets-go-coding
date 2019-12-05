@@ -1,12 +1,12 @@
 <template>
 <div class="layout">
-  <div class="tips" v-if="!isLogin">
+  <!-- <div class="tips" v-if="!isLogin || !userName">
     <p class="tourist">
       您现在是
       <span class="error">游客 </span>,请
       <a class="link" v-on:click="sigin"> 登录 </a> 后一起聊天吧!
     </p>
-  </div>
+  </div> -->
   <div class="container">
     <nav class="nav">
       <tabbar v-bind:tabs="tabs" />
@@ -21,7 +21,7 @@
 
 <script>
 import tabbar from '@/components/TabBar';
-import {getToken} from '@/utils/index';
+import {getToken,getUserInfo} from '@/utils/index';
 export default {
   name: 'Layout',
   components: {
@@ -30,6 +30,7 @@ export default {
   data: function () {
     return {
       isLogin: getToken(),
+      userName:getUserInfo.userName,
       transitionName: 'slideleft',
       tabs: [{
           id: 1,

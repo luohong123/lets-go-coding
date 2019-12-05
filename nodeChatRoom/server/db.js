@@ -8,6 +8,7 @@ const GROUPUSER = require('./models/groupuser').obj;
 const HISTORY = require('./models/history').obj;
 const OFFLINE = require('./models/offline').obj;
 const USERINFO = require('./models/userinfo').obj;
+const common = require('./core/common');
 /**
  * 新增用户
  */
@@ -69,26 +70,39 @@ exports.loginValid = function(userInfo) {
  */
 exports.groupInfoAdd = function(data) {
   console.log(data, 'userInfo');
-  return new Promise((resolve, reject) => {
-    db.run(
-      `INSERT INTO USERINFO (GROUPID,GROUPNAME,GROUPREMARK,CREATEUSERID,CREATETIME,DISSOLUTIONTIME,DISSOLUTIONTIME,GROUPSTATE)
+  // 操作多表: 群用户表新增一条数据 且 群用户表新增创建人
+  let sql = `
+  INSERT INTO GROUPINFO (GROUPID,GROUPNAME,GROUPREMARK,CREATEUSERID,CREATETIME,DISSOLUTIONTIME,GROUPSTATE,TS)
   VALUES (
     '${data.GROUPID}',
     '${data.GROUPNAME}',
-    '${data.GROUPREMARK}'
-    '${data.CREATEUSERID}'
-    '${data.CREATETIME}'
-    '${data.DISSOLUTIONTIME}'
-    '${data.GROUPSTATE}'
-    );`,
-      err => {
-        if (err) return reject(err);
-        return resolve({
-          code: '0',
-          message: '新增群成功'
-        });
-      }
+    '${data.GROUPREMARK}',
+    '${data.CREATEUSERID}',
+    '${data.CREATETIME}',
+    '${data.DISSOLUTIONTIME}',
+    '${data.GROUPSTATE}',
+    '${data.TS}'
     );
+  INSERT INTO GROUPUSER (ID,GROUPID,USERID,STATE,JOINTIME,QUITTIME,TS)
+  VALUES (
+    '${common.getGuid()}',
+    '${data.GROUPID}',
+    '${data.CREATEUSERID}',
+    '0',
+    '${data.CREATETIME}',
+    '',
+    '${data.TS}'
+    );
+
+  `;
+  return new Promise((resolve, reject) => {
+    db.exec(sql, err => {
+      if (err) return reject(err);
+      return resolve({
+        code: '0',
+        message: '新增群成功和设置创建人为群用户成功'
+      });
+    });
   });
 };
 /**
@@ -102,6 +116,16 @@ exports.getGroupUsersById = function(groupInfo) {
       return resolve(row);
     });
   });
+};
+exports.getMessageListByUserId = function(userId) {
+  let sql;
+  if (userId) {
+    // 1. 查询历史记录表,群聊ID为空表示私聊
+    sql = `SELECT * FROM HISTORY WHERE USERID = '${userId}'`;
+  } else {
+    // 游客身份可以浏览一个默认的群
+    sql = `SELECT * FROM GROUPINFO WHERE GROUPID = 'c31091d0-1735-11ea-8132-7fd89f085ca9'`
+  }
 };
 // 使用代码创建表,创建用户信息表
 // db.run(
