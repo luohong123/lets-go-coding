@@ -6,13 +6,20 @@
  * @Description:
  * @email: 3300536651@qq.com
  */
-var app = require('express')();
+var express = require('express');
+var app = express();
 var path = require('path');
 var http = require('http').createServer(app);
 // 解析body字段模块,post请求数据是在req.body中取
 const bodyParser = require('body-parser');
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(express.static('public'));
+
+app.get('/public/images/*', function(req, res) {
+  res.sendFile(__dirname + '/' + req.url);
+  console.log('Request for ' + req.url + ' received.');
+});
 // 数据库
 require('./db.js');
 var myroute = require('./routes');
@@ -57,6 +64,10 @@ app.get('/getPrivateInfo', myroute.getPrivateInfo);
 app.post('/groupInfo/create', myroute.groupInfoCreate);
 // 获取用户信息
 app.get('/getUserInfo', myroute.getUserInfoByName);
+// 根据ID获取历史消息
+app.get('/history/list', myroute.historyList);
+
+
 // 端口
 http.listen(port, function() {
   console.log(`listening on *:${port}`);

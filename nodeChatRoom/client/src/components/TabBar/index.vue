@@ -1,13 +1,20 @@
 <template>
 <div class="navbar">
-  <img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3199241964,979639112&fm=26&gp=0.jpg" class="avatar" alt="avatar" />
-  <router-link class="tab-bar-item" v-for="(tab, index) in tabs" :key="index" :to="tab.router" v-bind:class="{'active':activeRoute == tab.router}">
+  <img v-if="userInfo&&userInfo['USERNAME']" :src="avatar" :title="userName" class="avatar" alt="avatar" />
+  <router-link class="tab-bar-item" v-for="(tab, index) in tabs" :key="index" :to="tab.router" v-bind:class="{ active: activeRoute == tab.router }">
     <li class="icon-wrap">
       <a class="tab-text" href="javascript:;" :title="tab.name">
         <i class="icon iconfont" v-bind:class="tab.icon"></i>
       </a>
     </li>
   </router-link>
+  <div class="tab-bar-item">
+    <div class="icon-wrap">
+      <a class="tab-text" href="javascript:;" title="退出登录">
+        <i class="icon iconfont icon-tuichu" v-on:click="sigout"></i>
+      </a>
+    </div>
+  </div>
   <div class="more">
     <i class="icon iconfont icon-more"></i>
   </div>
@@ -15,25 +22,50 @@
 </template>
 
 <script>
+import {
+  getUserInfo
+} from '@/utils';
 export default {
   name: 'TabBar',
   props: {
     tabs: Array
   },
+  data() {
+    return {
+      userInfo: {},
+      avatar: '',
+      userName:''
+    };
+  },
   computed: {
     activeRoute() {
-      return this.$route.path
+      return this.$route.path;
     }
   },
-}
+  mounted() {
+    getUserInfo().then(result => {
+      this.userInfo = result;
+      if (result) {
+        this.avatar = result['AVATAR'];
+        this.userName = result['USERNAME'];
+      }
+    });
+  },
+  methods: {
+    sigout: function () {
+      window.localStorage.clear();
+      this.$router.push('/signin');
+    }
+  }
+};
 </script>
 
 <style scoped>
 .navbar {
   width: 100%;
   height: 100%;
-  background: #2F2B2A;
-  color: #8C8C8C;
+  background: #2f2b2a;
+  color: #8c8c8c;
   padding: 20px 0;
   position: relative;
   box-sizing: border-box;
@@ -68,7 +100,7 @@ export default {
 }
 
 .tab-bar-item.active .iconfont {
-  color: #09BB07;
+  color: #09bb07;
 }
 
 .navbar .more {

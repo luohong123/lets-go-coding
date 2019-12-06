@@ -11,6 +11,7 @@ import Router from 'vue-router';
 import { getToken } from '@/utils/index';
 Vue.use(Router);
 import Layout from '../layout';
+import { getUserName } from '../utils';
 const router = new Router({
   routes: [
     {
@@ -58,10 +59,10 @@ const router = new Router({
   ]
 });
 
-const whiteList = ['/signin','/signup','/']; // 不重定向白名单
+const whiteList = ['/signin', '/signup', '/']; // 不重定向白名单
 router.beforeEach((to, from, next) => {
   //  如果token没有过期,直接跳转到聊天室界面
-  if (getToken()) {
+  if (getToken() && getUserName() && getUserName() !== 'undefined') {
     if (to.path === '/signin') {
       next({ path: '/' });
     } else {

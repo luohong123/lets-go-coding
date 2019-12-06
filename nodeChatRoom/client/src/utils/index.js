@@ -117,16 +117,14 @@ export function getToken() {
 }
 export function getUserInfo() {
   let userName = window.localStorage.getItem('userName');
-  if (userName && userName !== 'undefined') {
-  return  new Promise((resolve, reject) => {
-      SearchUserInfo(userName).then(response => {
-        if (response.code === '0') {
-          let userInfo = response['data'];
-          return resolve(userInfo);
-        } else {
-          return reject(response);
-        }
-      });
+  return new Promise((resolve, reject) => {
+    SearchUserInfo(userName).then(response => {
+      if (response.code === '0') {
+        let userInfo = response['data'];
+        return resolve(userInfo);
+      } else {
+        return reject(response);
+      }
     });
-  }
+  });
 }

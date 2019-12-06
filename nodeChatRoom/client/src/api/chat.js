@@ -19,7 +19,6 @@ export function messageList(userId) {
     method: 'get',
     params: {
       userId: userId,
-      // userId: userId
     }
   });
 }
@@ -31,7 +30,9 @@ export function getGroupInfoById(groupId) {
   return request({
     url: `/groupinfo/list`,
     method: 'get',
-    params: {}
+    params: {
+      groupId: groupId
+    }
   });
 }
 /**

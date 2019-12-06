@@ -9,6 +9,9 @@ const userInfoAdd = require('../db').userInfoAdd;
 const _getUserInfoByName = require('../db').getUserInfoByName;
 const loginValid = require('../db').loginValid;
 const _groupInfoAdd = require('../db').groupInfoAdd;
+const _getMessageList = require('../db').getMessageList;
+const _getHistoryList = require('../db').getHistoryList;
+const _getGroupInfoById = require('../db').getGroupInfoById;
 function JWT_auth(req, res, next) {
   let authorization = req.headers['X-Token'];
   // 如果存在token
@@ -33,11 +36,24 @@ function JWT_auth(req, res, next) {
   else res.status(401).send('未授权');
 }
 // 注册
-exports.register = function(req, res) {
+exports.register = function (req, res) {
+  let imgUrl =
+    'http://localhost:3000' +
+    '/public/images/' +
+    Math.round(Math.random() * 10) +
+    '.jpeg';
+  console.log(imgUrl, 'imgUrl');
   let person = {
     USERID: common.getGuid(),
+    USERCODE: req.body.userName,
     USERNAME: req.body.userName,
-    PASSWORD: req.body.passWord
+    PASSWORD: req.body.passWord,
+    AVATAR: imgUrl,
+    SEX: '',
+    REMARK: '',
+    ONLINESTATE: '',
+    LASTONLINETIME: '',
+    TS: common.getTimeS()
   };
   console.log(person, 'person');
   _getUserInfoByName(person.USERNAME).then(result => {
@@ -56,7 +72,7 @@ exports.register = function(req, res) {
   });
 };
 // 登录
-exports.login = function(req, res) {
+exports.login = function (req, res) {
   let person = {
     USERNAME: req.body.userName,
     PASSWORD: req.body.passWord
@@ -85,9 +101,8 @@ exports.login = function(req, res) {
     }
   });
 };
-
 // 登出
-exports.signout = function(req, res) {
+exports.signout = function (req, res) {
   req.session.destroy(() => console.log('销毁session，已经推出登录'));
   res.send({
     code: '0',
@@ -95,10 +110,10 @@ exports.signout = function(req, res) {
   });
 };
 // 消息列表
-exports.messageList = function(req, res) {
+exports.messageList = function (req, res) {
   // 根据userId 查询和自己相关的群聊和私聊,加入到消息列表中,并根据群聊或者私聊的最后一条聊天记录时间倒序排序
   let userId = req.query.userId;
-  console.log(userId,'messageList');
+  console.log(userId, 'messageList');
 
   if (userId) {
     // 查询和此用户相关的私聊和群聊消息
@@ -109,15 +124,43 @@ exports.messageList = function(req, res) {
     });
   } else {
     // 游客身份
-    res.status(200).send({
-      code: '0',
-      message: '以游客身份请求成功',
-      data: []
+    _getMessageList(userId).then(result => {
+      res.status(200).send({
+        code: '0',
+        message: '以游客身份请求成功',
+        data: result
+      });
     });
   }
 };
+// 消息详情
+exports.historyList = function (req, res) {
+  let query = {
+    GROUPID: req.query.GROUPID, // 群ID
+    FROMUSERID: req.query.FROMUSERID, // 发送人
+    TOUSERID: req.query.TOUSERID //接收人
+  };
+  console.log(req.query.GROUPID, 'historyList');
+  console.log(query, 'historyList');
+  _getHistoryList(query)
+    .then(result => {
+      console.log(result, '====>historyList');
+      res.status(200).send({
+        code: '0',
+        message: '请求成功',
+        data: result
+      });
+    })
+    .catch(err => {
+      res.status(200).send({
+        code: '-1',
+        message: '请求失败',
+        data: []
+      });
+    });
+};
 // 用户信息
-exports.getUserInfoByName = function(req, res) {
+exports.getUserInfoByName = function (req, res) {
   _getUserInfoByName(req.query.userName).then(result => {
     return res.status(200).send({
       code: '0',
@@ -127,11 +170,31 @@ exports.getUserInfoByName = function(req, res) {
   });
 };
 // 群聊
-exports.getGroupInfo = function(req, res) {};
-exports.groupInfoCreate = function(req, res) {
+exports.groupInfoList = function (req, res) {
+  _getGroupInfoById(req.query.groupId).then(result => {
+    res.status(200).send({
+      code: '0',
+      message: '请求成功',
+      data: result
+    })
+  })
+    .catch(err => {
+      res.status(200).send({
+        code: '-1',
+        message: '请求失败',
+        data: err
+      })
+    })
+};
+exports.groupInfoCreate = function (req, res) {
   let groupInfo = req.body.groupInfo;
   groupInfo.GROUPID = common.getGuid();
   groupInfo.TS = common.getTimeS();
+  groupInfo.AVATAR =
+    'http://localhost:3000' +
+    '/public/images/' +
+    Math.round(Math.random() * 10) +
+    '.jpeg';
   _groupInfoAdd(groupInfo).then(result => {
     if (result.code === '0') {
       res.status(200).send(result);
@@ -139,4 +202,4 @@ exports.groupInfoCreate = function(req, res) {
   });
 };
 // 私聊
-exports.getPrivateInfo = function(req, res) {};
+exports.getPrivateInfo = function (req, res) { };

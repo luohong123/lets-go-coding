@@ -1,31 +1,44 @@
 <template>
-<ul class="list-item">
-  <li class="list-item-every" v-for="item in data" v-bind:key="item.id" v-on:click="changeMessage">
-    <img class="avatar" v-bind:src="item.image" alt="avator">
-    <div class="list-item-right">
-      <div class="list-item-header">
-        <span class="title">{{item.name}}</span>
-        <span class="time">{{item.time}}</span>
+  <ul class="list-item">
+    <li
+      class="list-item-every"
+      v-for="(item, index) in list"
+      v-bind:key="item.ID"
+      v-bind:class="{ active: currentIndex === index }"
+      v-on:click="changeMessage(item, index)"
+    >
+      <img class="avatar" :src="item.AVATAR" alt="avator" />
+      <div class="list-item-right">
+        <div class="list-item-header">
+          <span class="title">{{ item.GROUPNAME }}</span>
+          <span class="time">{{ item.LATEDTIME }}</span>
+        </div>
+        <div class="list-item-content">
+          <span class="text">{{ item.content }}</span>
+          <i class="icon iconfont"></i>
+        </div>
       </div>
-      <div class="list-item-content">
-        <span class="text">{{item.content}}</span>
-        <i class="icon iconfont"></i>
-      </div>
-    </div>
-  </li>
-</ul>
+    </li>
+  </ul>
 </template>
 
 <script>
+import { eventHub } from '@/utils/event-bus';
 export default {
   name: 'ListItem',
-  props: ['data'],
+  props: ['list'],
+  data() {
+    return {
+      currentIndex: 0
+    };
+  },
   methods: {
-    changeMessage: function () {
-
+    changeMessage: function(item, index) {
+      this.currentIndex = index;
+      eventHub.$emit('change', item);
     }
   }
-}
+};
 </script>
 
 <style>
@@ -36,10 +49,14 @@ export default {
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
+  cursor: pointer;
 }
-.list-item-every:hover {
-  background: #DEDCDB;
+
+.list-item-every:hover,
+.list-item-every.active {
+  background: #dedcdb;
 }
+
 .list-item-right {
   flex: 1;
   white-space: nowrap;

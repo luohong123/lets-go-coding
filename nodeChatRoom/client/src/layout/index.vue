@@ -21,7 +21,10 @@
 
 <script>
 import tabbar from '@/components/TabBar';
-import {getToken,getUserInfo} from '@/utils/index';
+import {
+  getToken,
+  getUserInfo
+} from '@/utils/index';
 export default {
   name: 'Layout',
   components: {
@@ -30,7 +33,7 @@ export default {
   data: function () {
     return {
       isLogin: getToken(),
-      userName:getUserInfo.userName,
+      userName: getUserInfo.userName,
       transitionName: 'slideleft',
       tabs: [{
           id: 1,
@@ -76,9 +79,7 @@ export default {
     }
   },
   methods: {
-    sigin: function () {
-      this.$router.push('/signin')
-    }
+   
   }
 }
 </script>
