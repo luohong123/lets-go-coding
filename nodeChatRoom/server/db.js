@@ -14,8 +14,7 @@ const common = require('./core/common');
  */
 exports.userInfoAdd = function(data) {
   // 注册用户后加入默认的fe-free群
-  db.run(
-    `INSERT INTO USERINFO (USERID,USERCODE,USERNAME,PASSWORD,AVATAR,SEX,REMARK,ONLINESTATE,LASTONLINETIME,TS)
+  let sql = `INSERT INTO USERINFO (USERID,USERCODE,USERNAME,PASSWORD,AVATAR,SEX,REMARK,ONLINESTATE,LASTONLINETIME,TS)
   VALUES (
     '${data.USERID}',
     '${data.USERCODE}',
@@ -38,7 +37,9 @@ exports.userInfoAdd = function(data) {
     '',
     '${data.TS}'
     );   
-    `,
+    `;
+  db.run(
+    sql,
     err => {
       if (err) throw err;
       console.log('新增用户成功,加入默认群成功');
@@ -129,8 +130,8 @@ exports.groupInfoAdd = function(data) {
 /**
  * 根据群ID查询群用户
  */
-exports.getGroupUsersById = function(groupInfo) {
-  let query = `SELECT * FROM GROUPUSER WHERE GROUPID = '${groupInfo.GROUPID}'`;
+exports.getGroupUsersById = function(groupId) {
+  let query = `SELECT * FROM GROUPUSER WHERE GROUPID = '${groupId}'`;
   return new Promise((resolve, reject) => {
     db.get(query, (err, row) => {
       if (err) return reject(err);
@@ -226,85 +227,30 @@ exports.getHistoryList = function(data) {
     // 私聊
   }
 };
-// 使用代码创建表,创建用户信息表
-// db.run(
-//   `create table USERINFO (
-//     ${USERINFO.USERID} INT,
-//     ${USERINFO.USERCODE} VARCHAR,
-//     ${USERINFO.USERNAME} VARCHAR,
-//     ${USERINFO.PASSWORD} VARCHAR,
-//     ${USERINFO.SEX} VARCHAR,
-//     ${USERINFO.REMARK} VARCHAR,
-//     ${USERINFO.ONLINESTATE} VARCHAR,
-//     ${USERINFO.LASTONLINETIME} VARCHAR,
-//     ${USERINFO.TS} VARCHAR
-//     )`,
-//   err => {
-//     if (err) throw err;
-//     console.log('用户信息表创建成功');
-//   }
-// );
-// // 创建群信息表
-// db.run(
-//   `create table GROUPINFO (
-//     ${GROUPINFO.GROUPID} INT,
-//     ${GROUPINFO.GROUPNAME} VARCHAR,
-//     ${GROUPINFO.GROUPREMARK} VARCHAR,
-//     ${GROUPINFO.CREATEUSERID} VARCHAR,
-//     ${GROUPINFO.CREATETIME} VARCHAR,
-//     ${GROUPINFO.DISSOLUTIONTIME} VARCHAR,
-//     ${GROUPINFO.GROUPSTATE} VARCHAR
-//     )`,
-//   err => {
-//     if (err) throw err;
-//     console.log('群信息表创建成功');
-//   }
-// );
-// db.run(
-//   `create table GROUPUSER (
-//     ${GROUPUSER.ID} INT,
-//     ${GROUPUSER.GROUPID} VARCHAR,
-//     ${GROUPUSER.USERID} VARCHAR,
-//     ${GROUPUSER.STATE} VARCHAR,
-//     ${GROUPUSER.JOINTIME} VARCHAR,
-//     ${GROUPUSER.QUITTIME} VARCHAR,
-//     ${GROUPUSER.TS} VARCHAR
-//     )`,
-//   err => {
-//     if (err) throw err;
-//     console.log('群用户表创建成功');
-//   }
-// );
-// // 创建历史记录表
-// db.run(
-//   `create table HISTORY (
-//     ${HISTORY.MESSAGEID} INT,
-//     ${HISTORY.GROUPID} VARCHAR,
-//     ${HISTORY.FROMUSERID} VARCHAR,
-//     ${HISTORY.TOUSERID} VARCHAR,
-//     ${HISTORY.CONTENT} VARCHAR,
-//     ${HISTORY.TIME} VARCHAR,
-//     ${HISTORY.TS} VARCHAR
-//     )`,
-//   err => {
-//     if (err) throw err;
-//     console.log('历史记录表创建成功');
-//   }
-// );
-// // 创建离线表
-// db.run(
-//   `create table OFFLINE (
-//     ${OFFLINE.ID} INT,
-//     ${OFFLINE.MESSAGEID} VARCHAR,
-//     ${OFFLINE.GROUPID} VARCHAR,
-//     ${OFFLINE.FROMUSERID} VARCHAR,
-//     ${OFFLINE.CONTENT} VARCHAR,
-//     ${OFFLINE.TIME} VARCHAR,
-//     ${OFFLINE.TOUSERID} VARCHAR,
-//     ${OFFLINE.TS} VARCHAR
-//     )`,
-//   err => {
-//     if (err) throw err;
-//     console.log('离线表创建成功');
-//   }
-// );
+// 新增一条历史消息
+exports.historyCreate = function(data) {
+  let sql = `
+  INSERT INTO USERINFO (USERID,USERCODE,USERNAME,PASSWORD,AVATAR,SEX,REMARK,ONLINESTATE,LASTONLINETIME,TS)
+  VALUES (
+    '${data.USERID}',
+    '${data.USERCODE}',
+    '${data.USERNAME}',
+    '${data.PASSWORD}',
+    '${data.AVATAR}',
+    '${data.SEX}',
+    '${data.REMARK}',
+    '${data.ONLINESTATE}',
+    '${data.LASTONLINETIME}',
+    '${data.TS}'
+    )
+  `;
+  return new Promise((resolve,reject)=>{
+    db.run(sql, (err)=>{
+      if(err) reject(err);
+      resolve({
+        code:'0',
+        message:'成功新增一条消息!',
+      })
+    })
+  })
+}

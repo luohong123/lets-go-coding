@@ -1,40 +1,30 @@
 <template>
-  <div class="chatDetail">
-    <div class="left">
-      <div class="searchbar-wrap" v-if="userName && userName !== 'undefined'">
-        <searchbar />
-        <div class="action-add">
-          <a-icon type="plus-square" v-on:click="groupAddModal" />
-        </div>
-      </div>
-      <listitem :list="list" class="left-list" />
-    </div>
-    <div class="right">
-      <headerbar
-        v-bind:title="group.NAME"
-        v-on:toggle="toggle"
-        ref="headerbar"
-      />
-      <chat class="chat-wrap" :list="historyChats" />
-      <!-- 隐藏区域 -->
-      <div class="more-introduce" v-bind:class="{ show: isOpen }">
-        <managepanel :group="group" :list="groupUsers" />
+<div class="chatDetail">
+  <div class="left">
+    <div class="searchbar-wrap" v-if="userName && userName !== 'undefined'">
+      <searchbar />
+      <div class="action-add">
+        <a-icon type="plus-square" v-on:click="groupAddModal" />
       </div>
     </div>
-    <!-- 创建群 -->
-    <a-modal
-      title="创建群聊"
-      :visible="groupVisible"
-      @ok="groupInfoAdd"
-      :confirmLoading="groupConfirmLoading"
-      @cancel="groupCancel"
-    >
-      <div>
-        <p>请输入群聊名称</p>
-        <a-input v-model="groupName" />
-      </div>
-    </a-modal>
+    <listitem :list="list" class="left-list" />
   </div>
+  <div class="right">
+    <headerbar v-bind:title="groupInfo.GROUPNAME" v-on:toggle="toggle" ref="headerbar" />
+    <chat class="chat-wrap" :list="historyChats" />
+    <!-- 隐藏区域 -->
+    <div class="more-introduce" v-bind:class="{ show: isOpen }">
+      <managepanel :group="groupInfo" :list="groupUsers" />
+    </div>
+  </div>
+  <!-- 创建群 -->
+  <a-modal title="创建群聊" :visible="groupVisible" @ok="groupInfoAdd" :confirmLoading="groupConfirmLoading" @cancel="groupCancel">
+    <div>
+      <p>请输入群聊名称</p>
+      <a-input v-model="groupName" />
+    </div>
+  </a-modal>
+</div>
 </template>
 
 <script>
@@ -44,7 +34,9 @@ import listitem from '@/components/ListItem';
 import managepanel from '@/components/ManagePanel';
 import searchbar from '@/components/SearchBar';
 import io from 'socket.io-client';
-import { eventHub } from '@/utils/event-bus.js';
+import {
+  eventHub
+} from '@/utils/event-bus.js';
 import {
   getGuid,
   getUserName,
@@ -54,13 +46,19 @@ import {
   getUserInfo,
   getToken
 } from '@/utils';
-import { messageList, getGroupInfoById, groupInfoCreate } from '@/api/chat';
-import { historyList } from '@/api/history';
+import {
+  messageList,
+  getGroupInfoById,
+  groupInfoCreate,
+  getGroupUser
+} from '@/api/chat';
+import {
+  historyList
+} from '@/api/history';
 var opts = {
   extraHeaders: {
     'X-Custom-Header-For-My-Project': 'my-secret-access-token',
-    Cookie:
-      'user_session=NI2JlCKF90aE0sJZD9ZzujtdsUqNYSBYxzlTsvdSUe35ZzdtVRGqYFr0kdGxbfc5gUOkR9RGp20GVKza; path=/; expires=Tue, 07-Apr-2015 18:18:08 GMT; secure; HttpOnly'
+    Cookie: 'user_session=NI2JlCKF90aE0sJZD9ZzujtdsUqNYSBYxzlTsvdSUe35ZzdtVRGqYFr0kdGxbfc5gUOkR9RGp20GVKza; path=/; expires=Tue, 07-Apr-2015 18:18:08 GMT; secure; HttpOnly'
   }
 };
 const socket = io('http://localhost:3000/');
@@ -87,12 +85,8 @@ export default {
       userInfo: {},
       list: [],
       chatContent: {},
+      groupInfo:'',
       groupUsers: [], // 群成员
-      group: {
-        NAME: '222',
-        DESCRIBE: ''
-      },
-      groupName: '',
       groupInfo: {},
       groupVisible: false,
       groupConfirmLoading: false,
@@ -124,13 +118,13 @@ export default {
       let icon = data.avatar;
       showDeskTopNotice(title, icon, msg);
     });
-    socket.on('disconnect', function() {
+    socket.on('disconnect', function () {
       console.log('disconnect');
     });
     socket.on('new message', data => {
       this.addChatMessage(data);
     });
-    socket.on('disconnect', function() {
+    socket.on('disconnect', function () {
       console.log('disconnect');
     });
     // 发送消息，并群消息通知所有人
@@ -159,7 +153,7 @@ export default {
       this.userInfo = result;
     });
   },
-  created: function() {
+  created: function () {
     // 点击其他区域关闭面板
     document.addEventListener('click', e => {
       let box = document.querySelector('.toggle');
@@ -182,11 +176,11 @@ export default {
   },
   methods: {
     // 新增群组弹窗
-    groupAddModal: function() {
+    groupAddModal: function () {
       this.groupVisible = true;
     },
     // 创建新群
-    groupInfoAdd: function() {
+    groupInfoAdd: function () {
       this.groupInfo = {
         GROUPID: '',
         GROUPNAME: this.groupName,
@@ -213,17 +207,32 @@ export default {
     // 点击消息列表切换历史记录
     changeHistroy(item) {
       console.log(item, 'item');
+      // 群信息
+      // 历史记录
       historyList(item).then(result => {
         if (result.code === '0') {
           this.historyChats = result['data'];
         }
       });
+      // 群用户
+      if (item.GROUPID !== '') {
+        getGroupInfoById(item.GROUPID).then(result => {
+          if (result.code === '0') {
+            this.groupInfo = result.data;
+          }
+        });
+        getGroupUser(item.GROUPID).then(result => {
+          if (result.code === '0') {
+            this.groupUsers = result.data;
+          }
+        });
+      }
     },
-    getMessageList: function() {
+    getMessageList: function () {
       let userId =
-        this.userInfo && this.userInfo['userId']
-          ? this.userInfo['userId']
-          : undefined;
+        this.userInfo && this.userInfo['userId'] ?
+        this.userInfo['userId'] :
+        undefined;
       messageList(userId)
         .then(response => {
           if (response.code === '0') {
@@ -236,17 +245,17 @@ export default {
           console.errpr(errr);
         });
     },
-    toggle: function() {
+    toggle: function () {
       this.isOpen = !this.isOpen;
       document.body.removeEventListener('click', this.toggle);
     },
-    scrollTop: function() {
+    scrollTop: function () {
       this.chatContent = document.querySelector('.message-list');
       console.log(this.chatContent.scrollHeight, 'scrollHeight');
       this.chatContent.scrollTop = this.chatContent.scrollHeight;
     },
 
-    addParticipantsMessage: function(data) {
+    addParticipantsMessage: function (data) {
       let message = '';
       if (data.numUsers === 1) {
         message += "there's 1 participant";
@@ -255,16 +264,16 @@ export default {
       }
       consoloe.log(message);
     },
-    connectServer: function() {
+    connectServer: function () {
       // 如果没有登录，分配一个游客身份，客户端向服务端发起请求,
-      socket.on('connect', function() {
+      socket.on('connect', function () {
         console.log('连接成功');
       });
     },
     /**
      * 新增一条消息
      */
-    addChatMessage: function(data) {
+    addChatMessage: function (data) {
       if (data) {
         // eventHub被多次触发、次数累加, 尤大回复：https://github.com/vuejs/vue/issues/3399
         // https://github.com/Pasoul/blog/issues/12

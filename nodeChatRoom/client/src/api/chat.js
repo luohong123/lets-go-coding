@@ -28,7 +28,7 @@ export function messageList(userId) {
  */
 export function getGroupInfoById(groupId) {
   return request({
-    url: `/groupinfo/list`,
+    url: `/groupinfo/detail`,
     method: 'get',
     params: {
       groupId: groupId
@@ -41,8 +41,11 @@ export function getGroupInfoById(groupId) {
  */
 export function getGroupUser(groupId) {
   return request({
-    url: `/groupuser/list/${groupId}`,
-    method: 'get'
+    url: `/groupuser/list`,
+    method: 'get',
+    params:{
+      groupId:groupId
+    }
   });
 }
 /**
@@ -62,9 +65,9 @@ export function groupInfoCreate(data) {
  * 新增群成员
  * @param {*} groupId
  */
-export function groupUserAdd(groupId, data) {
+export function groupUserAdd( data) {
   return request({
-    url: `/groupuser/list/${groupId}`,
+    url: `/groupuser/create`,
     method: 'post',
     data
   });

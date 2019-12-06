@@ -16,7 +16,7 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(express.static('public'));
 
-app.get('/public/images/*', function(req, res) {
+app.get('/public/images/*', function (req, res) {
   res.sendFile(__dirname + '/' + req.url);
   console.log('Request for ' + req.url + ' received.');
 });
@@ -31,7 +31,7 @@ socket.socket(io);
 // 静态文件
 // app.use('/static', app.static(path.join(__dirname, 'public')))
 // 允许跨域
-app.all('*', function(req, res, next) {
+app.all('*', function (req, res, next) {
   //设置允许跨域的域名，*代表允许任意域名跨域
   res.header('Access-Control-Allow-Origin', '*');
   //允许的header类型
@@ -42,7 +42,7 @@ app.all('*', function(req, res, next) {
   //让options尝试请求快速结束
   else next();
 });
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   res.send('<h1>Node聊天室</h1>');
 });
 // 登录
@@ -57,7 +57,9 @@ app.get('signout', myroute.signout);
 // 消息列表
 app.get('/messageList', myroute.messageList);
 // 群消息
-app.get('/groupinfo/list', myroute.getGroupInfo);
+app.get('/groupinfo/detail', myroute.groupInfoList);
+// 群用户
+app.get('/groupuser/list', myroute.groupUserList);
 // 私聊
 app.get('/getPrivateInfo', myroute.getPrivateInfo);
 // 创建群聊
@@ -69,6 +71,6 @@ app.get('/history/list', myroute.historyList);
 
 
 // 端口
-http.listen(port, function() {
+http.listen(port, function () {
   console.log(`listening on *:${port}`);
 });
