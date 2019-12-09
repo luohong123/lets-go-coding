@@ -5,7 +5,7 @@ var common = require('../core/common');
 const JWT = require('jsonwebtoken');
 const secret = 'chegi123456';
 const algorithm = 'HS256';
-const userInfoAdd = require('../db').userInfoAdd;
+const _userInfoAdd = require('../db').userInfoAdd;
 const _getUserInfoByName = require('../db').getUserInfoByName;
 const loginValid = require('../db').loginValid;
 const _groupInfoAdd = require('../db').groupInfoAdd;
@@ -65,11 +65,19 @@ exports.register = function (req, res) {
         code: '-1'
       });
     } else {
-      userInfoAdd(person);
-      res.status(200).send({
-        message: '注册成功',
-        code: '0'
-      });
+      _userInfoAdd(person)
+        .then(res => {
+          res.status(200).send({
+            message: res,
+            code: '0'
+          });
+        })
+        .catch(err => {
+          res.status(200).send({
+            code: '0',
+            message: err,
+          });
+        })
     }
   });
 };
@@ -170,7 +178,7 @@ exports.historyCreate = function (req, res) {
     TOUSERID: req.body.TOUSERID,
     CONTENT: req.body.CONTENT,
     TIME: req.body.TIME,
-    TS: req.body.TS
+    TS: common.getTimeS()
   }
   _historyCreate(message).then(result => {
     res.status(200).send(result);

@@ -12,7 +12,7 @@ const common = require('./core/common');
 /**
  * 新增用户
  */
-exports.userInfoAdd = function(data) {
+exports.userInfoAdd = function (data) {
   // 注册用户后加入默认的fe-free群
   let sql = `INSERT INTO USERINFO (USERID,USERCODE,USERNAME,PASSWORD,AVATAR,SEX,REMARK,ONLINESTATE,LASTONLINETIME,TS)
   VALUES (
@@ -30,7 +30,7 @@ exports.userInfoAdd = function(data) {
     INSERT INTO GROUPUSER (ID,GROUPID,USERID,STATE,JOINTIME,QUITTIME,TS)
     VALUES (
     '${common.getGuid()}',
-    'c31091d0-1735-11ea-8132-7fd89f085ca9',
+    '16838200-1a29-11ea-92c5-f3482b4425d5',
     '${data.USERID}',
     '',
     '${data.TS}',
@@ -38,18 +38,17 @@ exports.userInfoAdd = function(data) {
     '${data.TS}'
     );   
     `;
-  db.run(
-    sql,
-    err => {
-      if (err) throw err;
-      console.log('新增用户成功,加入默认群成功');
-    }
-  );
+  return new Promise((resolve, reject) => {
+    db.exec(sql, err => {
+      if (err) return reject(err);
+      return resolve('新增用户成功,加入默认群成功');
+    });
+  })
 };
 /**
  * 根据USERNAME查询用户信息,用于用户名查重、登录验证
  */
-exports.getUserInfoByName = function(userName) {
+exports.getUserInfoByName = function (userName) {
   return new Promise((resolve, reject) => {
     db.get(
       `SELECT * FROM USERINFO WHERE USERNAME = '${userName}';`,
@@ -63,7 +62,7 @@ exports.getUserInfoByName = function(userName) {
 /**
  * 验证用户名和密码是否输入一直
  */
-exports.loginValid = function(userInfo) {
+exports.loginValid = function (userInfo) {
   let query = `SELECT * FROM USERINFO WHERE USERNAME = '${userInfo.USERNAME}' AND PASSWORD = '${userInfo.PASSWORD}'`;
   let promise = new Promise((resolve, reject) => {
     db.get(query, (err, row) => {
@@ -89,7 +88,7 @@ exports.loginValid = function(userInfo) {
 /**
  * 创建新群
  */
-exports.groupInfoAdd = function(data) {
+exports.groupInfoAdd = function (data) {
   console.log(data, 'userInfo');
   // 操作多表: 群用户表新增一条数据 且 群用户表新增创建人
   let sql = `
@@ -130,32 +129,55 @@ exports.groupInfoAdd = function(data) {
 /**
  * 根据群ID查询群用户
  */
-exports.getGroupUsersById = function(groupId) {
-  let query = `SELECT * FROM GROUPUSER WHERE GROUPID = '${groupId}'`;
+exports.getGroupUsersById = function (groupId) {
+  let users = [],
+    sql1 = '',
+    sql2 = 'SELECT * FROM USERINFO WHERE ';
+  sql1 = `SELECT USERID FROM GROUPUSER WHERE GROUPID = '${groupId}'`;
   return new Promise((resolve, reject) => {
-    db.get(query, (err, row) => {
-      if (err) return reject(err);
-      return resolve(row);
-    });
-  });
+    db.serialize(() => {
+      db.all(sql1, (err, rows) => {
+        if (err) return err;
+        console.log(rows, '=========>rows');
+        users = rows;
+        console.log(users, '====>users');
+        let len = users.length;
+        for (let i = 0; i < users.length; i++) {
+          let userId = users[i].USERID;
+          if (i < len - 1) {
+            sql2 += `USERID = '${userId}' OR `
+          } else {
+            sql2 += `USERID = '${userId}'`
+          }
+          console.log(users[i].USERID, 'users[i].USERID====>');
+        }
+        console.log(sql2, '=====>sql2');
+        db.all(sql2, (err, rows) => {
+          if (err) return err;
+          console.log(rows, '======>getGroupUsersById');
+          return resolve(rows);
+        })
+      })
+    })
+  })
 };
 /**
  * 根据群ID查询群信息
  */
-exports.getGroupInfoById = function(groupId) {
+exports.getGroupInfoById = function (groupId) {
   let sql = `
     SELECT * FROM GROUPINFO WHERE GROUPID = '${groupId}'
   `;
   return new Promise((resolve, reject) => {
     db.get(sql, (err, row) => {
       if (err) return reject(err);
-      console.log(row,'getGroupInfoById');
+      console.log(row, 'getGroupInfoById');
       return resolve(row);
     });
   });
 };
 // 获取消息列表
-exports.getMessageList = function(userId) {
+exports.getMessageList = function (userId) {
   // 返回 消息标题(群ID、群名称、私聊时对方的姓名和ID)、历史记录表中最近消息的时间、
   let sql,
     groupsSql,
@@ -178,37 +200,40 @@ exports.getMessageList = function(userId) {
     //   historySql += `SELECT * FROM HISTORY WHERE GROUPID = '${groups[i].GROUPID} ORDER '`
     // }
     // db.all(historySql)
-    db.serialize(function() {
+    db.serialize(function () {
       // 这里执行的命令是串行的
-      db.serialize(function() {
+      db.serialize(function () {
         // 这里执行的命令是串行的
       });
       // 这里执行的命令是串行的
     });
   } else {
     // 游客身份可以浏览一个默认的群
-    sql = `SELECT * FROM GROUPINFO WHERE GROUPID = 'c31091d0-1735-11ea-8132-7fd89f085ca9'`;
+    sql = `SELECT * FROM GROUPINFO WHERE GROUPID = '16838200-1a29-11ea-92c5-f3482b4425d5'`;
     return new Promise((resolve, reject) => {
       db.get(sql, (err, row) => {
         if (err) reject(err);
         console.log(row, 'GROUPINFO-row');
-        messages.push({
-          ID: common.getGuid(),
-          GROUPID: row.GROUPID,
-          GROUPNAME: row.GROUPNAME,
-          AVATAR: row.AVATAR,
-          CONTENT: '', // 预览最近的一条信息
-          LATEDTIME: '',
-          FROMUSERID: '', // 发送人
-          TOUSERID: ''
-        });
+        console.log(row, '======>row');
+        if (row) {
+          messages.push({
+            ID: common.getGuid(),
+            GROUPID: row.GROUPID,
+            GROUPNAME: row.GROUPNAME,
+            AVATAR: row.AVATAR,
+            CONTENT: '', // 预览最近的一条信息
+            LATEDTIME: '',
+            FROMUSERID: '', // 发送人
+            TOUSERID: ''
+          });
+        }
         return resolve(messages);
       });
     });
   }
 };
 // 获取历史消息
-exports.getHistoryList = function(data) {
+exports.getHistoryList = function (data) {
   let sql;
   // 群聊
   if (data.GROUPID) {
@@ -228,29 +253,26 @@ exports.getHistoryList = function(data) {
   }
 };
 // 新增一条历史消息
-exports.historyCreate = function(data) {
+exports.historyCreate = function (data) {
   let sql = `
-  INSERT INTO USERINFO (USERID,USERCODE,USERNAME,PASSWORD,AVATAR,SEX,REMARK,ONLINESTATE,LASTONLINETIME,TS)
+  INSERT INTO HISTORY (MESSAGEID,GROUPID,FROMUSERID,TOUSERID,CONTENT,TIME,TS)
   VALUES (
-    '${data.USERID}',
-    '${data.USERCODE}',
-    '${data.USERNAME}',
-    '${data.PASSWORD}',
-    '${data.AVATAR}',
-    '${data.SEX}',
-    '${data.REMARK}',
-    '${data.ONLINESTATE}',
-    '${data.LASTONLINETIME}',
+    '${data.MESSAGEID}',
+    '${data.GROUPID}',
+    '${data.FROMUSERID}',
+    '${data.TOUSERID}',
+    '${data.CONTENT}',
+    '${data.TIME}',
     '${data.TS}'
     )
   `;
-  return new Promise((resolve,reject)=>{
-    db.run(sql, (err)=>{
-      if(err) reject(err);
+  return new Promise((resolve, reject) => {
+    db.run(sql, err => {
+      if (err) reject(err);
       resolve({
-        code:'0',
-        message:'成功新增一条消息!',
-      })
-    })
-  })
-}
+        code: '0',
+        message: '成功新增一条消息!'
+      });
+    });
+  });
+};

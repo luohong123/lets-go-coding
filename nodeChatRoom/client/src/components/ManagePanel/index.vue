@@ -1,70 +1,83 @@
 <template>
-<div class="ManagePanel">
-  <div class="header">
-    <searchbar v-on:search="search" />
-  </div>
-  <div class="content">
-    <div class="contacts">
-      <div class="contacts-list-wrap">
-        <ul class="contacts-list">
-          <!-- <div class="contacts-list-item action">
+  <div class="ManagePanel">
+    <div class="header">
+      <searchbar v-on:search="search" />
+    </div>
+    <div class="content">
+      <div class="contacts">
+        <div class="contacts-list-wrap">
+          <ul class="contacts-list">
+            <!-- <div class="contacts-list-item action">
             <span class="action-icon"> <i class="icon iconfont icon-jia"></i></span>
             <span class="text">添加</span>
           </div> -->
-          <h5>在线用户 {{list.length}} 人</h5>
-          <li class="contacts-list-item" v-for="item in list" v-bind:key="item.ID">
-            <img v-bind:src="item.AVATAR" alt="">
-            <span class="text">{{item.USERNAME}}</span>
-          </li>
-        </ul>
+            <h5>在线用户 {{ list.length }} 人</h5>
+            <li
+              class="contacts-list-item"
+              v-for="item in list"
+              v-bind:key="item.ID"
+            >
+              <img :src="item.AVATAR" alt="" />
+              <span class="text" :title="item.USERNAME">{{
+                item.USERNAME
+              }}</span>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="manage-setting">
-      <span class="title">群名</span>
-      <div class="setting-item">
-        <span contentEditable="true" class="text">{{group.NAME}}</span>
-        <i class="icon iconfont icon-xiugai"></i>
+      <div class="manage-setting">
+        <span class="title">群名</span>
+        <div class="setting-item">
+          <span contentEditable="true" class="text">{{ group.GROUPNAME }}</span>
+          <i class="icon iconfont icon-xiugai"></i>
+        </div>
       </div>
-    </div>
-    <div class="manage-setting">
-      <span class="title">群公告</span>
-      <div class="setting-item">
-        <span contentEditable="true" class="text">{{group.DESCRIBE}}</span>
-        <i class="icon iconfont icon-xiugai"></i>
+      <div class="manage-setting">
+        <span class="title">群公告</span>
+        <div class="setting-item">
+          <span contentEditable="true" class="text">{{
+            group.GROUPREMARK
+          }}</span>
+          <i class="icon iconfont icon-xiugai"></i>
+        </div>
       </div>
-    </div>
-    <div class="manage-setting">
-      <span class="title">我在本群的昵称</span>
-      <div class="setting-item">
-        <span contentEditable="true" class="text">{{group.MYNAME}}</span>
-        <i class="icon iconfont icon-xiugai"></i>
+      <div class="manage-setting">
+        <span class="title">我在本群的昵称</span>
+        <div class="setting-item">
+          <span contentEditable="true" class="text">{{ userName }}</span>
+          <i class="icon iconfont icon-xiugai"></i>
+        </div>
       </div>
-    </div>
-    <div class="control">
-      <a class="btn-opacity btn-delete" v-on:click="deleteExit">删除并退出</a>
+      <div class="control">
+        <a class="btn-opacity btn-delete" v-on:click="deleteExit">删除并退出</a>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
 import searchbar from '@/components/SearchBar';
+import { getUserName } from '@/utils';
 export default {
   name: 'ManagePanel',
   components: {
     searchbar
   },
   props: ['list', 'group'],
+  data() {
+    return {
+      userName: getUserName()
+    };
+  },
   // 根据群成员的USERID 去查找用户信息表对应的用户在线状态,就可以判断在线人数
   methods: {
-    search: function () {
-
+    search: function() {},
+    // 退出群组
+    deleteExit: function() {
+      this.$emit('exitGroup');
     },
-    deleteExit: function () {
-      this.$emit('delete');
-    }
   }
-}
+};
 </script>
 
 <style>
@@ -147,7 +160,7 @@ export default {
   float: left;
 }
 
-.contacts-list-item:nth-child(4n+0) {
+.contacts-list-item:nth-child(4n + 0) {
   margin-right: 0;
 }
 

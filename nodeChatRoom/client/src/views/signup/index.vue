@@ -54,7 +54,7 @@ export default {
           if (response.code === '0') {
             // 跳转到上一个页面
             this.$router.push('/signin')
-            console.log(response.data.message)
+            console.log(response.message)
           } else if (response.code === '-1') {
             this.tips = response.message
           }
