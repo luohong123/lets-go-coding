@@ -8,71 +8,99 @@
  */
 var path = require('path');
 var fs = require('fs');
-
+var _historyCreate = require('../db').historyCreate;
+var _messageIsRepeat = require('../db').messageIsRepeat;
+var common = require('../core/common');
 // 客户端=》向服务端发送事件 enter进入 leave离开 sendMessage发送消息
 // 系统消息 systemMessage
 // 服务端=》向客户端发送事件 broadMessage广播消息 broadWhoEnter群通知谁进入、群broadWhoLeave
 // Chatroom
 
 var numUsers = 0;
-
-io.on('connection', (socket) => {
-    var addedUser = false;
-
-    // when the client emits 'new message', this listens and executes
-    socket.on('new message', (data) => {
-        // we tell the client to execute 'new message'
-        socket.broadcast.emit('new message', {
-            username: socket.username,
-            message: data
+exports.socketChat = function (io) {
+    io.on('connection', (socket) => {
+        console.log(socket.username, '===socket.username');
+        console.log('连接成功=====》');
+        var addedUser = false;
+        // when the client emits 'new message', this listens and executes
+        socket.on('new message', (data) => {
+            // we tell the client to execute 'new message'
+            let message = {
+                MESSAGEID: common.getGuid(),
+                GROUPID: data.GROUPID,
+                FROMUSERID: data.FROMUSERID,
+                TOUSERID: data.TOUSERID,
+                CONTENT: data.CONTENT,
+                TIME: data.TIME,
+                TS: data.TS, // 去重  
+                AVATAR: data.AVATAR,
+                USERNAME: data.USERNAME
+            }
+            // 新增历史消息
+            _messageIsRepeat(message).then(res => {
+                // 不能重复添加消息
+                if (!res) {
+                    _historyCreate(message).then(result => {
+                        // 通知其他人
+                    })
+                }
+            });
+            socket.broadcast.emit('new message', {
+                username: socket.username,
+                message: message
+            });
+            // 通知自己
+            socket.emit('new message', {
+                username: socket.username,
+                message: message
+            })
         });
-    });
 
-    // when the client emits 'add user', this listens and executes
-    socket.on('add user', (username) => {
-        if (addedUser) return;
+        // when the client emits 'add user', this listens and executes
+        socket.on('add user', (username) => {
+            if (addedUser) return;
 
-        // we store the username in the socket session for this client
-        socket.username = username;
-        ++numUsers;
-        addedUser = true;
-        socket.emit('login', {
-            numUsers: numUsers
-        });
-        // echo globally (all clients) that a person has connected
-        socket.broadcast.emit('user joined', {
-            username: socket.username,
-            numUsers: numUsers
-        });
-    });
-
-    // when the client emits 'typing', we broadcast it to others
-    socket.on('typing', () => {
-        socket.broadcast.emit('typing', {
-            username: socket.username
-        });
-    });
-
-    // when the client emits 'stop typing', we broadcast it to others
-    socket.on('stop typing', () => {
-        socket.broadcast.emit('stop typing', {
-            username: socket.username
-        });
-    });
-
-    // when the user disconnects.. perform this
-    socket.on('disconnect', () => {
-        if (addedUser) {
-            --numUsers;
-
-            // echo globally that this client has left
-            socket.broadcast.emit('user left', {
+            // we store the username in the socket session for this client
+            socket.username = username;
+            ++numUsers;
+            addedUser = true;
+            socket.emit('login', {
+                numUsers: numUsers
+            });
+            // echo globally (all clients) that a person has connected
+            socket.broadcast.emit('user joined', {
                 username: socket.username,
                 numUsers: numUsers
             });
-        }
+        });
+
+        // when the client emits 'typing', we broadcast it to others
+        socket.on('typing', () => {
+            socket.broadcast.emit('typing', {
+                username: socket.username
+            });
+        });
+
+        // when the client emits 'stop typing', we broadcast it to others
+        socket.on('stop typing', () => {
+            socket.broadcast.emit('stop typing', {
+                username: socket.username
+            });
+        });
+
+        // when the user disconnects.. perform this
+        socket.on('disconnect', () => {
+            if (addedUser) {
+                --numUsers;
+                // echo globally that this client has left
+                socket.broadcast.emit('user left', {
+                    username: socket.username,
+                    numUsers: numUsers
+                });
+            }
+        });
     });
-});
+}
 // io.on('connection', (socket) => {
 //     clientUsers.push(socket);
 //     var addedUser = false;

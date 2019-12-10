@@ -48,10 +48,11 @@ exports.userInfoAdd = function (data) {
 /**
  * 根据USERNAME查询用户信息,用于用户名查重、登录验证
  */
-exports.getUserInfoByName = function (userName) {
+exports.getUserInfo = function (data) {
+  let sql = `SELECT * FROM USERINFO WHERE USERNAME = '${data.USERNAME}' OR USERID = '${data.USERID}';`;
   return new Promise((resolve, reject) => {
     db.get(
-      `SELECT * FROM USERINFO WHERE USERNAME = '${userName}';`,
+      sql,
       (err, row) => {
         if (err) return reject(err);
         return resolve(row);
@@ -89,7 +90,6 @@ exports.loginValid = function (userInfo) {
  * 创建新群
  */
 exports.groupInfoAdd = function (data) {
-  console.log(data, 'userInfo');
   // 操作多表: 群用户表新增一条数据 且 群用户表新增创建人
   let sql = `
   INSERT INTO GROUPINFO (GROUPID,GROUPNAME,GROUPREMARK,CREATEUSERID,CREATETIME,DISSOLUTIONTIME,GROUPSTATE,AVATAR,TS)
@@ -138,9 +138,7 @@ exports.getGroupUsersById = function (groupId) {
     db.serialize(() => {
       db.all(sql1, (err, rows) => {
         if (err) return err;
-        console.log(rows, '=========>rows');
         users = rows;
-        console.log(users, '====>users');
         let len = users.length;
         for (let i = 0; i < users.length; i++) {
           let userId = users[i].USERID;
@@ -149,12 +147,9 @@ exports.getGroupUsersById = function (groupId) {
           } else {
             sql2 += `USERID = '${userId}'`
           }
-          console.log(users[i].USERID, 'users[i].USERID====>');
         }
-        console.log(sql2, '=====>sql2');
         db.all(sql2, (err, rows) => {
           if (err) return err;
-          console.log(rows, '======>getGroupUsersById');
           return resolve(rows);
         })
       })
@@ -171,7 +166,6 @@ exports.getGroupInfoById = function (groupId) {
   return new Promise((resolve, reject) => {
     db.get(sql, (err, row) => {
       if (err) return reject(err);
-      console.log(row, 'getGroupInfoById');
       return resolve(row);
     });
   });
@@ -213,8 +207,6 @@ exports.getMessageList = function (userId) {
     return new Promise((resolve, reject) => {
       db.get(sql, (err, row) => {
         if (err) reject(err);
-        console.log(row, 'GROUPINFO-row');
-        console.log(row, '======>row');
         if (row) {
           messages.push({
             ID: common.getGuid(),
@@ -234,38 +226,77 @@ exports.getMessageList = function (userId) {
 };
 // 获取历史消息
 exports.getHistoryList = function (data) {
-  let sql;
+  let sql,
+    messages = [], // 消息集合
+    userSql = 'SELECT * FROM USERINFO WHERE', // 用户信息
+    historys = [];
   // 群聊
   if (data.GROUPID) {
     // 根据群ID查询历史记录表并根据时间降序排序
     sql = `
-      SELECT * FROM HISTORY WHERE GROUPID = '${data.GROUPID}' ORDER BY TS DESC; 
+      SELECT * FROM HISTORY WHERE GROUPID = '${data.GROUPID}' ORDER BY TS ASC;
     `;
     return new Promise((resolve, reject) => {
-      db.get(sql, (err, row) => {
-        if (err) return reject(err);
-        console.log(row, 'history->row');
-        return resolve(row);
-      });
+      db.serialize(() => {
+        db.all(sql, (err, messages) => {
+          if (err) return err;
+          for (let i = 0; i < messages.length; i++) {
+            userSql += (i < messages.length - 1) ? (`
+            USERID = '${messages[i].FROMUSERID}' OR `) : (`USERID = '${messages[i].FROMUSERID}' `);
+          }
+          db.all(userSql, (err, users) => {
+            for (let i = 0; i < messages.length; i++) {
+              if (err) return reject(err);
+              let userInfo = users.filter((item) => messages[i].FROMUSERID === item.USERID);
+              console.log(userInfo, '===>userInfo');
+              historys.push({
+                MESSAGEID: messages[i].MESSAGEID,
+                GROUPID: messages[i].GROUPID,
+                FROMUSERID: messages[i].FROMUSERID,
+                TOUSERID: messages[i].TOUSERID,
+                CONTENT: messages[i].CONTENT,
+                TIME: messages[i].TIME,
+                TS: messages[i].TS,
+                AVATAR: userInfo[0].AVATAR,
+                USERNAME: userInfo[0].USERNAME
+              });
+            }
+            return resolve(historys);
+          })
+        });
+      })
     });
   } else {
     // 私聊
   }
 };
+// 判断消息是否已存在
+exports.messageIsRepeat = function (data) {
+  let sql = `
+            SELECT * FROM HISTORY WHERE TS = '${data.TS}';
+            `
+  return new Promise((resolve, reject) => {
+    db.get(sql, (err, row) => {
+      if (err) return reject(err);
+      console.log(row, 'history message is repeat');
+      return resolve(row);
+    })
+  })
+}
 // 新增一条历史消息
 exports.historyCreate = function (data) {
   let sql = `
-  INSERT INTO HISTORY (MESSAGEID,GROUPID,FROMUSERID,TOUSERID,CONTENT,TIME,TS)
-  VALUES (
-    '${data.MESSAGEID}',
-    '${data.GROUPID}',
-    '${data.FROMUSERID}',
-    '${data.TOUSERID}',
-    '${data.CONTENT}',
-    '${data.TIME}',
-    '${data.TS}'
-    )
-  `;
+            INSERT INTO HISTORY(MESSAGEID, GROUPID, FROMUSERID, TOUSERID, CONTENT, TIME, TS)
+            VALUES(
+              '${data.MESSAGEID}',
+              '${data.GROUPID}',
+              '${data.FROMUSERID}',
+              '${data.TOUSERID}',
+              '${data.CONTENT}',
+              '${data.TIME}',
+              '${data.TS}'
+            )
+              `;
   return new Promise((resolve, reject) => {
     db.run(sql, err => {
       if (err) reject(err);

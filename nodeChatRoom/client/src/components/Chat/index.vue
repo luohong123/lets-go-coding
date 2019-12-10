@@ -7,68 +7,67 @@
  * @email: 3300536651@qq.com
  -->
 <template>
-<div class="chat">
-  <ul class="message-list">
-    <li v-for="item in list" v-bind:key="item.id" class="chat-item">
-      <p class="time-show"><span class="time">{{ item.time }}</span></p>
-      <div class="chat-conversation them" v-if="item.userName !== userName">
-        <img v-bind:src="item.avatar" class="avatar" alt />
-        <div class="chat-message">
-          <span class="chat-user">{{ item.userName }}</span>
-          <div class="chat-popover">{{ item.content }}</div>
+  <div class="chat">
+    <ul class="message-list">
+      <li v-for="item in list" v-bind:key="item.MESSAGEID" class="chat-item">
+        <p class="time-show">
+          <span class="time">{{ item.TIME }}</span>
+        </p>
+        <div class="chat-conversation them" v-if="item.USERNAME !== userName">
+          <img :src="item.AVATAR" class="avatar" alt />
+          <div class="chat-message">
+            <span class="chat-user">{{ item.USERNAME }}</span>
+            <div class="chat-popover">{{ item.CONTENT }}</div>
+          </div>
         </div>
-      </div>
-      <div class="chat-conversation me" v-if="item.userName === userName">
-        <div class="chat-message">
-          <!-- <span class="chat-user">{{ item.userName }}</span> -->
-          <div class="chat-popover">{{ item.content }}</div>
+        <div class="chat-conversation me" v-if="item.USERNAME === userName">
+          <div class="chat-message">
+            <div class="chat-popover">{{ item.CONTENT }}</div>
+          </div>
+          <img :src="item.AVATAR" class="avatar" alt />
         </div>
-        <img v-bind:src="item.avatar" class="avatar" alt />
+      </li>
+    </ul>
+    <div v-if="userName && userName !== 'undefined'" class="sendMessage">
+      <div class="message-toolbar">
+        <div class="message-toolbar-left"></div>
+        <div class="message-toolbar-left"></div>
       </div>
-    </li>
-  </ul>
-  <div v-if="userName&&userName!=='undefined'" class="sendMessage">
-    <div class="message-toolbar">
-      <div class="message-toolbar-left">
-
-      </div>
-      <div class="message-toolbar-left">
-
+      <textarea
+        class="message-control"
+        v-model="message"
+        rows="3"
+        cols="20"
+        v-on:keyup.enter="sendMessage"
+      >
+      </textarea>
+      <div class="send-control">
+        <div class="popover" v-if="showTips">
+          <div class="tips">{{ tips }}</div>
+        </div>
+        <button type="submit" class="btn btn-primary" v-on:click="sendMessage">
+          发送(S)
+        </button>
       </div>
     </div>
-    <textarea class="message-control" v-model="message" rows="3" cols="20" v-on:keyup.enter="sendMessage">
-    </textarea>
-    <div class="send-control">
-      <div class="popover" v-if="showTips">
-        <div class="tips">{{tips}}</div>
-      </div>
-      <button type="submit" class="btn btn-primary" v-on:click="sendMessage">发送(S)</button>
+    <div v-if="!userName || userName === 'undefined'" class="dontSend">
+      您现在是游客身份,请<a class="link" v-on:click="sigin">登录</a
+      >后一起参与讨论吧！
     </div>
   </div>
-  <div v-if="!userName||userName==='undefined'" class="dontSend">
-    您现在是游客身份,请<a class="link" v-on:click="sigin">登录</a>后一起参与讨论吧！
-  </div>
-</div>
 </template>
 
 <script>
-import {
-  getUserName,
-  getGuid,
-  debounce,
-  getUserInfo
-} from "@/utils";
-import {
-  eventHub
-} from '@/utils/event-bus.js';
+import { getUserName, getGuid, debounce, getUserInfoByName } from '@/utils';
+import { eventHub } from '@/utils/event-bus.js';
 export default {
-  name: "Chat",
+  name: 'Chat',
   props: {
     list: Array
   },
   data() {
     return {
-      userInfo: getUserInfo(),
+      userInfo: getUserInfoByName(),
       userName: getUserName(),
       chatContent: {},
       message: '',
@@ -76,19 +75,17 @@ export default {
       showTips: false
     };
   },
-  mounted() {
-
-  },
+  mounted() {},
   created() {
     setTimeout(() => {
       this.scrollTop();
     }, 50);
   },
   methods: {
-    sigin: function () {
-      this.$router.push('/signin')
+    sigin: function() {
+      this.$router.push('/signin');
     },
-    sendMessage: function () {
+    sendMessage: function() {
       console.log(this.message == true, 'this.message ===');
       if (this.message.match(/^\s*$/)) {
         this.showTips = true;
@@ -98,7 +95,7 @@ export default {
       } else {
         eventHub.$emit('send', {
           message: this.message
-        })
+        });
         // 解决滚动条不能完全滚到底部的问题
         setTimeout(() => {
           this.scrollTop();
@@ -107,8 +104,8 @@ export default {
         }, 50);
       }
     },
-    scrollTop: function () {
-      this.chatContent = document.querySelector(".message-list");
+    scrollTop: function() {
+      this.chatContent = document.querySelector('.message-list');
       this.chatContent.scrollTop = this.chatContent.scrollHeight;
     }
   }
@@ -148,7 +145,7 @@ export default {
 }
 
 .chat-item .time {
-  background: #DADADA;
+  background: #dadada;
   color: #fff;
   font-size: 12px;
   text-align: center;
@@ -165,12 +162,10 @@ export default {
 
 .me .avatar {
   margin-left: 10px;
-
 }
 
 .them .avatar {
   margin-right: 10px;
-
 }
 
 .chat-conversation {
@@ -217,9 +212,9 @@ export default {
 }
 
 .me .chat-popover {
-  background: #9EEA6A;
+  background: #9eea6a;
   color: #fff;
-  border: 0.5px solid #9EEA6A;
+  border: 0.5px solid #9eea6a;
 }
 
 .me .chat-popover::after {
@@ -228,7 +223,7 @@ export default {
   height: 0;
   display: block;
   border-top: 8px solid transparent;
-  border-left: 8px solid #9EEA6A;
+  border-left: 8px solid #9eea6a;
   border-bottom: 8px solid transparent;
   position: absolute;
   right: -7px;
@@ -236,11 +231,11 @@ export default {
 }
 
 .me .chat-popover:hover {
-  background: #8BDB56;
+  background: #8bdb56;
 }
 
 .me .chat-popover:hover::after {
-  border-left: 8px solid #8BDB56;
+  border-left: 8px solid #8bdb56;
 }
 
 .them .chat-popover::before {
@@ -259,11 +254,11 @@ export default {
 }
 
 .them .chat-popover:hover {
-  background: #F6F6F6;
+  background: #f6f6f6;
 }
 
 .them .chat-popover:hover::before {
-  background: #F6F6F6;
+  background: #f6f6f6;
 }
 
 /* 发送消息 */
@@ -271,14 +266,15 @@ export default {
   width: 100%;
   height: 150px;
   padding: 10px 30px;
-  border-top: 1px solid #ECECEC;
+  border-top: 1px solid #ececec;
   background: #fff;
   box-sizing: border-box;
   /* display: flex; */
   /* margin-top: 20px; */
 }
 
-.message-toolbar {}
+.message-toolbar {
+}
 
 .message-control {
   border: 0;
@@ -299,9 +295,9 @@ export default {
 }
 
 .send-control .btn {
-  background: #F5F5F5;
+  background: #f5f5f5;
   color: #606060;
-  border: 1px solid #E5E5E5;
+  border: 1px solid #e5e5e5;
   margin-right: 30px;
   font-weight: normal;
   font-size: 12px;
@@ -309,9 +305,9 @@ export default {
 }
 
 .send-control .btn:hover {
-  background: #09BB07;
+  background: #09bb07;
   color: #fff;
-  border: 1px solid #09BB07;
+  border: 1px solid #09bb07;
 }
 
 .popover {

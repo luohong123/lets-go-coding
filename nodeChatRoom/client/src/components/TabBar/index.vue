@@ -23,7 +23,7 @@
 
 <script>
 import {
-  getUserInfo
+  getUserInfoByName
 } from '@/utils';
 export default {
   name: 'TabBar',
@@ -43,7 +43,7 @@ export default {
     }
   },
   mounted() {
-    getUserInfo().then(result => {
+    getUserInfoByName().then(result => {
       this.userInfo = result;
       if (result) {
         this.avatar = result['AVATAR'];

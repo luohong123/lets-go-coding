@@ -6,7 +6,7 @@ const JWT = require('jsonwebtoken');
 const secret = 'chegi123456';
 const algorithm = 'HS256';
 const _userInfoAdd = require('../db').userInfoAdd;
-const _getUserInfoByName = require('../db').getUserInfoByName;
+const _getUserInfo = require('../db').getUserInfo;
 const loginValid = require('../db').loginValid;
 const _groupInfoAdd = require('../db').groupInfoAdd;
 const _getMessageList = require('../db').getMessageList;
@@ -44,7 +44,6 @@ exports.register = function (req, res) {
     '/public/images/' +
     Math.round(Math.random() * 10) +
     '.jpeg';
-  console.log(imgUrl, 'imgUrl');
   let person = {
     USERID: common.getGuid(),
     USERCODE: req.body.userName,
@@ -57,8 +56,7 @@ exports.register = function (req, res) {
     LASTONLINETIME: '',
     TS: common.getTimeS()
   };
-  console.log(person, 'person');
-  _getUserInfoByName(person.USERNAME).then(result => {
+  _getUserInfo(person).then(result => {
     if (result && person.USERNAME === result.USERNAME) {
       return res.send({
         message: '用户名已被占用, 请重新注册',
@@ -123,7 +121,6 @@ exports.signout = function (req, res) {
 exports.messageList = function (req, res) {
   // 根据userId 查询和自己相关的群聊和私聊,加入到消息列表中,并根据群聊或者私聊的最后一条聊天记录时间倒序排序
   let userId = req.query.userId;
-  console.log(userId, 'messageList');
 
   if (userId) {
     // 查询和此用户相关的私聊和群聊消息
@@ -150,11 +147,8 @@ exports.historyList = function (req, res) {
     FROMUSERID: req.query.FROMUSERID, // 发送人
     TOUSERID: req.query.TOUSERID //接收人
   };
-  console.log(req.query.GROUPID, 'historyList');
-  console.log(query, 'historyList');
   _getHistoryList(query)
     .then(result => {
-      console.log(result, '====>historyList');
       res.status(200).send({
         code: '0',
         message: '请求成功',
@@ -169,24 +163,14 @@ exports.historyList = function (req, res) {
       });
     });
 };
-// 新增历史消息
-exports.historyCreate = function (req, res) {
-  let message = {
-    MESSAGEID: common.getGuid(),
-    GROUPID: req.body.GROUPID,
-    FROMUSERID: req.body.FROMUSERID,
-    TOUSERID: req.body.TOUSERID,
-    CONTENT: req.body.CONTENT,
-    TIME: req.body.TIME,
-    TS: common.getTimeS()
-  }
-  _historyCreate(message).then(result => {
-    res.status(200).send(result);
-  })
-}
+
 // 用户信息
-exports.getUserInfoByName = function (req, res) {
-  _getUserInfoByName(req.query.userName).then(result => {
+exports.getUserInfo = function (req, res) {
+  let person = {
+    USERNAME: req.query.USERNAME,
+    USERID: req.query.USERID
+  }
+  _getUserInfo(person).then(result => {
     return res.status(200).send({
       code: '0',
       message: '请求成功',
@@ -244,5 +228,4 @@ exports.groupInfoCreate = function (req, res) {
     }
   });
 };
-// 私聊
-exports.getPrivateInfo = function (req, res) { };
+

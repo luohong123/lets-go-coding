@@ -6,7 +6,8 @@ function resolve(dir) {
 // 默认端口为 8080
 const port = 8080;
 // const port = process.env.port || 8080;
-const isDev = process.env.NODE_ENV;
+const isDev = process.env.NODE_ENV === 'development';
+console.log(isDev, '====isDev');
 const VUE_APP_BASE_API = '/dev-api';
 const name = 'nodeChatRoom';
 module.exports = {
@@ -17,11 +18,11 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: isDev === 'production' ? '/nodeChatRoom/' : '/',
+  publicPath: !isDev ? '/nodeChatRoom/' : '/',
   outputDir: 'docs',
   assetsDir: 'static',
-  lintOnSave: isDev === 'development',
-  productionSourceMap: isDev === 'development', // 开发环境打开源码模式
+  lintOnSave: isDev,
+  productionSourceMap: isDev, // 开发环境打开源码模式
   devServer: {
     port: port,
     open: true,
@@ -34,7 +35,7 @@ module.exports = {
       // change xxx-api/login => mock/login
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [VUE_APP_BASE_API]: {
-        target: `http://192.168.0.111:3000`,
+        target: isDev ? 'http://localhost:3000' : 'http://39.96.19.170:3000',
         changeOrigin: true,
         pathRewrite: {
           ['^' + VUE_APP_BASE_API]: ''
@@ -58,7 +59,7 @@ module.exports = {
     config.name = name;
     config.resolve.alias = {
       '@': resolve('src')
-    }
+    };
   },
   chainWebpack(config) {
     config.plugins.delete('preload'); // TODO: need test

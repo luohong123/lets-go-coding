@@ -26,8 +26,8 @@ var myroute = require('./routes');
 var port = 3000;
 var io = require('socket.io')(http);
 // socket
-var socket = require('./core/socket.js');
-socket.socket(io);
+var socketChat = require('./core/socket.js').socketChat;
+socketChat(io);
 // 静态文件
 // app.use('/static', app.static(path.join(__dirname, 'public')))
 // 允许跨域
@@ -60,17 +60,15 @@ app.get('/messageList', myroute.messageList);
 app.get('/groupinfo/detail', myroute.groupInfoList);
 // 群用户
 app.get('/groupuser/list', myroute.groupUserList);
-// 私聊
-app.get('/getPrivateInfo', myroute.getPrivateInfo);
 // 创建群聊
 app.post('/groupInfo/create', myroute.groupInfoCreate);
 // 获取用户信息
-app.get('/getUserInfo', myroute.getUserInfoByName);
+app.get('/userinfo/list', myroute.getUserInfo);
 // 根据ID获取历史消息
 app.get('/history/list', myroute.historyList);
 
 
 // 端口
-http.listen(port, function () {
-  console.log(`listening on *:${port}`);
+http.listen(port,hostname, function () {
+  console.log(`Server running at http://${hostname}:${port}/`);
 });

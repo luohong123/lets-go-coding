@@ -66,3 +66,7 @@ server 服务端代码
 
 ### sqlite参考文章
 https://blog.csdn.net/qq_38081746/article/details/90673681
+
+### 部署
+
+部署Node.js项目（CentOS） https://help.aliyun.com/document_detail/50775.html

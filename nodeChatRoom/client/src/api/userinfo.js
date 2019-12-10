@@ -21,12 +21,13 @@ export function register(data) {
     data
   });
 }
-export function SearchUserInfo(userName) {
+export function searchUserInfo(person) {
   return request({
-    url: '/getUserInfo',
-    method:'get',
+    url: '/userinfo/list',
+    method: 'get',
     params: {
-      userName: userName
+      USERID: person.USERID,
+      USERNAME: person.USERNAME
     }
-  });
+  })
 }

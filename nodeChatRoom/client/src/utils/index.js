@@ -6,12 +6,18 @@
  * @Description:
  * @email: 3300536651@qq.com
  */
-import { SearchUserInfo } from '@/api/userinfo';
+import { searchUserInfo } from '@/api/userinfo';
 /**
  * 获取guid
  */
 export function getGuid() {
   return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+}
+/**
+ * 获取当前时间戳
+ */
+export function getTimeS() {
+  return new Date().valueOf(); //获取当前毫秒的时间戳，准确！
 }
 
 /**
@@ -55,7 +61,7 @@ export function getUserName() {
  */
 export function debounce(fn, wait) {
   var timeout = null;
-  return function() {
+  return function () {
     if (timeout !== null) clearTimeout(timeout);
     timeout = setTimeout(fn, wait);
   };
@@ -115,10 +121,35 @@ export function getToken() {
   console.log(window.localStorage.getItem('token'), 'token');
   return window.localStorage.getItem('token');
 }
-export function getUserInfo() {
+/**
+ * 根据userName查询用户信息
+ */
+export function getUserInfoByName() {
   let userName = window.localStorage.getItem('userName');
   return new Promise((resolve, reject) => {
-    SearchUserInfo(userName).then(response => {
+    searchUserInfo({
+      USERNAME: userName,
+      USERID: ''
+    }).then(response => {
+      if (response.code === '0') {
+        let userInfo = response['data'];
+        return resolve(userInfo);
+      } else {
+        return reject(response);
+      }
+    });
+  });
+}
+/**
+ * 根据id查询用户信息
+ * @param {*} userId 
+ */
+export function getUserInfoById(userId) {
+  return new Promise((resolve, reject) => {
+    searchUserInfo({
+      USERNAME: '',
+      USERID: userId
+    }).then(response => {
       if (response.code === '0') {
         let userInfo = response['data'];
         return resolve(userInfo);

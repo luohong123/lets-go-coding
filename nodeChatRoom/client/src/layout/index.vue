@@ -23,7 +23,7 @@
 import tabbar from '@/components/TabBar';
 import {
   getToken,
-  getUserInfo
+  getUserInfoByName
 } from '@/utils/index';
 export default {
   name: 'Layout',
@@ -33,7 +33,7 @@ export default {
   data: function () {
     return {
       isLogin: getToken(),
-      userName: getUserInfo.userName,
+      userName: getUserInfoByName().userName,
       transitionName: 'slideleft',
       tabs: [{
           id: 1,
