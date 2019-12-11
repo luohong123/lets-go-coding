@@ -61,6 +61,23 @@ exports.getUserInfo = function (data) {
   });
 };
 /**
+ * 修改用户信息
+ */
+exports.onlineStateUpdate = function (userInfo) {
+  let sql = `
+    UPDATE USERINFO SET ONLINESTATE = '${userInfo.ONLINESTATE}' WHERE USERNAME = '${userInfo.USERNAME}';
+  `;
+  console.log(sql, 'userInfo==>sql');
+  db.run(sql, (err) => {
+    if (err) return err;
+    if (userInfo.ONLINESTATE === 'Y') {
+      console.log('设置为在线状态=>数据修改成功');
+    } else {
+      console.log('设置为离线状态=>数据修改成功');
+    }
+  });
+};
+/**
  * 验证用户名和密码是否输入一直
  */
 exports.loginValid = function (userInfo) {
@@ -126,6 +143,17 @@ exports.groupInfoAdd = function (data) {
     });
   });
 };
+exports.groupInfoList = function () {
+  let sql = `
+  SELECT * FROM GROUPINFO;
+  `;
+  return new Promise((resolve, reject) => {
+    db.all(sql, (err, rows) => {
+      if (err) return reject(err);
+      return resolve(rows);
+    });
+  });
+}
 /**
  * 根据群ID查询群用户
  */
@@ -248,7 +276,6 @@ exports.getHistoryList = function (data) {
             for (let i = 0; i < messages.length; i++) {
               if (err) return reject(err);
               let userInfo = users.filter((item) => messages[i].FROMUSERID === item.USERID);
-              console.log(userInfo, '===>userInfo');
               historys.push({
                 MESSAGEID: messages[i].MESSAGEID,
                 GROUPID: messages[i].GROUPID,

@@ -23,6 +23,23 @@ export function messageList(userId) {
   });
 }
 /**
+ * 发起新的聊天
+ * @param {*} data 
+ */
+export function messageCreate(data) {
+  return request({
+    url:'/message/create',
+    method:'post',
+    data
+  })
+}
+export function getGroupInfoList() {
+  return request({
+    url:'/groupinfo/list',
+    method:'get',
+  })
+}
+/**
  * 根据 ID 获取群消息
  * @param {*} groupId
  */

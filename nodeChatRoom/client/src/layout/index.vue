@@ -44,7 +44,7 @@ export default {
         },
         {
           id: 2,
-          name: '通讯录',
+          name: '群组',
           icon: 'icon-tongxunlu',
           activeIcon: 'message-active',
           router: '/addresslist'

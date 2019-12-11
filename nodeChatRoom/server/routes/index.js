@@ -14,6 +14,7 @@ const _getHistoryList = require('../db').getHistoryList;
 const _getGroupInfoById = require('../db').getGroupInfoById;
 const _getGroupUsersById = require('../db').getGroupUsersById;
 const _historyCreate = require('../db').historyCreate;
+const _groupInfoList = require('../db').groupInfoList;
 function JWT_auth(req, res, next) {
   let authorization = req.headers['X-Token'];
   // 如果存在token
@@ -140,6 +141,11 @@ exports.messageList = function (req, res) {
     });
   }
 };
+// 消息列表-发起新的聊天
+exports.messageCreate = function (req, res) {
+  let
+};
+
 // 消息详情
 exports.historyList = function (req, res) {
   let query = {
@@ -178,8 +184,20 @@ exports.getUserInfo = function (req, res) {
     });
   });
 };
-// 群聊
-exports.groupInfoList = function (req, res) {
+//群信息-列表集合
+exports.groupinfoList = function (req, res) {
+  _groupInfoList().then(result => {
+    res.status(200).send({
+      code: '0',
+      message: '请求成功',
+      data: {
+        groups: result
+      }
+    })
+  })
+}
+// 群聊-详情
+exports.groupInfoDetail = function (req, res) {
   _getGroupInfoById(req.query.groupId).then(result => {
     res.status(200).send({
       code: '0',

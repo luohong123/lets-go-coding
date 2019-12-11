@@ -10,7 +10,8 @@
 export default {
   name: "building",
   data() {
-    return {
+    return { 
+      
      
     };
   }

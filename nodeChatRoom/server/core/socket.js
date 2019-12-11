@@ -11,18 +11,21 @@ var fs = require('fs');
 var _historyCreate = require('../db').historyCreate;
 var _messageIsRepeat = require('../db').messageIsRepeat;
 var common = require('../core/common');
+var _onlineStateUpdate = require('../db').onlineStateUpdate;
 // 客户端=》向服务端发送事件 enter进入 leave离开 sendMessage发送消息
 // 系统消息 systemMessage
 // 服务端=》向客户端发送事件 broadMessage广播消息 broadWhoEnter群通知谁进入、群broadWhoLeave
 // Chatroom
 
-var numUsers = 0;
+var userInfo = {
+
+};
 exports.socketChat = function (io) {
     io.on('connection', (socket) => {
-        console.log(socket.username, '===socket.username');
         console.log('连接成功=====》');
-        var addedUser = false;
-        // when the client emits 'new message', this listens and executes
+        // 用户是否进入
+        let addedUser = false;
+        // 当客户端发出 'new message' 时，它将侦听并执行
         socket.on('new message', (data) => {
             // we tell the client to execute 'new message'
             let message = {
@@ -56,22 +59,24 @@ exports.socketChat = function (io) {
             })
         });
 
-        // when the client emits 'add user', this listens and executes
+        // 当客户端发出 'add user'时，它将侦听并执行
         socket.on('add user', (username) => {
+            console.log(addedUser,'addedUser');
             if (addedUser) return;
-
             // we store the username in the socket session for this client
             socket.username = username;
-            ++numUsers;
+            console.log(socket.username, '===socket.username');
             addedUser = true;
-            socket.emit('login', {
-                numUsers: numUsers
-            });
-            // echo globally (all clients) that a person has connected
-            socket.broadcast.emit('user joined', {
-                username: socket.username,
-                numUsers: numUsers
-            });
+            // 修改用户在线状态
+            userInfo = {
+                USERNAME: socket.username,
+                ONLINESTATE: 'Y'
+            };
+            _onlineStateUpdate(userInfo);
+            // // echo globally (all clients) that a person has connected
+            // socket.broadcast.emit('user joined', {
+            //     username: socket.username,
+            // });
         });
 
         // when the client emits 'typing', we broadcast it to others
@@ -87,104 +92,33 @@ exports.socketChat = function (io) {
                 username: socket.username
             });
         });
-
-        // when the user disconnects.. perform this
+        // 当用户退出登录时,设置为不在线
+        socket.on('user leave', (username) => {
+            // 修改用户在线状态
+            userInfo = {
+                USERNAME: username,
+                ONLINESTATE: 'N'
+            };
+            _onlineStateUpdate(userInfo);
+            // 设置用户离开
+            addedUser = false;
+        })
+        // 当用户断开连接时,执行此操作
         socket.on('disconnect', () => {
+            console.log('disconnect', '已经断开连接=========>');
             if (addedUser) {
-                --numUsers;
                 // echo globally that this client has left
-                socket.broadcast.emit('user left', {
+                console.log('107行代码==')
+                socket.broadcast.emit('user leave', {
                     username: socket.username,
-                    numUsers: numUsers
                 });
+                // 修改用户在线状态,当用户断开连接时,修改为不在线
+                userInfo = {
+                    USERNAME: socket.username,
+                    ONLINESTATE: 'N'
+                };
+                _onlineStateUpdate(userInfo);
             }
         });
     });
 }
-// io.on('connection', (socket) => {
-//     clientUsers.push(socket);
-//     var addedUser = false;
-//     console.log('有新用户连接');
-//     // 服务端接收来自客户端的消息
-//     systemMessage = {
-//         newUser: '',
-//         leaveUser: '',
-//         online: 0
-//     };
-//     socket.on('addUser', username => {
-//         if (addedUser) return;
-//         // we store the username in the socket session for this client
-//         socket.username = username;
-//         ++numUsers;
-//         addedUser = true;
-//         socket.emit('login', {
-//             numUsers: numUsers
-//         });
-//         // echo globally (all clients) that a person has connected
-//         socket.broadcast.emit('userJoined', {
-//             username: socket.username,
-//             numUsers: numUsers
-//         });
-//     });
-//     // 退出登录，广播谁离开了房间
-//     socket.on('leave', (name) => {
-//         let index;
-//         for (let i = 0; i < clientUsers.length; i++) {
-//             console.log(clientUsers, 'users[i]');
-//             if (clientUsers[i] && clientUsers[i].indexOf(name) > -1) {
-//                 index = i;
-//                 clientUsers.splice(index, 1);
-//             }
-//         }
-//         // 通知其他人
-//         systemMessage.leaveUser = name;
-//         io.emit('system', systemMessage);
-//     });
-//     // 接收消息后，发送群消息
-//     socket.on('new message', msg => {
-//         let chatsone = msg;
-//         Object.defineProperty(chatsone, 'id', {
-//             enumerable: true,
-//             configurable: true,
-//             writable: true,
-//             value: getGuid()
-//         });
-//         fs.readFile(path.resolve(__dirname, './chats.json'), function (err, data) {
-//             if (err) {
-//                 return console.log(err);
-//             }
-//             let chats = JSON.parse(data);
-//             chats.data.push(chatsone);
-//             // 新增一条消息
-//             fs.writeFile(
-//                 path.resolve(__dirname, './chats.json'),
-//                 JSON.stringify(chats),
-//                 function (err) {
-//                     if (err) {
-//                         return console.log(err);
-//                     }
-//                     console.log(msg, 'msg');
-//                     socket.emit('login', {
-//                         numUsers: numUsers
-//                     });
-//                     socket.emit('new message', msg);
-//                     // 所有的socket连接都会被保存在某个变量（列表）中（具体是什么需要你自己查），你可以定时轮训这个列表，
-//                     // 然后向具体的连接发送数据。
-//                     // 如果不想重复发送的话，你可以维护一个缓存列表，记录是否已经发送过，发现已经发送就不再发了
-//                     // console.log(clientUsers, '已连接的users');
-//                 }
-//             );
-//         });
-//     });
-//     // 客户端重复累加接收 有两个解决方案：1. 根据客户机的原始地址进行路由 2.基于cookie路由客户端 https://socket.io/docs/using-multiple-nodes/
-//     socket.on('disconnect', function () {
-//         if (addedUser) {
-//             --numUsers;
-//             // 在全局范围内回显此客户端已离开
-//             socket.broadcast.emit('userLeft', {
-//                 username: socket.username,
-//                 numUsers: numUsers
-//             });
-//         }
-//     });
-// });

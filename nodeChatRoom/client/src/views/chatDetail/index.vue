@@ -131,11 +131,17 @@ export default {
         this.scrollTop();
       }, 50);
     });
+    // 用户加入连接
+    if (this.userName !== '' && this.userName !== 'undefined') {
+      this.$socket.emit('add user', this.userName);
+    }
     // 发送群消息
     eventHub.$on('send', this.addChatMessage);
     eventHub.$on('toggle', this.toggle);
     // 切换历史记录消息
     eventHub.$on('change', this.changeHistroy);
+    // 发起聊天
+    eventHub.$on('confirmchat', this.startChat)
     // 初始化消息列表
     this.getMessageList();
     // 获取用户信息
@@ -242,21 +248,11 @@ export default {
       this.chatContent = document.querySelector('.message-list');
       this.chatContent.scrollTop = this.chatContent.scrollHeight;
     },
+    /**
+     * 开始发起聊天
+     */
+    startChat: function (item) {
 
-    addParticipantsMessage: function (data) {
-      let message = '';
-      if (data.numUsers === 1) {
-        message += "there's 1 participant";
-      } else {
-        message += 'there are ' + data.numUsers + ' participants';
-      }
-      consoloe.log(message);
-    },
-    connectServer: function () {
-      // 如果没有登录，分配一个游客身份，客户端向服务端发起请求,
-      this.$socket.on('connect', function () {
-        console.log('连接成功');
-      });
     },
     /**
      * 新增一条消息

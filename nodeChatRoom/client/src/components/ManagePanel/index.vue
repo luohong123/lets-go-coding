@@ -11,12 +11,18 @@
             <span class="action-icon"> <i class="icon iconfont icon-jia"></i></span>
             <span class="text">添加</span>
           </div> -->
-            <h5>在线用户 {{ list.length }} 人</h5>
+            <h5>在线用户 {{ onlineUsers }} 人</h5>
             <li
               class="contacts-list-item"
               v-for="item in list"
               v-bind:key="item.ID"
+              @click="startChat(item)"
             >
+              <span
+                class="circle"
+                v-bind:class="{ active: item.ONLINESTATE === 'Y' }"
+              >
+              </span>
               <img :src="item.AVATAR" alt="" />
               <span class="text" :title="item.USERNAME">{{
                 item.USERNAME
@@ -52,12 +58,29 @@
         <a class="btn-opacity btn-delete" v-on:click="deleteExit">删除并退出</a>
       </div>
     </div>
+    <!-- 发起聊天 -->
+    <div>
+      <a-modal title="" v-model="chatVisible" :footer="null" width="300px">
+        <div class="startchat">
+          <img :src="chatInfo.AVATAR" width="60" height="60" alt="" />
+          <p>
+            <span>{{ chatInfo.USERNAME }}</span>
+          </p>
+          <div style="width: 100%;">
+            <a-button type="primary" v-on:click="confirmChat" block
+              >发起聊天</a-button
+            >
+          </div>
+        </div>
+      </a-modal>
+    </div>
   </div>
 </template>
 
 <script>
 import searchbar from '@/components/SearchBar';
 import { getUserName } from '@/utils';
+import {eventHub} from '@/utils/event-bus';
 export default {
   name: 'ManagePanel',
   components: {
@@ -66,16 +89,35 @@ export default {
   props: ['list', 'group'],
   data() {
     return {
-      userName: getUserName()
+      userName: getUserName(),
+      chatVisible: false, // 发起聊天弹窗
+      chatInfo: {} // 发起聊天的用户信息
     };
+  },
+  computed: {
+    onlineUsers: function() {
+      let res = this.list.filter(item => {
+        return item.ONLINESTATE === 'Y';
+      });
+      return res.length;
+    }
   },
   // 根据群成员的USERID 去查找用户信息表对应的用户在线状态,就可以判断在线人数
   methods: {
     search: function() {},
     // 退出群组
     deleteExit: function() {
-      this.$emit('exitGroup');
+      eventHub.$emit('exitGroup');
     },
+    // 发起聊天
+    startChat: function(userInfo) {
+      this.chatVisible = true;
+      this.chatInfo = userInfo;
+    },
+    confirmChat: function() {
+      this.chatVisible = false;
+      eventHub.$emit('confirmchat', this.chatInfo);
+    }
   }
 };
 </script>
@@ -124,7 +166,9 @@ export default {
 .action:hover .action-icon {
   color: #000;
 }
-
+.contacts-list-item {
+  position: relative;
+}
 .contacts-list-item .text {
   width: 100%;
   text-align: center;
@@ -134,11 +178,21 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-
+.circle {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: block;
+  position: absolute;
+  right: -2px;
+  top: -2px;
+  background: gray;
+}
+.circle.active {
+  background: green;
+}
 .contacts-list-wrap {
   width: 100%;
-  /* margin-right: -16px; */
-  /* box-sizing: border-box; */
 }
 
 .contacts-list {
@@ -217,5 +271,11 @@ export default {
   cursor: pointer;
   color: red;
   border-top: 1px solid #ccc;
+}
+.startchat {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 </style>

@@ -23,7 +23,9 @@ app.get('/public/images/*', function (req, res) {
 // 数据库
 require('./db.js');
 var myroute = require('./routes');
+
 var port = 3000;
+var hostname = '127.0.0.1';
 var io = require('socket.io')(http);
 // socket
 var socketChat = require('./core/socket.js').socketChat;
@@ -56,8 +58,12 @@ app.post('/register', myroute.register);
 app.get('signout', myroute.signout);
 // 消息列表
 app.get('/messageList', myroute.messageList);
+// 消息列表-发起新的聊天
+app.post('/message/create', myroute.messageCreate);
+// 群列表
+app.get('/groupinfo/list',myroute.groupinfoList)
 // 群消息
-app.get('/groupinfo/detail', myroute.groupInfoList);
+app.get('/groupinfo/detail', myroute.groupInfoDetail);
 // 群用户
 app.get('/groupuser/list', myroute.groupUserList);
 // 创建群聊

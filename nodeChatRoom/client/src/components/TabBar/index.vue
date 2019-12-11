@@ -1,30 +1,40 @@
 <template>
-<div class="navbar">
-  <img v-if="userInfo&&userInfo['USERNAME']" :src="avatar" :title="userName" class="avatar" alt="avatar" />
-  <router-link class="tab-bar-item" v-for="(tab, index) in tabs" :key="index" :to="tab.router" v-bind:class="{ active: activeRoute == tab.router }">
-    <li class="icon-wrap">
-      <a class="tab-text" href="javascript:;" :title="tab.name">
-        <i class="icon iconfont" v-bind:class="tab.icon"></i>
-      </a>
-    </li>
-  </router-link>
-  <div class="tab-bar-item">
-    <div class="icon-wrap">
-      <a class="tab-text" href="javascript:;" title="退出登录">
-        <i class="icon iconfont icon-tuichu" v-on:click="sigout"></i>
-      </a>
+  <div class="navbar">
+    <img
+      v-if="userInfo && userInfo['USERNAME']"
+      :src="avatar"
+      :title="userName"
+      class="avatar"
+      alt="avatar"
+    />
+    <router-link
+      class="tab-bar-item"
+      v-for="(tab, index) in tabs"
+      :key="index"
+      :to="tab.router"
+      v-bind:class="{ active: activeRoute == tab.router }"
+    >
+      <li class="icon-wrap">
+        <a class="tab-text" href="javascript:;" :title="tab.name">
+          <i class="icon iconfont" v-bind:class="tab.icon"></i>
+        </a>
+      </li>
+    </router-link>
+    <div class="tab-bar-item">
+      <div class="icon-wrap">
+        <a class="tab-text" href="javascript:;" title="退出登录">
+          <i class="icon iconfont icon-tuichu" v-on:click="sigout"></i>
+        </a>
+      </div>
+    </div>
+    <div class="more">
+      <i class="icon iconfont icon-more"></i>
     </div>
   </div>
-  <div class="more">
-    <i class="icon iconfont icon-more"></i>
-  </div>
-</div>
 </template>
 
 <script>
-import {
-  getUserInfoByName
-} from '@/utils';
+import { getUserInfoByName } from '@/utils';
 export default {
   name: 'TabBar',
   props: {
@@ -34,7 +44,7 @@ export default {
     return {
       userInfo: {},
       avatar: '',
-      userName:''
+      userName: ''
     };
   },
   computed: {
@@ -52,7 +62,8 @@ export default {
     });
   },
   methods: {
-    sigout: function () {
+    sigout: function() {
+      this.$socket.emit('user leave',this.userName);
       window.localStorage.clear();
       this.$router.push('/signin');
     }
