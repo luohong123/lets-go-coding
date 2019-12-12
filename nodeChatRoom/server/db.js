@@ -67,13 +67,10 @@ exports.onlineStateUpdate = function (userInfo) {
   let sql = `
     UPDATE USERINFO SET ONLINESTATE = '${userInfo.ONLINESTATE}' WHERE USERNAME = '${userInfo.USERNAME}';
   `;
-  console.log(sql, 'userInfo==>sql');
   db.run(sql, (err) => {
     if (err) return err;
     if (userInfo.ONLINESTATE === 'Y') {
-      console.log('设置为在线状态=>数据修改成功');
     } else {
-      console.log('设置为离线状态=>数据修改成功');
     }
   });
 };
@@ -143,6 +140,18 @@ exports.groupInfoAdd = function (data) {
     });
   });
 };
+/**
+ * 加群
+ */
+exports.groupJoin = function (data) {
+
+}
+/**
+ * 退群
+ */
+exports.groupExit = function (data) {
+
+}
 exports.groupInfoList = function () {
   let sql = `
   SELECT * FROM GROUPINFO;
@@ -203,32 +212,83 @@ exports.getMessageList = function (userId) {
   // 返回 消息标题(群ID、群名称、私聊时对方的姓名和ID)、历史记录表中最近消息的时间、
   let sql,
     groupsSql,
-    historySql,
+    privateSql, // 私聊
     groups = [], // 群聊
-    privateChats = [],
-    messages = []; // {groupId: string,groupName: string, latestTime:string, fromUserId:string, toUserId: string}
+    historySql = 'SELECT * FROM HISTORY WHERE ',
+    privateChats = [], // 私聊
+    messages = [];
+  // 用户已登录
   if (userId) {
     // 1. 查询历史记录表,群聊ID为空表示私聊
     // groups:查询 GROUPINFO表中的群ID==>根据群ID可以查询历史记录表
     groupsSql = `
-    SELECT * FROM GROUPINFO WHERE GROUPID =  (SELECT GROUPID FROM GROUPUSER WHERE USERID = '79075de0-17ca-11ea-8b61-ebb7391af6af');
+    SELECT * FROM GROUPINFO WHERE GROUPID IN (SELECT GROUPID FROM GROUPUSER WHERE USERID = '${userId}');
     `;
-    db.get(groupsSql, (err, row) => {
-      if (err) throw err;
-      groups = row;
-    });
-    // 查询群ID查询历史记录, 返回最近发送的消息时间
-    // for(let i = 0; i < groups.length; i++) {
-    //   historySql += `SELECT * FROM HISTORY WHERE GROUPID = '${groups[i].GROUPID} ORDER '`
-    // }
-    // db.all(historySql)
-    db.serialize(function () {
-      // 这里执行的命令是串行的
-      db.serialize(function () {
-        // 这里执行的命令是串行的
-      });
-      // 这里执行的命令是串行的
-    });
+    return new Promise((resolve, reject) => {
+      db.serialize(() => {
+        db.all(groupsSql, (err, rows) => {
+          if (err) throw err;
+          // 群聊列表
+          groups = rows;
+          // 私聊列表
+          privateSql = `
+          SELECT * FROM HISTORY WHERE (FROMUSERID = '${userId}' OR TOUSERID = '${userId}') AND GROUPID = '' AND CONTENT = '';
+          `;
+          db.all(privateSql, (err, privates) => {
+            if (err) throw err;
+            privateChats = privates;
+            for (let i = 0; i < groups.length; i++) {
+              if (i < groups.length - 1) {
+                historySql += `GROUPID = '${groups[i].GROUPID}' OR `;
+              } else {
+                historySql += `GROUPID = '${groups[i].GROUPID}' ORDER BY TS `;
+              }
+            };
+            // 查询每个群聊最近的聊天时间和最近的内容
+            db.all(historySql, (err, historys) => {
+              if (err) return err;
+              let content, latedTime;
+              for (let i = 0; i < groups.length; i++) {
+                let groupHistorys = historys.filter(item => {
+                  return groups[i].GROUPID === item.GROUPID;
+                })
+                if (groupHistorys.length > 0) {
+                  content = groupHistorys[groupHistorys.length - 1].CONTENT;
+                  latedTime = groupHistorys[groupHistorys.length - 1].LATEDTIME;
+                } else {
+                  content = '暂无消息';
+                  latedTime = groups[i].CREATETIME;
+                };
+                messages.push({
+                  ID: common.getGuid(),
+                  GROUPID: groups[i].GROUPID,
+                  GROUPNAME: groups[i].GROUPNAME,
+                  AVATAR: groups[i].AVATAR,
+                  CONTENT: content, // 预览最近的一条信息
+                  LATEDTIME: latedTime,
+                  FROMUSERID: groups[i].FROMUSERID, // 发送人
+                  TOUSERID: ''
+                });
+              };
+              // 私聊列表
+              for (let i = 0; i < privateChats.length; i++) {
+                messages.push({
+                  ID: common.getGuid(),
+                  GROUPID: '',
+                  GROUPNAME: '',
+                  AVATAR: privateChats[i].AVATAR,
+                  CONTENT: content, // 预览最近的一条信息
+                  LATEDTIME: latedTime,
+                  FROMUSERID: privateChats[i].FROMUSERID, // 发送人
+                  TOUSERID: privateChats[i].TOUSERID // 接收人
+                })
+              };
+              return resolve(messages);
+            })
+          })
+        });
+      })
+    })
   } else {
     // 游客身份可以浏览一个默认的群
     sql = `SELECT * FROM GROUPINFO WHERE GROUPID = '16838200-1a29-11ea-92c5-f3482b4425d5'`;
@@ -257,12 +317,13 @@ exports.getHistoryList = function (data) {
   let sql,
     messages = [], // 消息集合
     userSql = 'SELECT * FROM USERINFO WHERE', // 用户信息
+    privateSql,
     historys = [];
   // 群聊
   if (data.GROUPID) {
     // 根据群ID查询历史记录表并根据时间降序排序
     sql = `
-      SELECT * FROM HISTORY WHERE GROUPID = '${data.GROUPID}' ORDER BY TS ASC;
+      SELECT * FROM HISTORY WHERE GROUPID = '${data.GROUPID}'  ORDER BY TS ASC;
     `;
     return new Promise((resolve, reject) => {
       db.serialize(() => {
@@ -273,8 +334,8 @@ exports.getHistoryList = function (data) {
             USERID = '${messages[i].FROMUSERID}' OR `) : (`USERID = '${messages[i].FROMUSERID}' `);
           }
           db.all(userSql, (err, users) => {
+            if (err) return reject(err);
             for (let i = 0; i < messages.length; i++) {
-              if (err) return reject(err);
               let userInfo = users.filter((item) => messages[i].FROMUSERID === item.USERID);
               historys.push({
                 MESSAGEID: messages[i].MESSAGEID,
@@ -295,6 +356,15 @@ exports.getHistoryList = function (data) {
     });
   } else {
     // 私聊
+    privateSql = `
+    SELECT * FROM HISTORY WHERE (FROMUSERID = '${data.FROMUSERID}' OR TOUSERID = '${data.TOUSERID}' ) AND GROUPID = '';
+    `;
+    return new Promise((resolve, reject) => {
+      db.all(privateSql, (err, rows) => {
+        if (err) return reject(err);
+        return resolve(rows);
+      })
+    })
   }
 };
 // 判断消息是否已存在
@@ -305,7 +375,6 @@ exports.messageIsRepeat = function (data) {
   return new Promise((resolve, reject) => {
     db.get(sql, (err, row) => {
       if (err) return reject(err);
-      console.log(row, 'history message is repeat');
       return resolve(row);
     })
   })

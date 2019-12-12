@@ -122,18 +122,20 @@ exports.signout = function (req, res) {
 exports.messageList = function (req, res) {
   // 根据userId 查询和自己相关的群聊和私聊,加入到消息列表中,并根据群聊或者私聊的最后一条聊天记录时间倒序排序
   let userId = req.query.userId;
-
-  if (userId) {
+  if (userId && userId !== undefined && userId !== null && userId !== '') {
     // 查询和此用户相关的私聊和群聊消息
-    res.status(200).send({
-      code: '0',
-      message: '以用户身份请求成功',
-      data: []
+    _getMessageList(userId).then(result => {
+      return res.status(200).send({
+        code: '0',
+        message: '以用户身份请求成功',
+        data: result
+      });
     });
+
   } else {
     // 游客身份
     _getMessageList(userId).then(result => {
-      res.status(200).send({
+      return res.status(200).send({
         code: '0',
         message: '以游客身份请求成功',
         data: result
@@ -143,7 +145,24 @@ exports.messageList = function (req, res) {
 };
 // 消息列表-发起新的聊天
 exports.messageCreate = function (req, res) {
-  let
+  let data = req.body;
+  let message = {
+    MESSAGEID: common.getGuid(),
+    GROUPID: data.GROUPID,
+    FROMUSERID: data.FROMUSERID,
+    TOUSERID: data.TOUSERID,
+    CONTENT: data.CONTENT,
+    TIME: data.TIME,
+    TS: common.getTimeS()
+  }
+  console.log(message, '发起新的聊天');
+  _historyCreate(message).then(result => {
+    res.status(200).send({
+      code: '0',
+      message: '成功发起新的聊天',
+      data: []
+    })
+  })
 };
 
 // 消息详情
