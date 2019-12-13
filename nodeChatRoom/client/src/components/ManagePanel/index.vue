@@ -80,7 +80,7 @@
 <script>
 import searchbar from '@/components/SearchBar';
 import { getUserName } from '@/utils';
-import {eventHub} from '@/utils/event-bus';
+import { eventHub } from '@/utils/event-bus';
 export default {
   name: 'ManagePanel',
   components: {
@@ -111,8 +111,12 @@ export default {
     },
     // 发起聊天
     startChat: function(userInfo) {
-      this.chatVisible = true;
-      this.chatInfo = userInfo;
+      if (userInfo.USERNAME === this.userName) {
+        alert('不能向自己发起聊天');
+      } else {
+        this.chatVisible = true;
+        this.chatInfo = userInfo;
+      }
     },
     confirmChat: function() {
       this.chatVisible = false;

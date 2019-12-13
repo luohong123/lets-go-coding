@@ -20,3 +20,6 @@ exports.getGuid = function() {
 exports.getTimeS = function() {
   return new Date().valueOf(); //获取当前毫秒的时间戳，准确！
 };
+exports.setPort = function() {
+  return 'http://192.168.0.110:3000/'
+}

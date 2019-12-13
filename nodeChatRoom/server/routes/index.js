@@ -41,8 +41,7 @@ function JWT_auth(req, res, next) {
 // 注册
 exports.register = function (req, res) {
   let imgUrl =
-    'http://localhost:3000' +
-    '/public/images/' +
+    'public/images/' +
     Math.round(Math.random() * 10) +
     '.jpeg';
   let person = {
@@ -168,9 +167,8 @@ exports.messageCreate = function (req, res) {
 // 消息详情
 exports.historyList = function (req, res) {
   let query = {
-    GROUPID: req.query.GROUPID, // 群ID
-    FROMUSERID: req.query.FROMUSERID, // 发送人
-    TOUSERID: req.query.TOUSERID //接收人
+    type: req.query.type, // QL表示群聊
+    otherpartid: req.query.otherpartid // 对方的id
   };
   _getHistoryList(query)
     .then(result => {
@@ -255,8 +253,7 @@ exports.groupInfoCreate = function (req, res) {
   groupInfo.GROUPID = common.getGuid();
   groupInfo.TS = common.getTimeS();
   groupInfo.AVATAR =
-    'http://localhost:3000' +
-    '/public/images/' +
+    'public/images/' +
     Math.round(Math.random() * 10) +
     '.jpeg';
   _groupInfoAdd(groupInfo).then(result => {

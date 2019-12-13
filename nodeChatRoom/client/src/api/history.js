@@ -16,9 +16,8 @@ export function historyList(data) {
     url: `/history/list`,
     method: 'get',
     params: {
-      GROUPID: data.GROUPID, // 群ID
-      FROMUSERID:data.FROMUSERID, // 发送人
-      TOUSERID:data.TOUSERID //接收人
+      type:data.type, // QL表示群聊
+      otherpartid:data.otherpartid // 对方的id
     }
   });
 }

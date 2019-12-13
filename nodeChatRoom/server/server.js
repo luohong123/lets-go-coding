@@ -25,7 +25,8 @@ require('./db.js');
 var myroute = require('./routes');
 
 var port = 3000;
-var hostname = '127.0.0.1';
+var hostname = '192.168.0.110';
+// var hostname = '127.0.0.1';
 var io = require('socket.io')(http);
 // socket
 var socketChat = require('./core/socket.js').socketChat;

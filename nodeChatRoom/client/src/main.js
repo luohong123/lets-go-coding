@@ -15,7 +15,7 @@ import '@/assets/fonts/ali_icon/iconfont.css';
 // };
 const isDev = process.env.NODE_ENV === 'development';
 import io from 'socket.io-client';
-const ip = isDev ? 'http://localhost:3000' : 'http://39.96.19.170:3000';
+const ip = isDev ? 'http://192.168.0.110:3000' : 'http://39.96.19.170:3000';
 Vue.prototype.$socket = io(ip);
 Vue.config.productionTip = false;
 import axios from 'axios';

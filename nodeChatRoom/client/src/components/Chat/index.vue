@@ -36,6 +36,7 @@
       <textarea
         class="message-control"
         v-model="message"
+        v-on:input="watchInput"
         rows="3"
         cols="20"
         v-on:keyup.enter="sendMessage"
@@ -103,6 +104,11 @@ export default {
           this.showTips = false;
         }, 50);
       }
+    },
+    watchInput:function() {
+      eventHub.$emit('watchinput', {
+          message: this.message
+        });
     },
     scrollTop: function() {
       this.chatContent = document.querySelector('.message-list');

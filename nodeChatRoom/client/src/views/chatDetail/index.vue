@@ -1,36 +1,31 @@
 <template>
-  <div class="chatDetail">
-    <div class="left">
-      <div class="searchbar-wrap" v-if="userName && userName !== 'undefined'">
-        <searchbar />
-        <div class="action-add">
-          <a-icon type="plus-square" v-on:click="groupAddModal" />
-        </div>
-      </div>
-      <listitem :list="list" class="left-list" />
-    </div>
-    <div class="right">
-      <headerbar v-bind:title="title" v-on:toggle="toggle" ref="headerbar" />
-      <chat class="chat-wrap" :list="historyChats" />
-      <!-- 隐藏区域 -->
-      <div class="more-introduce" v-bind:class="{ show: isOpen }">
-        <managepanel :group="groupInfo" :list="groupUsers" />
+<div class="chatDetail">
+  <div class="left">
+    <div class="searchbar-wrap" v-if="userName && userName !== 'undefined'">
+      <searchbar />
+      <div class="action-add">
+        <a-icon type="plus-square" v-on:click="groupAddModal" />
       </div>
     </div>
-    <!-- 创建群 -->
-    <a-modal
-      title="创建群聊"
-      :visible="groupVisible"
-      @ok="groupInfoAdd"
-      :confirmLoading="groupConfirmLoading"
-      @cancel="groupCancel"
-    >
-      <div>
-        <p>请输入群聊名称</p>
-        <a-input v-model="groupName" />
-      </div>
-    </a-modal>
+    <listitem :list="list" class="left-list" />
+    <!-- <listitem :list="list" class="left-list" /> -->
   </div>
+  <div class="right">
+    <headerbar v-bind:title="title" v-on:toggle="toggle" ref="headerbar" />
+    <chat class="chat-wrap" :list="historyChats" />
+    <!-- 隐藏区域 -->
+    <div class="more-introduce" v-bind:class="{ show: isOpen }">
+      <managepanel :group="groupInfo" :list="groupUsers" />
+    </div>
+  </div>
+  <!-- 创建群 -->
+  <a-modal title="创建群聊" :visible="groupVisible" @ok="groupInfoAdd" :confirmLoading="groupConfirmLoading" @cancel="groupCancel">
+    <div>
+      <p>请输入群聊名称</p>
+      <a-input v-model="groupName" />
+    </div>
+  </a-modal>
+</div>
 </template>
 
 <script>
@@ -40,7 +35,9 @@ import listitem from '@/components/ListItem';
 import managepanel from '@/components/ManagePanel';
 import searchbar from '@/components/SearchBar';
 // import io from 'socket.io-client';
-import { eventHub } from '@/utils/event-bus.js';
+import {
+  eventHub
+} from '@/utils/event-bus.js';
 import {
   getGuid,
   getUserName,
@@ -59,8 +56,12 @@ import {
   getGroupUser,
   messageCreate
 } from '@/api/chat';
-import { historyList } from '@/api/history';
-import { searchUserInfo } from '@/api/userinfo';
+import {
+  historyList
+} from '@/api/history';
+import {
+  searchUserInfo
+} from '@/api/userinfo';
 export default {
   name: 'chatDetail',
   components: {
@@ -75,18 +76,16 @@ export default {
       title: '',
       historyChats: [],
       userName: getUserName(),
-      passWord: '',
-      times: 0,
       newUser: '',
       online: 0,
       leaveUser: '',
+      count: 0,
       connected: false,
       userInfo: {},
       friendInfo: {}, // 接收人信息
       list: [],
       chatContent: {},
       groupName: '',
-      groupInfo: '',
       groupUsers: [], // 群成员
       groupInfo: {},
       groupVisible: false,
@@ -95,15 +94,15 @@ export default {
     };
   },
   computed: {},
-  watch: {
-    chats(val) {
-      return this.chats;
-    }
-  },
+  watch: {},
   mounted() {
+    let self = this;
     //  this.$socket.on 的原因引起多次触发
     // 解决方法: https://github.com/this.$socketio/this.$socket.io/issues/474#issuecomment-2833227
     // https://groups.google.com/forum/?hl=en&fromgroups#!topic/this.$socket_io/X9FRMjCkPco
+    this.$socket.on('connection', () => {
+      console.log('已经连接');
+    });
     // 接收广播的消息 群聊
     this.$socket.on('new message', data => {
       let title = `${data.message.FROMUSERID}对大家说:`;
@@ -120,13 +119,14 @@ export default {
         AVATAR: data.message.AVATAR,
         USERNAME: data.message.USERNAME
       };
+      // 刷新消息列表
+      this.getMessageList();
       // 刷新历史消息
       if (message.GROUPID === this.groupInfo.GROUPID) {
         this.historyChats.push(message);
       }
       showDeskTopNotice(title, icon, msg);
       setTimeout(() => {
-        console.log(this.historyChats, 'this.historyChats');
         this.scrollTop();
       }, 50);
     });
@@ -138,7 +138,7 @@ export default {
       let message = {
         MESSAGEID: data.message.MESSAGEID,
         GROUPID: data.message.GROUPID,
-        FROMUSERID: data.message.USERID,
+        FROMUSERID: data.message.FROMUSERID,
         TOUSERID: data.message.TOUSERID,
         CONTENT: data.message.CONTENT,
         TIME: data.message.TIME,
@@ -146,22 +146,24 @@ export default {
         AVATAR: data.message.AVATAR,
         USERNAME: data.message.USERNAME
       };
+      // 刷新消息列表
+      this.getMessageList();
       // 刷新历史消息
       if (
         message.GROUPID === '' &&
-        (message.FROMUSERID === this.userInfo.USERID ||
-          message.TOUSERID === this.userInfo.USERID)
+        (message.FROMUSERID === self.friendInfo.otherpartid)
       ) {
-        this.historyChats.push(message);
-        showDeskTopNotice(title, icon, msg);
+        self.historyChats.push(message);
+        // showDeskTopNotice(title, icon, msg);
         setTimeout(() => {
-          console.log(this.historyChats, 'this.historyChats');
-          this.scrollTop();
+          self.scrollTop();
         }, 50);
       }
     });
     // 发送群消息
     eventHub.$on('send', this.addChatMessage);
+    // 用户正在输入
+    eventHub.$on('watchinput', this.watchInput);
     eventHub.$on('toggle', this.toggle);
     // 切换历史记录消息
     eventHub.$on('change', this.changeHistroy);
@@ -169,20 +171,13 @@ export default {
     eventHub.$on('confirmchat', this.startChat);
     // 初始化消息列表
     this.getMessageList();
-    // 获取用户信息
-    getUserInfoByName().then(result => {
-      this.userInfo = result;
-      if (this.userInfo) {
-        this.$socket.emit('add user', this.userInfo.USERNAME);
-      }
-    });
     // setTimeout(() => {
     //   if (this.userInfo) {
     //     this.$socket.emit('add user', this.userInfo.USERNAME);
     //   }
     // }, 2000);
   },
-  created: function() {
+  created: function () {
     // 点击其他区域关闭面板
     document.addEventListener('click', e => {
       let box = document.querySelector('.toggle');
@@ -199,12 +194,18 @@ export default {
     // 注意：注册的 Bus 要在组件销毁时卸载，否则会多次挂载，造成触发一次但多个响应的情况。
   },
   methods: {
+    /**
+     * 用户输入中
+     */
+    watchInput: function (message) {
+      console.log(message, '用户正在输入中');
+    },
     // 新增群组弹窗
-    groupAddModal: function() {
+    groupAddModal: function () {
       this.groupVisible = true;
     },
     // 创建新群
-    groupInfoAdd: function() {
+    groupInfoAdd: function () {
       this.groupInfo = {
         GROUPID: '',
         GROUPNAME: this.groupName,
@@ -229,6 +230,7 @@ export default {
     },
     // 点击消息列表切换历史记录
     changeHistroy(item) {
+      this.friendInfo = item;
       // 群信息
       // 历史记录
       historyList(item).then(result => {
@@ -236,84 +238,55 @@ export default {
           this.historyChats = result['data'];
           setTimeout(() => {
             this.scrollTop();
-            console.log(this.historyChats, 'this.historyChats');
           }, 0);
         }
       });
       // 群用户
-      if (item.GROUPID !== '') {
-        getGroupInfoById(item.GROUPID).then(result => {
+      if (item.type === 'QL') {
+        getGroupInfoById(item.otherpartid).then(result => {
           if (result.code === '0') {
             this.groupInfo = result.data;
             this.title = result.data.GROUPNAME;
           }
         });
-        getGroupUser(item.GROUPID).then(result => {
+        getGroupUser(item.otherpartid).then(result => {
           if (result.code === '0') {
             this.groupUsers = result.data;
           }
         });
       } else {
         this.groupInfo.GROUPID = '';
-        this.toUserInfo = item;
-        if (item.FROMUSERID !== this.userInfo.USERID) {
-          searchUserInfo({
-            USERID: item.FROMUSERID
-          }).then(res => {
-            if (res.code === '0') {
-              this.title = res.data.USERNAME;
-              this.friendInfo = res.data;
-            }
-          });
-        } else {
-          searchUserInfo({
-            USERID: item.TOUSERID
-          }).then(res => {
-            if (res.code === '0') {
-              this.title = res.data.USERNAME;
-              this.friendInfo = res.data;
-            }
-          });
-        }
+        searchUserInfo({
+          USERID: item.otherpartid
+        }).then(res => {
+          if (res.code === '0') {
+            this.title = res.data.USERNAME;
+          }
+        });
       }
     },
-    getMessageList: function() {
+    getMessageList: function () {
       getUserInfoByName().then(result => {
         let userId = result ? result['USERID'] : null;
         messageList(userId)
           .then(response => {
             if (response.code === '0') {
-              if (response.data && response.data.length > 0) {
-                let messages = response.data;
-                for (let i = 0; i < messages.length; i++) {
-                  if (messages[i].GROUPID === '') {
-                    if (messages[i].FROMUSERID !== userId) {
-                      searchUserInfo({
-                        USERID: messages[i].FROMUSERID
-                      }).then(res => {
-                        if (res.code === '0') {
-                          messages[i]['GROUPNAME'] = res.data.USERNAME;
-                          messages[i]['AVATAR'] = res.data.AVATAR;
-                        }
-                      });
-                    } else {
-                      searchUserInfo({
-                        USERID: messages[i].TOUSERID
-                      }).then(res => {
-                        if (res.code === '0') {
-                          messages[i]['GROUPNAME'] = res.data.USERNAME;
-                          messages[i]['AVATAR'] = res.data.AVATAR;
-                        }
-                      });
-                    }
-                  }
+              let _list = response['data'];
+             // 查询每个消息列表的未读消息(保存在offline表中的离线消息)分别为多少条
+              this.list = response['data'];
+              
+              if (this.count === 0) {
+                this.changeHistroy(this.list[0]);
+                this.count++;
+              };
+              // 获取用户信息
+              getUserInfoByName().then(result => {
+                this.userInfo = result;
+                if (this.userInfo) {
+                  this.$socket.emit('add user', this.userInfo.USERNAME);
                 }
-                setTimeout(() => {
-                  this.list = messages;
-                  // 默认选择第一条
-                  this.changeHistroy(this.list[0]);
-                }, 100);
-              }
+              });
+              return this.list;
             }
           })
           .catch(err => {
@@ -321,18 +294,18 @@ export default {
           });
       });
     },
-    toggle: function() {
+    toggle: function () {
       this.isOpen = !this.isOpen;
       document.body.removeEventListener('click', this.toggle);
     },
-    scrollTop: function() {
+    scrollTop: function () {
       this.chatContent = document.querySelector('.message-list');
       this.chatContent.scrollTop = this.chatContent.scrollHeight;
     },
     /**
      * 开始发起聊天-私聊
      */
-    startChat: function(item) {
+    startChat: function (item) {
       let message = {
         MESSAGEID: '',
         GROUPID: '',
@@ -344,6 +317,8 @@ export default {
       };
       messageCreate(message).then(result => {
         if (result.code === '0') {
+          // 刷新消息列表
+          this.messageList();
           console.log('发起聊天成功');
         }
       });
@@ -351,7 +326,7 @@ export default {
     /**
      * 新增一条消息
      */
-    addChatMessage: function(data) {
+    addChatMessage: function (data) {
       if (data) {
         // eventHub被多次触发、次数累加, 尤大回复：https://github.com/vuejs/vue/issues/3399
         // https://github.com/Pasoul/blog/issues/12
@@ -366,10 +341,24 @@ export default {
           AVATAR: this.userInfo.AVATAR,
           USERNAME: this.userInfo.USERNAME
         };
+        // 群发
         if (this.groupInfo.GROUPID !== '') {
           this.$socket.emit('new message', message);
         } else {
-          message.TOUSERID = this.friendInfo.USERID;
+          // 私发
+          message.TOUSERID = this.friendInfo.otherpartid;
+          // 刷新历史消息
+          // if (
+          //   message.GROUPID === '' &&
+          //   (message.FROMUSERID === this.userInfo.USERID ||
+          //     message.TOUSERID === this.userInfo.USERID)
+          // ) {
+            this.historyChats.push(message);
+            // showDeskTopNotice(title, icon, msg);
+            setTimeout(() => {
+              this.scrollTop();
+            }, 50);
+          // }
           this.$socket.emit('private', message);
         }
       }

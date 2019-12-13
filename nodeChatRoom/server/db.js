@@ -12,7 +12,7 @@ const common = require('./core/common');
 /**
  * 新增用户
  */
-exports.userInfoAdd = function (data) {
+exports.userInfoAdd = function(data) {
   // 注册用户后加入默认的fe-free群
   let sql = `INSERT INTO USERINFO (USERID,USERCODE,USERNAME,PASSWORD,AVATAR,SEX,REMARK,ONLINESTATE,LASTONLINETIME,TS)
   VALUES (
@@ -43,31 +43,32 @@ exports.userInfoAdd = function (data) {
       if (err) return reject(err);
       return resolve('新增用户成功,加入默认群成功');
     });
-  })
+  });
 };
 /**
  * 根据USERNAME查询用户信息,用于用户名查重、登录验证
  */
-exports.getUserInfo = function (data) {
+exports.getUserInfo = function(data) {
   let sql = `SELECT * FROM USERINFO WHERE USERNAME = '${data.USERNAME}' OR USERID = '${data.USERID}';`;
   return new Promise((resolve, reject) => {
-    db.get(
-      sql,
-      (err, row) => {
-        if (err) return reject(err);
+    db.get(sql, (err, row) => {
+      if (err) return reject(err);
+      if(row){
+        let img = row.AVATAR;
+        row.AVATAR = common.setPort() + img;
         return resolve(row);
       }
-    );
+    });
   });
 };
 /**
  * 修改用户信息
  */
-exports.onlineStateUpdate = function (userInfo) {
+exports.onlineStateUpdate = function(userInfo) {
   let sql = `
     UPDATE USERINFO SET ONLINESTATE = '${userInfo.ONLINESTATE}' WHERE USERNAME = '${userInfo.USERNAME}';
   `;
-  db.run(sql, (err) => {
+  db.run(sql, err => {
     if (err) return err;
     if (userInfo.ONLINESTATE === 'Y') {
     } else {
@@ -77,7 +78,7 @@ exports.onlineStateUpdate = function (userInfo) {
 /**
  * 验证用户名和密码是否输入一直
  */
-exports.loginValid = function (userInfo) {
+exports.loginValid = function(userInfo) {
   let query = `SELECT * FROM USERINFO WHERE USERNAME = '${userInfo.USERNAME}' AND PASSWORD = '${userInfo.PASSWORD}'`;
   let promise = new Promise((resolve, reject) => {
     db.get(query, (err, row) => {
@@ -103,7 +104,7 @@ exports.loginValid = function (userInfo) {
 /**
  * 创建新群
  */
-exports.groupInfoAdd = function (data) {
+exports.groupInfoAdd = function(data) {
   // 操作多表: 群用户表新增一条数据 且 群用户表新增创建人
   let sql = `
   INSERT INTO GROUPINFO (GROUPID,GROUPNAME,GROUPREMARK,CREATEUSERID,CREATETIME,DISSOLUTIONTIME,GROUPSTATE,AVATAR,TS)
@@ -143,30 +144,30 @@ exports.groupInfoAdd = function (data) {
 /**
  * 加群
  */
-exports.groupJoin = function (data) {
-
-}
+exports.groupJoin = function(data) {};
 /**
  * 退群
  */
-exports.groupExit = function (data) {
-
-}
-exports.groupInfoList = function () {
+exports.groupExit = function(data) {};
+exports.groupInfoList = function() {
   let sql = `
   SELECT * FROM GROUPINFO;
   `;
   return new Promise((resolve, reject) => {
     db.all(sql, (err, rows) => {
       if (err) return reject(err);
+      for (let i = 0; i < rows.length; i++) {
+        let img = rows[i].avatar;
+        rows[i].avatar = common.setPort() + img;
+      }
       return resolve(rows);
     });
   });
-}
+};
 /**
  * 根据群ID查询群用户
  */
-exports.getGroupUsersById = function (groupId) {
+exports.getGroupUsersById = function(groupId) {
   let users = [],
     sql1 = '',
     sql2 = 'SELECT * FROM USERINFO WHERE ';
@@ -180,35 +181,43 @@ exports.getGroupUsersById = function (groupId) {
         for (let i = 0; i < users.length; i++) {
           let userId = users[i].USERID;
           if (i < len - 1) {
-            sql2 += `USERID = '${userId}' OR `
+            sql2 += `USERID = '${userId}' OR `;
           } else {
-            sql2 += `USERID = '${userId}'`
+            sql2 += `USERID = '${userId}'`;
           }
         }
         db.all(sql2, (err, rows) => {
           if (err) return err;
+          for (let i = 0; i < rows.length; i++) {
+            let img = rows[i].avatar;
+            rows[i].avatar = common.setPort() + img;
+          }
           return resolve(rows);
-        })
-      })
-    })
-  })
+        });
+      });
+    });
+  });
 };
 /**
  * 根据群ID查询群信息
  */
-exports.getGroupInfoById = function (groupId) {
+exports.getGroupInfoById = function(groupId) {
   let sql = `
     SELECT * FROM GROUPINFO WHERE GROUPID = '${groupId}'
   `;
   return new Promise((resolve, reject) => {
     db.get(sql, (err, row) => {
       if (err) return reject(err);
+      for (let i = 0; i < row.length; i++) {
+        let img = row[i].AVATAR;
+        row[i].avatar = common.setPort() + img;
+      }
       return resolve(row);
     });
   });
 };
 // 获取消息列表
-exports.getMessageList = function (userId) {
+exports.getMessageList = function(userId) {
   // 返回 消息标题(群ID、群名称、私聊时对方的姓名和ID)、历史记录表中最近消息的时间、
   let sql,
     groupsSql,
@@ -217,80 +226,153 @@ exports.getMessageList = function (userId) {
     historySql = 'SELECT * FROM HISTORY WHERE ',
     privateChats = [], // 私聊
     messages = [];
+    // d3ced1b0-1d4f-11ea-b9cf-9b09cc351cea
   // 用户已登录
   if (userId) {
-    // 1. 查询历史记录表,群聊ID为空表示私聊
-    // groups:查询 GROUPINFO表中的群ID==>根据群ID可以查询历史记录表
-    groupsSql = `
-    SELECT * FROM GROUPINFO WHERE GROUPID IN (SELECT GROUPID FROM GROUPUSER WHERE USERID = '${userId}');
+    sql = `
+    select * from (
+    --------------------------正式使用版本--------------------
+                 
+    --查询最后与对方的最新一条私信信息                                 
+    select 'SL' type,
+           messageid,
+           otherpartid,
+           ui.username name,
+           ui.AVATAR avatar,
+           mi.content,
+           mi.time,
+           mi.ts
+      from (select messageid, touserid otherpartid, content, time, ts
+              from history hi
+             where 
+             erid || '__' || touserid in
+                   (select max(ts) || ft
+                      from (select messageid,
+                                   fromuserid || '__' || touserid ft,
+                                   fromuserid,
+                                   touserid,
+                                   content,
+                                   groupid,
+                                   time,
+                                   ts
+                              from history hi
+                             where (hi.fromuserid =
+                                   (select userid
+                                       from userinfo ui
+                                      where ui.USERID = '${userId}'))
+                               and length(groupid) = 0   
+                               and length(touserid)!=0              
+                               and hi.fromuserid!=touserid
+                            union all
+                            select messageid,
+                                   touserid || '__' || fromuserid ft,
+                                   fromuserid,
+                                   touserid,
+                                   content,
+                                   groupid,
+                                   time,
+                                   ts
+                              from history hi
+                             where (hi.touserid =
+                                   (select userid
+                                       from userinfo ui
+                                      where ui.USERID = '${userId}'))
+                               and length(groupid) = 0   
+                               and length(fromuserid)!=0              
+                               and hi.fromuserid!=touserid) hi
+                    
+                     group by ft)
+            union all
+            select messageid, fromuserid otherpartid, content, time, ts
+              from history hi
+             where ts || hi.touserid || '__' || fromuserid in
+                   (select max(ts) || ft
+                      from (select messageid,
+                                   fromuserid || '__' || touserid ft,
+                                   fromuserid,
+                                   touserid,
+                                   content,
+                                   groupid,
+                                   time,
+                                   ts
+                              from history hi
+                             where (hi.fromuserid =
+                                   (select userid
+                                       from userinfo ui
+                                      where ui.USERID = '${userId}'))
+                               and length(groupid) = 0       
+                               and length(touserid)!=0          
+                               and hi.fromuserid!=touserid
+                            union all
+                            select messageid,
+                                   touserid || '__' || fromuserid ft,
+                                   fromuserid,
+                                   touserid,
+                                   content,
+                                   groupid,
+                                   time,
+                                   ts
+                              from history hi
+                             where (hi.touserid =
+                                   (select userid
+                                       from userinfo ui
+                                      where ui.USERID = '${userId}'))
+                               and length(groupid) = 0     
+                               and length(fromuserid)!=0            
+                               and hi.fromuserid!=touserid) hi
+                    
+                     group by ft)) mi
+      left join userinfo ui
+        on mi.otherpartid = ui.USERID
+    -----以上是私聊    
+    
+    union all
+    -----群聊     
+    
+    select 'QL' type,
+           mi.messageid,
+           mi.groupid otherpartid,
+           gi.GROUPNAME name,
+           gi.AVATAR avatar,
+           mi.content,
+           mi.time,
+           mi.ts
+      from (select *
+              from history hi
+             where ts || hi.GROUPID in
+                   (select max(ts) || groupid
+                      from history hi
+                     where hi.GROUPID in
+                           (select GROUPID
+                              from groupuser gu
+                             where gu.USERID =
+                                   (select userid
+                                      from userinfo ui
+                                     where ui.USERID = '${userId}'))
+                     group by groupid)) mi
+      left join groupinfo gi
+        on gi.GROUPID = mi.groupid) date
+        order by ts desc
+    
     `;
     return new Promise((resolve, reject) => {
-      db.serialize(() => {
-        db.all(groupsSql, (err, rows) => {
-          if (err) throw err;
-          // 群聊列表
-          groups = rows;
-          // 私聊列表
-          privateSql = `
-          SELECT * FROM HISTORY WHERE (FROMUSERID = '${userId}' OR TOUSERID = '${userId}') AND GROUPID = '' AND CONTENT = '';
-          `;
-          db.all(privateSql, (err, privates) => {
-            if (err) throw err;
-            privateChats = privates;
-            for (let i = 0; i < groups.length; i++) {
-              if (i < groups.length - 1) {
-                historySql += `GROUPID = '${groups[i].GROUPID}' OR `;
-              } else {
-                historySql += `GROUPID = '${groups[i].GROUPID}' ORDER BY TS `;
-              }
-            };
-            // 查询每个群聊最近的聊天时间和最近的内容
-            db.all(historySql, (err, historys) => {
-              if (err) return err;
-              let content, latedTime;
-              for (let i = 0; i < groups.length; i++) {
-                let groupHistorys = historys.filter(item => {
-                  return groups[i].GROUPID === item.GROUPID;
-                })
-                if (groupHistorys.length > 0) {
-                  content = groupHistorys[groupHistorys.length - 1].CONTENT;
-                  latedTime = groupHistorys[groupHistorys.length - 1].LATEDTIME;
-                } else {
-                  content = '暂无消息';
-                  latedTime = groups[i].CREATETIME;
-                };
-                messages.push({
-                  ID: common.getGuid(),
-                  GROUPID: groups[i].GROUPID,
-                  GROUPNAME: groups[i].GROUPNAME,
-                  AVATAR: groups[i].AVATAR,
-                  CONTENT: content, // 预览最近的一条信息
-                  LATEDTIME: latedTime,
-                  FROMUSERID: groups[i].FROMUSERID, // 发送人
-                  TOUSERID: ''
-                });
-              };
-              // 私聊列表
-              for (let i = 0; i < privateChats.length; i++) {
-                messages.push({
-                  ID: common.getGuid(),
-                  GROUPID: '',
-                  GROUPNAME: '',
-                  AVATAR: privateChats[i].AVATAR,
-                  CONTENT: content, // 预览最近的一条信息
-                  LATEDTIME: latedTime,
-                  FROMUSERID: privateChats[i].FROMUSERID, // 发送人
-                  TOUSERID: privateChats[i].TOUSERID // 接收人
-                })
-              };
-              return resolve(messages);
-            })
-          })
+      db.serialize(()=>{
+        db.all(sql, (err, rows) => {
+          if (err) return reject(err);
+          // let unreadSql = `
+          // SELECT 
+          // `;
+          for (let i = 0; i < rows.length; i++) {
+            let img = rows[i].avatar;
+            rows[i].avatar = common.setPort() + img;
+          }
+          // 查询离线记录表,返回未读消息条数
+          return resolve(rows);
         });
       })
-    })
+    });
   } else {
-    // 游客身份可以浏览一个默认的群
+    // 游客身份可以浏览一个默认的群  智能机器人
     sql = `SELECT * FROM GROUPINFO WHERE GROUPID = '16838200-1a29-11ea-92c5-f3482b4425d5'`;
     return new Promise((resolve, reject) => {
       db.get(sql, (err, row) => {
@@ -313,30 +395,35 @@ exports.getMessageList = function (userId) {
   }
 };
 // 获取历史消息
-exports.getHistoryList = function (data) {
+exports.getHistoryList = function(data) {
   let sql,
     messages = [], // 消息集合
     userSql = 'SELECT * FROM USERINFO WHERE', // 用户信息
     privateSql,
     historys = [];
   // 群聊
-  if (data.GROUPID) {
+  if (data.type === 'QL') {
     // 根据群ID查询历史记录表并根据时间降序排序
     sql = `
-      SELECT * FROM HISTORY WHERE GROUPID = '${data.GROUPID}'  ORDER BY TS ASC;
+      SELECT * FROM HISTORY WHERE GROUPID = '${data.otherpartid}'  ORDER BY TS ASC;
     `;
     return new Promise((resolve, reject) => {
       db.serialize(() => {
         db.all(sql, (err, messages) => {
           if (err) return err;
           for (let i = 0; i < messages.length; i++) {
-            userSql += (i < messages.length - 1) ? (`
-            USERID = '${messages[i].FROMUSERID}' OR `) : (`USERID = '${messages[i].FROMUSERID}' `);
+            userSql +=
+              i < messages.length - 1
+                ? `
+            USERID = '${messages[i].FROMUSERID}' OR `
+                : `USERID = '${messages[i].FROMUSERID}' `;
           }
           db.all(userSql, (err, users) => {
             if (err) return reject(err);
             for (let i = 0; i < messages.length; i++) {
-              let userInfo = users.filter((item) => messages[i].FROMUSERID === item.USERID);
+              let userInfo = users.filter(
+                item => messages[i].FROMUSERID === item.USERID
+              );
               historys.push({
                 MESSAGEID: messages[i].MESSAGEID,
                 GROUPID: messages[i].GROUPID,
@@ -350,37 +437,37 @@ exports.getHistoryList = function (data) {
               });
             }
             return resolve(historys);
-          })
+          });
         });
-      })
+      });
     });
   } else {
     // 私聊
     privateSql = `
-    SELECT * FROM HISTORY WHERE (FROMUSERID = '${data.FROMUSERID}' OR TOUSERID = '${data.TOUSERID}' ) AND GROUPID = '';
+    SELECT * FROM HISTORY WHERE (FROMUSERID = '${data.otherpartid}' OR TOUSERID = '${data.otherpartid}' ) AND GROUPID = '';
     `;
     return new Promise((resolve, reject) => {
       db.all(privateSql, (err, rows) => {
         if (err) return reject(err);
         return resolve(rows);
-      })
-    })
+      });
+    });
   }
 };
 // 判断消息是否已存在
-exports.messageIsRepeat = function (data) {
+exports.messageIsRepeat = function(data) {
   let sql = `
             SELECT * FROM HISTORY WHERE TS = '${data.TS}';
-            `
+            `;
   return new Promise((resolve, reject) => {
     db.get(sql, (err, row) => {
       if (err) return reject(err);
       return resolve(row);
-    })
-  })
-}
+    });
+  });
+};
 // 新增一条历史消息
-exports.historyCreate = function (data) {
+exports.historyCreate = function(data) {
   let sql = `
             INSERT INTO HISTORY(MESSAGEID, GROUPID, FROMUSERID, TOUSERID, CONTENT, TIME, TS)
             VALUES(
@@ -402,4 +489,28 @@ exports.historyCreate = function (data) {
       });
     });
   });
+};
+exports.offlineCreate = function(data) {
+  let sql = `
+    INSERT INTO OFFLINE(ID,MESSAGEID, GROUPID, FROMUSERID, TOUSERID, CONTENT, TIME, TS)
+    VALUES(
+      '${data.ID}',
+      '${data.MESSAGEID}',
+      '${data.GROUPID}',
+      '${data.FROMUSERID}',
+      '${data.TOUSERID}',
+      '${data.CONTENT}',
+      '${data.TIME}',
+      '${data.TS}'
+    )
+  `;
+  return new Promise((resolve,reject)=>{
+    db.run(sql,(err)=>{
+      if(err) reject(err);
+      return resolve({
+        code:'0',
+        message:`新增离线记录:${data.CONTENT} .`
+      })
+    })
+  })
 };
