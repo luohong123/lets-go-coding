@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div id="canvas"></div>
+    <script type="script">
+      var value = "global";
+
+// 例子1
+(function() {
+    console.log(value);
+
+    let value = 'local';
+}());
+
+// 例子2
+{
+    console.log(value);
+
+    const value = 'local';
+};
+    </script>
+  </body>
+</html>
