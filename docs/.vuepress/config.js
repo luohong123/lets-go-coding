@@ -2,7 +2,7 @@
  * @Author: honghong
  * @Date: 2019-09-25 10:15:42
  * @LastEditors: honghong
- * @LastEditTime: 2020-02-02 10:48:03
+ * @LastEditTime: 2020-02-03 10:42:55
  * @Description: 
  * @email: 3300536651@qq.com
  */
@@ -72,7 +72,20 @@ module.exports = {
             '/JavaScript/': [
                 '/JavaScript/',
                 '/JavaScript/手写instanceof',
+                '/JavaScript/防抖和节流',
+                '/JavaScript/函数柯里化',
+                '/JavaScript/基于Promise的ajax封装',
+                '/JavaScript/模拟实现promise',
+                '/JavaScript/深拷贝和浅拷贝',
+                '/JavaScript/手动实现常见的设计模式',
+                '/JavaScript/手动实现call、apply、bind',
+                '/JavaScript/手动实现es5继承',
+                '/JavaScript/手动实现jsonp',
+                '/JavaScript/手写instanceof',
+                '/JavaScript/数组去重、扁平、最值、乱序',
                 '/JavaScript/Array',
+                '/JavaScript/EventEmitter',
+                '/JavaScript/JavaScript',
                 '/JavaScript/TypeScript'
             ],
             '/visual/Threejs基础': [
