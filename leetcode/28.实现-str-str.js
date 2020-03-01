@@ -54,10 +54,7 @@
  */
 // 使用内置函数
 var strStr = function (haystack, needle) {
-    if (needle === '') return 0;
-    let i = 0;
-    for (let j = 0; j < haystack.length) {
-        if (haystack[j].charAt(j))
-    }
+
+
 };
 // @lc code=end
