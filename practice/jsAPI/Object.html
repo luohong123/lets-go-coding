@@ -1,0 +1,60 @@
+<!--
+ * @Author: honghong
+ * @Date: 2020-02-27 11:06:40
+ * @LastEditors: honghong
+ * @LastEditTime: 2020-02-27 11:11:07
+ * @Description: 
+ * @email: 3300536651@qq.com
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let objs = {
+            animal: 'dog',
+            fruit: 'apple'
+        };
+        let arrayObjs = [{
+                animal: 'dog',
+                fruit: 'apple'
+            },
+            {
+                animal: 'dog',
+                fruit: 'apple'
+            }
+        ]
+
+        Object.keys(objs).forEach((key) => {
+            console.log(key)
+            console.log(objs[key])
+            // animal
+            // dog
+            // fruit
+            // apple
+        });
+        console.log('-----------------')
+        Object.keys(arrayObjs).forEach((key) => {
+            console.log(key);
+            console.log(arrayObjs[key]);
+        })
+        // 0 
+        // {
+        //     animal: "dog",
+        //     fruit: "apple"
+        // }
+        // 1 
+        // {
+        //     animal: "dog",
+        //     fruit: "apple"
+        // }
+    </script>
+</body>
+
+</html>
