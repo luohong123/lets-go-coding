@@ -2,7 +2,7 @@
  * @Author: honghong
  * @Date: 2020-03-06 09:07:09
  * @LastEditors: honghong
- * @LastEditTime: 2020-03-06 10:43:16
+ * @LastEditTime: 2020-03-06 10:49:56
  * @Description:
  * @email: 3300536651@qq.com
  */
@@ -56,6 +56,7 @@
  * 由于栈是后进先出，队列是先进先出，那么声明两个栈，
  * 一个按顺序压入栈为stackPush，再把stackPush栈按顺序全部倒入stackPop栈，
  * stackPop用来弹出栈，就能实现队列的效果了。
+ * 如果是用队列实现栈呢？
  */
 // @lc code=start
 /**
