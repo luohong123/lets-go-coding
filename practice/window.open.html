@@ -1,0 +1,55 @@
+<!--
+ * @Author: qingcheng
+ * @Date: 2020-04-28 20:47:06
+ * @LastEditors: qingcheng
+ * @LastEditTime: 2020-04-28 21:28:37
+ * @Description: 
+ * @email: 3300536651@qq.com
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        button {
+            background: rgb(0, 102, 255);
+            color: #fff;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <button type="button" onclick="openTest();">打开</button>
+    </div>
+    <script>
+        /**
+         * 解决 Mac window.open方法失效的问题 
+         */
+        function openTest() {
+            // 参考链接：https://juejin.im/post/5c08fd2ee51d4530e4144225
+            // 解决方法1:如果是由用户触发的动作所引起的 window.open 就不会被浏览器所阻止，
+            // 比如写在 onclick 这些事件 handler 里的，但如果是代码自己触发的就会被阻止。
+            let windowReference = window.open('', '_blank');
+            let url = 'https://www.baidu.com';
+            // promise异步方法
+            const promise1 = new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    resolve('open new window');
+                }, 300);
+            });
+            promise1.then(function (value) {
+                console.log(value);
+                windowReference.location = url;
+
+                // expected output: "open new window"
+            });
+        }
+    </script>
+</body>
+
+</html>
