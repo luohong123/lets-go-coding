@@ -1,8 +1,8 @@
 /*
  * @Author: honghong
  * @Date: 2020-01-31 18:39:20
- * @LastEditors: honghong
- * @LastEditTime: 2020-01-31 18:55:37
+ * @LastEditors: lh
+ * @LastEditTime: 2020-05-25 21:05:47
  * @Description: 
  * @email: 3300536651@qq.com
  */
@@ -48,13 +48,21 @@
 
 // @lc code=start
 /**
+ * 解题思路：通过indexOf内置函数，滑动窗口
  * @param {string} haystack
  * @param {string} needle
  * @return {number}
  */
 // 使用内置函数
 var strStr = function (haystack, needle) {
-
+    let nLen = needle.length,
+        hLen = haystack.length;
+    for (let start = 0; start < hLen - nLen + 1; ++start) {
+        if (haystack.substring(start, start + nLen).indexOf(needle) !== -1) {
+            return start;
+        }
+    }
+    return -1;
 
 };
 // @lc code=end

@@ -1,0 +1,45 @@
+<!--
+ * @Author: qingcheng
+ * @Date: 2020-05-11 14:10:40
+ * @LastEditors: qingcheng
+ * @LastEditTime: 2020-05-11 14:36:39
+ * @Description: 
+ * @email: 3300536651@qq.com
+ -->
+<script>
+    const content = {
+        setHash: function(input) {
+            let map = new Map();
+            if (!input.length) return;
+            let result = [];
+            for (let i = 0; i < input.length; i++) {
+                // 还要判断是否为中文，通过正则，这个不知道怎么写
+                if (!map.has(input[i])) {
+                    map.set(
+                        input[i],
+                        1
+                    )
+                } else {
+                    let count = map.get(input[i]);
+                    map.set(input[i], ++count);
+                }
+            }
+            return map;
+        },
+        getCount: function (input, key) {
+            let maps = this.setHash(input);
+            return maps.get(key);
+        },
+        getWords: function (input) {
+            let result = [];
+            let maps = this.setHash(input);
+           for(let key of maps.keys()){
+               result.push(key);
+           }
+            return result.join('');
+        }
+    }
+    // 测试用例
+    content.getCount('你好，你是我，我是你','你');  // 3
+    content.getWords('你好，你是我，我是你'); // 你好，是我
+</script>

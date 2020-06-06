@@ -1,0 +1,20 @@
+<!--
+ * @Author: qingcheng
+ * @Date: 2020-05-12 16:22:54
+ * @LastEditors: qingcheng
+ * @LastEditTime: 2020-05-12 17:33:20
+ * @Description: 
+ * @email: 3300536651@qq.com
+ -->
+<script>
+    // let text = 'Some text\nAnd some more\r\nAnd yet\rThis is the end'
+    // let lines = text.split(/\r\n|\r|\n/)
+    // console.log(lines) // logs [ 'Some text', 'And some more', 'And yet', 'This is the end' ]
+    let input1 = '$islandPositions[D][0]';
+    let input2 = '$boatPosition[single][A][2]';
+    let regExpTest1 = (input1.replace(/^\$/,'')).replace(/\]$/,'').split(/\[|\]\[/);
+    let regExpTest2 = (input2.replace(/^\$/,'')).replace(/\]$/,'').split(/\[|\]\[/);
+   
+    console.log(regExpTest1);  // ['islandPositions', 'D', '0']
+    console.log(regExpTest2);  // ['boatPosition', 'single', 'A', '2']
+</script>
