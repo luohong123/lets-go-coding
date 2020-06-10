@@ -1,8 +1,8 @@
 /*
  * @Author: qingcheng
  * @Date: 2020-04-16 23:05:40
- * @LastEditors: qingcheng
- * @LastEditTime: 2020-04-16 23:05:46
+ * @LastEditors: lh
+ * @LastEditTime: 2020-06-06 09:26:18
  * @Description: 
  * @email: 3300536651@qq.com
  */
@@ -45,15 +45,24 @@
  * }
  */
 /**
- * @param {ListNode} head
+ * 解题思路: 操作节点指针的方法，操作链表的下一个节点的指向，如果当前节点等于下一个节点，
+ * 那么下一个节点指向下下个节点。
+ * 时间复杂度O(n) 空间复杂度O(1)
+ * @param {ListNode} head 排序链表
  * @return {ListNode}
  */
 var deleteDuplicates = function(head) {
+    // 当前节点
     let cur = head;
+    // 遍历链表
     while(cur && cur.next) {
+        // 当前值 和 下一个节点的值相等
         if(cur.val == cur.next.val) {
+            // 当前值的下一个节点 指向下下个节点
             cur.next = cur.next.next;
-        } else {
+        }
+         else {
+            // 反之，继续遍历
             cur = cur.next;
         }
     }

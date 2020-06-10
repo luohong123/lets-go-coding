@@ -1,0 +1,36 @@
+<!--
+ * @Author: lh
+ * @Date: 2020-06-10 17:16:04
+ * @LastEditors: lh
+ * @LastEditTime: 2020-06-10 17:29:28
+ * @Description: 
+ * @email: 3300536651@qq.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 找出数字中唯一一个出现奇数次数的数字，异或
+        // 同自己求异或为0，同0求异或为自己
+        // 如local = {A,B,C,A,B,N,C}，令e ^ A^B^C^A^B^N^C = 0^(A^A)^(B^B)^(C^C)^N = N;
+        function findOdd(arr) {
+            let res = 0;
+            for (let i = 0; i < arr.length; i++) {
+                res = res^arr[i];
+            }
+            console.log(res);
+            return res;
+        }
+        findOdd([1, 1, 2,2, 4, 4, 4]); // 4
+    </script>
+
+</body>
+
+</html>
