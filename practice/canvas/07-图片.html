@@ -1,0 +1,41 @@
+<!--
+ * @Author: lh
+ * @Date: 2020-06-26 22:03:14
+ * @LastEditors: lh
+ * @LastEditTime: 2020-06-26 22:24:45
+ * @Description: 
+ * @email: 3300536651@qq.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="canvas">您的浏览器不支持canvas,请升级浏览器</canvas>
+    <script type="text/javascript">
+        (function () {
+            let canvas = document.querySelector("#canvas");
+            let ctx = canvas.getContext("2d");
+            canvas.width = 600;
+            canvas.height = 600;
+            canvas.style.border = "1px solid #333";
+
+            let img = new Image();
+            img.src = './img/3.jpeg';
+            img.onload = function () {
+                let originH = img.height;
+                let originW = img.width;
+                // 绘制指定的宽高比的图片
+                ctx.drawImage(img, 100, 100, 80, 80 * originH / originW);
+            }
+        }());
+    </script>
+</body>
+
+</html>

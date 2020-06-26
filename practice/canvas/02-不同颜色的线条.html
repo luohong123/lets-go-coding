@@ -1,0 +1,67 @@
+<!--
+ * @Author: lh
+ * @Date: 2020-06-23 22:58:11
+ * @LastEditors: lh
+ * @LastEditTime: 2020-06-24 12:30:40
+ * @Description: 
+ * @email: 3300536651@qq.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>不同的线条</h1> 
+    <canvas id="canvas">
+        您的浏览器不支持canvas
+    </canvas>
+    <script type="text/javascript">
+        (function () {
+            let canvas = document.getElementById('canvas');
+            // 返回一个用于在画布上绘图的环境
+            let ctx = canvas.getContext('2d');
+            canvas.width = 600;
+            canvas.height = 1600;
+            canvas.style.border = '1px solid #eee';
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = 'red';
+            ctx.moveTo(100, 100);
+            ctx.lineTo(500, 100);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.strokeStyle = "yellow";
+            ctx.moveTo(100, 200);
+            ctx.lineTo(500, 200)
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.strokeStyle = "blue";
+            ctx.moveTo(100, 300);
+            ctx.lineTo(500, 300)
+            ctx.stroke();
+            ctx.beginPath();
+            // 隔行变色
+            for(let i = 0; i<4; i++){
+                if(i%2===0){
+                    ctx.beginPath();
+                    ctx.moveTo(100,(i+1)*100);
+                    ctx.lineTo(500,(i+1)*100);
+                    ctx.strokeStyle='red';
+                    ctx.stroke();
+                }else{
+                    ctx.beginPath();
+                    ctx.moveTo(100,(i+1)*100);
+                    ctx.lineTo(500,(i+1)*100);
+                    ctx.strokeStyle='pink';
+                    ctx.stroke();
+                }
+            }
+        })();
+    </script>
+</body>
+
+</html>

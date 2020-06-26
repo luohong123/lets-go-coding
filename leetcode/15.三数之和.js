@@ -1,4 +1,12 @@
 /*
+ * @Author: lh
+ * @Date: 2020-01-30 18:23:53
+ * @LastEditors: lh
+ * @LastEditTime: 2020-06-21 14:34:28
+ * @Description: 
+ * @email: 3300536651@qq.com
+ */
+/*
  * @lc app=leetcode.cn id=15 lang=javascript
  *
  * [15] 三数之和
@@ -35,11 +43,45 @@
 
 // @lc code=start
 /**
+ * 解题思路: 指针。 a+b+c =0，就相当于a+b = -c，相当于两数之和
  * @param {number[]} nums
  * @return {number[][]}
  */
-var threeSum = function(nums) {
-    
+var threeSum = function (nums) {
+    let n = nums.length,
+        ans = [];
+    if (n < 1) return ans;
+    // 先从小到大进行排序
+    nums.sort((a, b) => {
+        return a - b
+    });
+    // 最左端的指针
+    for (let first = 0; first < n; ++first) {
+        if (first > 0 && nums[first] === nums[first - 1])
+            continue;
+        // 最右端的指针
+        let third = n - 1;
+        // 第一个值一定小于0
+        let target = -nums[first];
+        // 寻找第二个值和第三个值
+        for (let second = first + 1; second < n; ++second) {
+            if (second > first + 1 && nums[second] === nums[second - 1])
+                continue;
+            // 保证b指针在c指针的左侧
+            while (second < third && nums[second] + nums[third] > target) {
+                --third;
+            }
+            if (second === third) break;
+            // 第二个值+第三个值 一定等于第一个值的绝对值
+            if (nums[second] + nums[third] === target) {
+                let list = [];
+                list.push(nums[first]);
+                list.push(nums[second]);
+                list.push(nums[third]);
+                ans.push(list);
+            }
+        }
+    }
+    return ans;
 };
 // @lc code=end
-

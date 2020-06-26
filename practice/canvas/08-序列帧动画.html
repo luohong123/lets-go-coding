@@ -1,0 +1,47 @@
+<!--
+ * @Author: lh
+ * @Date: 2020-06-26 22:03:14
+ * @LastEditors: lh
+ * @LastEditTime: 2020-06-26 22:50:16
+ * @Description: 
+ * @email: 3300536651@qq.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="canvas">您的浏览器不支持canvas,请升级浏览器</canvas>
+    <script type="text/javascript">
+        (function () {
+            let canvas = document.querySelector("#canvas");
+            let ctx = canvas.getContext("2d");
+            canvas.width = 600;
+            canvas.height = 600;
+            canvas.style.border = "1px solid #333";
+
+            let img = new Image();
+            img.src = './img/action.jpg';
+            // 绘制指定的裁剪动画
+            img.onload = function () {
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                var frameIndex = 0;
+                setInterval(() => {
+                    ctx.drawImage(img, 29 + frameIndex * 75, 60, 83, 63, 200, 200, 168, 120);
+                    frameIndex++;
+                    if (frameIndex === 11) {
+                        frameIndex = 0;
+                    }
+                }, 1000 / 10); // 10帧 100毫秒绘制一个动作
+            }
+        }());
+    </script>
+</body>
+
+</html>

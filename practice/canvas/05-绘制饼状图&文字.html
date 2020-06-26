@@ -1,0 +1,160 @@
+<!--
+ * @Author: lh
+ * @Date: 2020-06-24 12:42:36
+ * @LastEditors: lh
+ * @LastEditTime: 2020-06-26 18:52:45
+ * @Description: 
+ * @email: 3300536651@qq.com
+-->
+<canvas id="canvas">您的浏览器不支持canvas!</canvas>
+<script>
+    let data = [{
+            "id": 0,
+            "label": "苹果🍎",
+            "value": .3,
+            "color": "red"
+        },
+        {
+            "id": 1,
+            "label": "西瓜🍉",
+            "value": .5,
+            "color": "blue"
+        }, {
+            "id": 2,
+            "label": "梨🍐",
+            "value": .1,
+            "color": "green"
+        }, {
+            "id": 3,
+            "label": "橙子🍊",
+            "value": .2,
+            "color": "orange"
+        }
+    ];
+
+    function draw(data) {
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        canvas.width = 600;
+        canvas.height = 600;
+        canvas.style.border = "1px solid #000";
+        // 图例
+        for (let i = 0; i < data.length; i++) {
+            ctx.lineWidth = 10;
+            ctx.beginPath();
+            ctx.moveTo(500, 47 + 15 * i);
+            ctx.lineTo(500 + 10, 47 + 15 * i);
+            ctx.strokeStyle = data[i].color;
+            ctx.fillText(data[i].label, 500 + 20, 50 + 15 * i, 55 + 15 * i);
+            ctx.stroke();
+        }
+        // 从圆心开始画
+        let tempAngle = -90,
+            startAngle, endAngle, x0 = 200,
+            y0 = 200,
+            r = 100,
+            x1, y1, textAngle;
+        // 扇形
+        for (let i = 0; i < data.length; i++) {
+            ctx.beginPath();
+            ctx.moveTo(x0, y0);
+            let sum = 0;
+            let angle = data[i].value * 360; // 度数
+            startAngle = tempAngle / 180 * Math.PI;
+            endAngle = (tempAngle + angle) / 180 * Math.PI;
+            ctx.arc(x0, y0, r, startAngle, endAngle);
+            ctx.fillStyle = data[i].color;
+            ctx.font = 'italic 200 14px/2 Unknown Font, sans-serif';
+            textAngle = angle / 2 + tempAngle;
+            x1 = x0 + Math.cos(textAngle * Math.PI / 180) * (r + 20);
+            y1 = y0 + Math.sin(textAngle * Math.PI / 180) * (r + 20);
+            if (textAngle > 90 && textAngle < 270) {
+                ctx.textAlign = 'end';
+            }
+            let persent = (Number.parseFloat(data[i].value)).toFixed(4) * 100 + '%';
+            ctx.fillText(persent, x1, y1);
+            ctx.fill();
+            ctx.stroke;
+            // 线指向文字
+            // 折线箭头
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = data[i].color;
+            // 不要折线
+            if (Math.abs(textAngle - 0) < 6 || Math.abs(textAngle - 90) < 6 || Math.abs(textAngle - 180) < 6 || Math
+                .abs(textAngle - 270) < 6) {
+                // 箭头
+                ctx.moveTo((x0 + Math.cos(textAngle * Math.PI / 180) * r), (x0 + Math.sin(textAngle * Math.PI / 180) *
+                    r));
+                ctx.lineTo(x1, y1);
+            } else {
+                if (textAngle > 90 && textAngle < 270) {
+                    // 箭头
+                    ctx.moveTo((x0 + Math.cos(textAngle * Math.PI / 180) * r), (x0 + Math.sin(textAngle * Math.PI /
+                            180) *
+                        r));
+                    ctx.lineTo(x1 + 8, y1 - 5);
+                    ctx.stroke();
+                    // 折线
+                    ctx.beginPath();
+                    ctx.moveTo(x1 + 8, y1 - 5);
+                    ctx.lineTo(x1, y1 - 5);
+                } else {
+                    // 箭头
+                    ctx.moveTo((x0 + Math.cos(textAngle * Math.PI / 180) * r), (x0 + Math.sin(textAngle * Math.PI /
+                            180) *
+                        r));
+                    ctx.lineTo(x1 - 8, y1 - 5);
+                    ctx.stroke();
+                    // 折线
+                    ctx.beginPath();
+                    ctx.moveTo(x1 - 8, y1 - 5);
+                    ctx.lineTo(x1, y1 - 5);
+                }
+            }
+
+            ctx.stroke();
+            tempAngle += angle;
+        }
+        // 点击区域
+        canvas.addEventListener('click', (event) => {
+            // var pos = getEventPosition(event);
+            // if (event.region) {
+
+            // }
+        })
+    }
+
+    function getEventPosition(ev) {
+        var x, y;
+        if (ev.layerX || ev.layerX == 0) {
+            x = ev.layerX;
+            y = ev.layerY;
+        } else {
+            x = ev.offsetX;
+            y = ev.offsetY;
+        }
+        console.log("x:" + x + ",y:" + y)
+        return {
+            x: x,
+            y: y
+        }
+    }
+    // 处理百分比
+    let newData = [];
+    let sum = 0;
+    for (let k = 0; k < data.length; k++) {
+        sum += data[k].value;
+
+    }
+    for (let i = 0; i < data.length; i++) {
+        newData.push({
+            "id": data[i].id,
+            "label": data[i].label,
+            "value": data[i].value / sum,
+            "color": data[i].color
+
+        })
+    }
+    draw(newData);
+</script>

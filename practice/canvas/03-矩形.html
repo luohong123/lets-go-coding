@@ -1,8 +1,8 @@
 <!--
  * @Author: honghong
  * @Date: 2020-01-30 17:02:07
- * @LastEditors: honghong
- * @LastEditTime: 2020-01-30 17:13:08
+ * @LastEditors: lh
+ * @LastEditTime: 2020-06-24 12:41:29
  * @Description: 
  * @email: 3300536651@qq.com
  -->
@@ -23,13 +23,20 @@
 </head>
 
 <body>
-    <canvas id="box1"></canvas>
+    <canvas id="canvas"></canvas>
     <script type="text/javascript">
-        var canvas = document.getElementById('box1');
-        var ctx = canvas.getContext('2d');
+        let canvas = document.querySelector('#canvas');
+        let ctx = canvas.getContext('2d');
+        canvas.width=600;
+        canvas.height=600;
+        canvas.style.border='1px solid #333';
         ctx.fillStyle = '#FF0000';
+        ctx.rect(100,100,80,80);
         // fillRect(起点x坐标，起点y坐标，终点x坐标，终点y坐标)
-        ctx.fillRect(0, 0, 80, 1000);
+        ctx.fillRect(100, 100, 80, 80);
+        ctx.clearRect(120,120,30,30);
+        ctx.stroke();
+        ctx.strokeRect(300,300,60,60);
     </script>
 </body>
 

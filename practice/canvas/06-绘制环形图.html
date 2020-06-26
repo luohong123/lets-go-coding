@@ -1,0 +1,67 @@
+<!--
+ * @Author: lh
+ * @Date: 2020-06-24 12:42:36
+ * @LastEditors: lh
+ * @LastEditTime: 2020-06-26 15:46:54
+ * @Description: 
+ * @email: 3300536651@qq.com
+-->
+<canvas id="canvas">您的浏览器不支持canvas!</canvas>
+<script>
+    let data = [{
+            "label": "苹果🍎",
+            "value": .2,
+            "color": "red"
+        },
+        {
+            "label": "香蕉🍌",
+            "value": .5,
+            "color": "yellow"
+        }, {
+            "label": "梨🍐",
+            "value": .1,
+            "color": "green"
+        }, {
+            "label": "橙子🍊",
+            "value": .2,
+            "color": "orange"
+        }
+    ];
+
+    function draw(data) {
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        canvas.width = 600;
+        canvas.height = 600;
+        canvas.style.border = "1px solid #000";
+        // 从圆心开始画
+        let tempAngle = -90,
+            startAngle, endAngle, x0 = 200,
+            y0 = 200,
+            r = 100;
+
+        for (let i = 0; i < data.length; i++) {
+            ctx.beginPath();
+            ctx.moveTo(x0, y0);
+            let angle = data[i].value * 360; // 度数
+            startAngle = tempAngle / 180 * Math.PI;
+            endAngle = (tempAngle + angle) / 180 * Math.PI;
+            ctx.arc(x0, y0, r, startAngle, endAngle);
+            ctx.fillStyle = data[i].color;
+            ctx.fill();
+            tempAngle += angle;
+        }
+        for (let i = 0; i < data.length; i++) {
+            ctx.beginPath();
+            ctx.moveTo(x0, y0);
+            let angle = data[i].value * 360; // 度数
+            startAngle = tempAngle / 180 * Math.PI;
+            endAngle = (tempAngle + angle) / 180 * Math.PI;
+            ctx.arc(x0, y0, 50, startAngle, endAngle);
+            ctx.fillStyle = '#fff';
+            ctx.fill();
+            tempAngle += angle;
+        }
+    }
+    draw(data);
+</script>

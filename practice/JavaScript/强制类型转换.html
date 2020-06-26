@@ -1,0 +1,50 @@
+<!--
+ * @Author: lh
+ * @Date: 2020-06-25 08:33:37
+ * @LastEditors: lh
+ * @LastEditTime: 2020-06-25 09:25:32
+ * @Description: 
+ * @email: 3300536651@qq.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function f1() {
+            return 30;
+        }
+        f1().toString(); // '30'
+        var a = {
+            b: 42,
+            c: '43',
+            d: [1, 2, 3]
+        };
+        JSON.stringify(a, ['b', 'c']);
+
+        var b = 'Hello World';
+        if (b.indexOf('lo') >= 0) {
+            console.log('lo 找到===>');
+        }
+        if (~b.indexOf('lo')) {
+            console.log('lo 找到~~~~');
+        }
+        if (-4) {
+            console.log(-4);
+        }
+        if (4) {
+            console.log(4);
+        }
+        if (0) {
+            console.log(0);
+        }
+    </script>
+</body>
+
+</html>

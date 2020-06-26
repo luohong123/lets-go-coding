@@ -1,0 +1,44 @@
+<!--
+ * @Author: lh
+ * @Date: 2020-06-24 12:42:36
+ * @LastEditors: lh
+ * @LastEditTime: 2020-06-26 14:39:32
+ * @Description: 
+ * @email: 3300536651@qq.com
+-->
+<canvas id="canvas">您的浏览器不支持canvas!</canvas>
+<script>
+    let data = [{
+            "label": "苹果🍎",
+            "value": .1,
+            "color": "red"
+        },
+        {
+            "label": "香蕉🍌",
+            "value": .4,
+            "color": "yellow"
+        }, {
+            "label": "梨🍐",
+            "value": .2,
+            "color": "green"
+        }, {
+            "label": "橙子🍊",
+            "value": .3,
+            "color": "orange"
+        }
+    ];
+
+    function draw(data) {
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        canvas.width = 600;
+        canvas.height = 600;
+        canvas.style.border = "1px solid #000";
+        // 从圆心开始画
+        ctx.moveTo(200, 200);
+        ctx.arc(200, 200, 100, 0, Math.PI/2,true);
+        ctx.fill();
+        ctx.closePath();
+    }
+    draw(data);
+</script>

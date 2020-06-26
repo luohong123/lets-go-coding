@@ -1,0 +1,48 @@
+<!--
+ * @Author: lh
+ * @Date: 2020-06-23 22:58:11
+ * @LastEditors: lh
+ * @LastEditTime: 2020-06-24 09:42:59
+ * @Description: 
+ * @email: 3300536651@qq.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="canvas">
+        您的浏览器不支持canvas
+    </canvas>
+    <script type="text/javascript">
+        (function () {
+            let canvas = document.getElementById('canvas');
+            // 返回一个用于在画布上绘图的环境
+            let ctx = canvas.getContext('2d');
+            canvas.width = 600;
+            canvas.height = 600;
+            canvas.style.border = '1px solid #eee';
+
+            let rectH = 10;
+            let rectW = 10;
+            for (let i = 0; i < canvas.width / rectH; i++) {
+                // 把路径移动到画布中的指定点，不创建线条
+                ctx.moveTo(0, i * rectH);
+                // 添加一个新点，然后在画布中创建从该点到最后指定点的线条
+                ctx.lineTo(canvas.width, i*rectH);
+
+                ctx.moveTo(i*rectW,0);
+                ctx.lineTo(i*rectW,canvas.height);
+            }
+            // 绘制已定义的路径
+            ctx.stroke();
+        })();
+    </script>
+</body>
+
+</html>
