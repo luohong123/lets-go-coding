@@ -1,0 +1,80 @@
+<!--
+ * @Author: lh
+ * @Date: 2020-06-26 22:03:14
+ * @LastEditors: lh
+ * @LastEditTime: 2020-06-27 10:33:29
+ * @Description: 
+ * @email: 3300536651@qq.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="canvas">您的浏览器不支持canvas,请升级浏览器</canvas>
+    <button type="button" id="left">⬅️</button>
+    <button type="button" id="right">➡</button>
+    <button type="button" id="top">⬆️</button>
+    <button type="button" id="bottom">⬇️</button>
+    <div>
+        <h3>面向过程</h3>
+        一步一步的操作，去控制游戏的场景，第一步干什么 第二步干什么
+        <h3> 面向对象</h3>
+        这个小人就是对象
+        属性：color width height speed
+        行为：leftTurn左转 rightTurn右转
+    </div>
+    <script type="text/javascript">
+        var directIndex = 0;
+        var frameIndex = 0;
+        (function () {
+            let canvas = document.querySelector("#canvas");
+            let ctx = canvas.getContext("2d");
+            canvas.width = 600;
+            canvas.height = 600;
+            canvas.style.border = "1px solid #333";
+
+            let img = new Image();
+            img.src = './img/action2.png';
+
+            // 绘制指定的裁剪动画
+            img.onload = function () {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                setInterval(() => {
+                    // 清楚之前的图片
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, frameIndex * 67, 109 * directIndex, 67, 109, 200, 200, 67, 109);
+                    // 如果通过代码重新设置，canvas画布的宽高
+                    frameIndex++;
+                    frameIndex %= 4;
+                }, 1000 / 10); // 10帧 100毫秒绘制一个动作
+            }
+        }());
+        var btnLeft = document.getElementById('left');
+        var btnRight = document.getElementById('right');
+        var btnTop = document.getElementById('top');
+        var btnBottom = document.getElementById('bottom');
+        // 按钮点击事件
+        btnLeft.onclick = function () {
+            // 朝左方向
+            directIndex = 1;
+        }
+        btnRight.onclick = function () {
+            directIndex = 2;
+        }
+        btnTop.onclick = function () {
+            directIndex = 3;
+        }
+        btnBottom.onclick = function () {
+            directIndex = 0;
+        }
+    </script>
+</body>
+
+</html>

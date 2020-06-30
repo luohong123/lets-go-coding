@@ -1,0 +1,61 @@
+<!--
+ * @Author: lh
+ * @Date: 2020-06-27 16:23:15
+ * @LastEditors: lh
+ * @LastEditTime: 2020-06-27 16:45:45
+ * @Description: 
+ * @email: 3300536651@qq.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+</head>
+
+<body>
+    <p>
+        建议少用阴影和渐变，性能不好，绘制时需要计算
+    </p>
+    <canvas id="canvas">您的浏览器不支持canvas,请升级浏览器</canvas>
+    <script type="text/javascript">
+        let canvas = document.querySelector("#canvas");
+        let ctx = canvas.getContext("2d");
+        canvas.width = 600;
+        canvas.height = 600;
+        canvas.style.border = "1px solid #333";
+
+        // 阴影
+        ctx.fillStyle = "rgba(255,0,0,.9)";
+        ctx.shadowColor = "teal";
+        ctx.shadowBlur = 10;
+        ctx.shadowOffsetX = 8;
+        ctx.shadowOffsetY = 8;
+        ctx.fillRect(400, 400, 100, 100);
+
+        // 线性渐变: x0起点的 x 轴坐标。y0起点的 y 轴坐标。x1终点的 x 轴坐标。y1终点的 y 轴坐标。
+        // var grd = ctx.createLinearGradient(300, 300, 500, 300);
+        // // 添加一个渐变颜色，第一个参数介于0.0 与1.0 之间的值，表示渐变中开始与结束之间的位置
+        // grd.addColorStop(0, 'black');
+        // grd.addColorStop(.5, 'red');
+        // grd.addColorStop(1, 'white'); // 添加一个渐变颜色
+        // ctx.fillStyle = grd;
+        // ctx.fillRect(300, 300, 200, 200);
+
+
+        // 圆形渐变 创建一个沿着参数坐标指定的线的放射性性渐变。
+        // x0开始圆形的 x 轴坐标。 y0开始圆形的 y 轴坐标。 r0开始圆形的半径。 x1结束圆形的 x 轴坐标。
+        // y1结束圆形的 y 轴坐标。 r1结束圆形的半径。
+        var rlg = ctx.createRadialGradient(50, 50, 10, 100, 100, 100);
+        rlg.addColorStop(0, 'pink');
+        rlg.addColorStop(.4, 'blue');
+        rlg.addColorStop(1, 'purple');
+        ctx.fillStyle = rlg;
+        ctx.fillRect(0, 0, 300, 300);
+    </script>
+</body>
+
+</html>

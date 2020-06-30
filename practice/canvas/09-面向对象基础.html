@@ -1,0 +1,47 @@
+<!--
+ * @Author: lh
+ * @Date: 2020-06-27 10:34:54
+ * @LastEditors: lh
+ * @LastEditTime: 2020-06-27 10:47:34
+ * @Description: 
+ * @email: 3300536651@qq.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 创建对象的方式 
+        // 第一种：json的方式创建对象(通过数组或对象创建)
+        // 缺点：不能把json对象当成一个模版
+        // var o = {
+        //     key: val
+        // };
+        // var array = [1, 2, 4, {}];
+        // 第二种:创建对象的方式
+        // 缺点：不能把json对象当成一个模版，通过new来构建一个新对象
+        // var o2 = new Object();
+        // o2.age = 19;
+        // o2.show = function () {
+
+        // }
+        // 第三种：创建对象的方式
+        // 优点 可以通过new 传参  当成一个模版
+        function Cat(age, name) {
+            this.age = age;
+            this.name = name;
+            this.show =  ()=> {
+                console.log("我的名字是："+this.name);
+            }
+        }
+        var cat = new Cat('18','Alice'); // 通过构造函数构造了一个函数出来，通过Cat类构造了一个函数
+    </script>
+</body>
+
+</html>

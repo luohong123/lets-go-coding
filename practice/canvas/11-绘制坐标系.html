@@ -1,0 +1,68 @@
+<!--
+ * @Author: lh
+ * @Date: 2020-06-27 12:16:26
+ * @LastEditors: lh
+ * @LastEditTime: 2020-06-27 12:41:04
+ * @Description: 
+ * @email: 3300536651@qq.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>绘制坐标系</title>
+</head>
+
+<body>
+    <canvas id="canvas">您的浏览器不支持canvas,请升级浏览器</canvas>
+    <script type="text/javascript">
+        let canvas = document.querySelector("#canvas");
+        let ctx = canvas.getContext("2d");
+        canvas.width = 600;
+        canvas.height = 600;
+        canvas.style.border = "1px solid #333";
+        var x0 = 100,
+            y0 = 400; // 圆心点坐标
+        var maxHeight = 300;
+        var arrowWidth = 10; //箭头宽度 45度的箭头 勾股 长度相等
+        //    绘制x轴
+        ctx.beginPath();
+        ctx.strokeStyle = 'blue';
+        ctx.moveTo(100, 400);
+        ctx.lineTo(500, 400);
+        ctx.moveTo(500, 400);
+        ctx.lineTo(500 - arrowWidth, 400 - arrowWidth);
+        ctx.moveTo(500, 400);
+        ctx.lineTo(500 - arrowWidth, 400 + arrowWidth);
+        ctx.stroke();
+        // 绘制y轴
+        ctx.beginPath();
+        ctx.strokeStyle = 'orange';
+        ctx.moveTo(x0, y0);
+        ctx.lineTo(x0, y0 - 400);
+        ctx.moveTo(100, 0);
+        ctx.lineTo(x0 - arrowWidth, arrowWidth);
+        ctx.moveTo(x0, y0 - 400);
+        ctx.lineTo(x0 + arrowWidth, arrowWidth);
+        ctx.stroke();
+        // 绘制线段
+        var data = [
+            .4, .5, .8, .7
+        ];
+        // 线段宽度，两边留白
+        var pointWidth = 400 / (data.length + 1);
+        ctx.beginPath();
+        ctx.strokeStyle = 'red';
+        for (let i = 0; i < data.length; i++) {
+            let x = x0 + (i + 1) * pointWidth;
+            let y = y0 - data[i] * maxHeight;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }
+    </script>
+</body>
+
+</html>

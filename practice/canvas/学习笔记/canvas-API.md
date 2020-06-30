@@ -14,7 +14,7 @@ Internet Explorer 9、Firefox、Opera、Chrome 以及 Safari 支持 <canvas> 及
 属性	描述
 fillStyle	设置或返回用于填充绘画的颜色、渐变或模式
 strokeStyle	设置或返回用于笔触的颜色、渐变或模式
-shadowColor	设置或返回用于阴影的颜色
+shadowColor	设置或返回用于阴影的颜色(性能差，需要js计算，尽量用图片)
 shadowBlur	设置或返回用于阴影的模糊级别
 shadowOffsetX	设置或返回阴影距形状的水平距离
 shadowOffsetY	设置或返回阴影距形状的垂直距离

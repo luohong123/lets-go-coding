@@ -1,0 +1,52 @@
+<!--
+ * @Author: lh
+ * @Date: 2020-06-27 12:50:20
+ * @LastEditors: lh
+ * @LastEditTime: 2020-06-27 13:12:21
+ * @Description: 
+ * @email: 3300536651@qq.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function Sprite(option) {
+            this._init(option);
+        }
+        Sprite.prototype = {
+            _init: function (option) {
+                this.name = option.name;
+                this.age = option.age;
+                this.color = 'red';
+            },
+            show: function () {
+                let args1 = Array.prototype.slice.call(arguments);
+                let args2 = Array.from(arguments);
+                let args3 = [].slice.call(arguments);
+                let args4 = [].slice.call(arguments);
+                console.log('args1:' + args1);
+                console.log('args2:' + args2);
+                console.log('args3:' + args3);
+                console.log('args4:' + args4);
+                console.log('args1 instanceof Array', args1 instanceof Array);
+                console.log('args1 instanceof Object', args1 instanceof Object);
+                console.log('args1 instanceof String', args1 instanceof String);
+
+            }
+        }
+        var sprite = new Sprite({
+            name: 'qingcheng',
+            age: 18,
+        })
+        sprite.show('a', 'b');
+    </script>
+</body>
+
+</html>
