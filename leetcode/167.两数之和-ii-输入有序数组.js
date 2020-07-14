@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-04-21 12:08:14
- * @LastEditTime: 2020-04-21 12:17:36
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-07-09 16:52:56
+ * @LastEditors: lh
  * @Description: In User Settings Edit
  * @FilePath: \lets-go-coding\leetcode\167.两数之和-ii-输入有序数组.js
  */
@@ -42,29 +42,60 @@
 
 // @lc code=start
 /**
- * 通过快慢指针方法，解题思路，由于index1必须小于index2，
+ * 通过双指针方法，解题思路，由于index1必须小于index2，
  * 输入的是有序数组且答案唯一，那么
- * 使用快慢指针numbers[low]、 numbers[high]，
- * numbers[low] + numbers[high]大于 target时，快指针 high 索引
- * 减 1 ，反之慢指针 low 索引加 1
+ * 使用双指针numbers[low]、 numbers[high]，
+ * numbers[left] + numbers[right]大于 target时 right 索引
+ * 减 1 ，反之 left 索引加 1
  * @param {number[]} numbers
  * @param {number} target
  * @return {number[]}
  */
-var twoSum = function(numbers, target) {
-  let low = 0, 
-      high = numbers.length - 1;
-  while(low < high) {
-    let sum = numbers[low] + numbers[high];
-    if(sum === target) {
-      return [low + 1, high + 1];
-    } else if(sum < target){
-      low++;
+// var twoSum = function (numbers, target) {
+//   let left = 0,
+//     right = numbers.length - 1;
+//   while (left < right) {
+//     let sum = numbers[left] + numbers[right];
+//     if (sum === target) {
+//       return [left + 1, right + 1];
+//     } else if (sum < target) {
+//       left++;
+//     } else {
+//       right--;
+//     }
+//   }
+//   return [-1, -1];
+// };
+
+/**
+ * 方法二: 二分查找
+ * @param {*} numbers 
+ * @param {*} target 
+ */
+var binarySearch = function (numbers, target) {
+  let low = 0,
+    high = numbers.length;
+  while (low <= high) {
+    let mid = parseInt((high + low) / 2);
+    if (numbers[mid] === target) {
+      return mid;
+    } else if (numbers[mid] < target) {
+      low = mid + 1;
     } else {
-      high--;
+      high = mid - 1;
     }
   }
-  return [-1, -1 ];
-};
+  return -1;
+}
+var twoSum = function (numbers, target) {
+  if (!numbers) return numbers;
+  for (let i = 0; i < numbers.length; i++) {
+    let value = target - numbers[i];
+    let res = binarySearch(numbers, value);
+    // 不能重复使用相同的元素
+    if (res !== -1 && res != i) // 有序的元素
+      return i < res ? [i + 1, res + 1] : [res + 1, i + 1];
+  }
+  return [];
+}
 // @lc code=end
-

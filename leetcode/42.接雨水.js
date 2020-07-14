@@ -1,4 +1,12 @@
 /*
+ * @Author: lh
+ * @Date: 2020-06-21 13:57:34
+ * @LastEditors: lh
+ * @LastEditTime: 2020-07-08 09:52:20
+ * @Description: 
+ * @email: 3300536651@qq.com
+ */
+/*
  * @lc app=leetcode.cn id=42 lang=javascript
  *
  * [42] 接雨水
@@ -29,11 +37,30 @@
 
 // @lc code=start
 /**
+ * 双指针,时间复杂度O(N) 空间复杂度O(1)
  * @param {number[]} height
  * @return {number}
  */
-var trap = function(height) {
-
+var trap = function (height) {
+    if (!height) return null;
+    let left = 0,
+        right = height.length - 1,
+        leftMax = 0,
+        rightMax = 0,
+        ans = 0;
+    while (left < right) {
+        if (height[left] < height[right]) {
+            height[left] >= leftMax ? 
+            (leftMax = height[left]) :
+             ans += (leftMax - height[left]);
+            left++;
+        } else {
+            height[right] >= rightMax ?
+             (rightMax = height[right]) : 
+             ans += (rightMax - height[right]);
+            right--;
+        }
+    }
+    return ans;
 };
 // @lc code=end
-
