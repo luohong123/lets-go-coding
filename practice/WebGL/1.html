@@ -1,0 +1,31 @@
+<!--
+ * @Author: lh
+ * @Date: 2020-08-27 17:24:22
+ * @LastEditors: lh
+ * @LastEditTime: 2020-08-27 17:25:03
+ * @Description: 
+ * @email: 3300536651@qq.com
+-->
+<script>
+    const canvas = document.querySelector('canvas');
+    const gl = canvas.getContext('webgl');
+
+    const vertex = `
+  attribute vec2 position;
+
+  void main() {
+    gl_PointSize = 1.0;
+    gl_Position = vec4(position, 1.0, 1.0);
+  }
+`;
+
+
+    const fragment = `
+  precision mediump float;
+
+  void main()
+  {
+    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+  }    
+`;
+</script>
